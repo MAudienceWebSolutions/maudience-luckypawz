@@ -89,14 +89,14 @@
 			//     'side',
 			//     'high'
 			// );
-			// add_meta_box(
-			//     'ma_testimonials_authormeta',
-			//     __( 'Author Meta', 'ma_textdomain' ),
-			//     'ma_meta_box_authormeta',
-			//     'testimonials',//$screen
-			//     'side',
-			//     'high'
-			// );
+			add_meta_box(
+			    'ma_staff_position',
+			    __( 'Position', 'ma_textdomain' ),
+			    'ma_meta_box_authormeta',
+			    'staff',//$screen
+			    'side',
+			    'high'
+			);
 		}
 		add_action( 'add_meta_boxes', 'ma_add_meta_box' );
 	/**
