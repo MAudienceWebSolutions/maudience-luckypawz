@@ -28,6 +28,10 @@ get_header();
 			<?php while ( have_posts() ) : the_post(); ?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
+					<section id="top-section" class="content-section home-section">
+						<?php the_content(); ?>
+					</section>
+
 					<section id="top-section" class="top-section home-section">
 
 						<div id="top-centerfull" class="column-centerfull section-column">
