@@ -92,7 +92,7 @@
 			add_meta_box(
 			    'ma_staff_position',
 			    __( 'Position', 'ma_textdomain' ),
-			    'ma_meta_box_authormeta',
+			    'ma_meta_box_position',
 			    'staff',//$screen
 			    'side',
 			    'high'
@@ -130,7 +130,7 @@
 		//     echo '</label> ';
 		//     echo '<input type="text" id="ma_new_field2" name="ma_new_field2" value="' . esc_attr( $value ) . '" size="25" />';
 		// }
-		function ma_meta_box_authormeta( $post ) {
+		function ma_meta_box_position( $post ) {
 			// Add an nonce field so we can check for it later.
 			wp_nonce_field( 'ma_meta_box', 'ma_meta_box_nonce' );
 			/*
@@ -139,7 +139,7 @@
 			 */
 			$value = get_post_meta( $post->ID, '_ma_meta_value_key3', true );
 			echo '<label for="ma_new_field3">';
-			_e( 'Add the author meta here (ex. John Doe, North Liberty, Iowa)', 'ma_textdomain' );
+			_e( 'Position', 'ma_textdomain' );
 			echo '</label> ';
 			echo '<input type="text" id="ma_new_field3" name="ma_new_field3" value="' . esc_attr( $value ) . '" size="25" />';
 		}
