@@ -21,13 +21,13 @@
   border-radius: 5px;
   width: 100px;
   padding: 10px;
-  background-color: #0a1633;
+  background-color: #fbaf5d;
 }
 .btn.free-online-estimate,
 .button.free-online-estimate {
   height: 50px;
   width: 250px;
-  background-color: rgba(10, 22, 51, 0.85);
+  background-color: rgba(251, 175, 93, 0.85);
   line-height: 50px;
   text-align: center;
   font-size: 1.15rem;
@@ -49,7 +49,7 @@
   display: block;
   background-color: black;
   content: " ";
-  background-color: #0a1633;
+  background-color: #fbaf5d;
   float: left;
 }
 .btn.free-online-estimate:after,
@@ -58,7 +58,7 @@
 }
 .btn:hover,
 .button:hover {
-  background-color: rgba(10, 22, 51, 0.5);
+  background-color: rgba(251, 175, 93, 0.5);
   color: white;
 }
 /* BASE */
@@ -92,9 +92,9 @@ html {
   background-color: white;
 }
 body {
-  border-top: 5px solid #a50000;
+  border-top: 5px solid #ed1c24;
   min-height: 100vh;
-  background-color: #006e97;
+  background-color: #9bdcba;
 }
 body .site-header,
 body #primary,
@@ -109,18 +109,15 @@ body .site {
 }
 body .site-header {
   background-color: white;
-  border-bottom: 2px solid #a9c3d1;
+  border-bottom: 2px solid #04733d;
   padding-bottom: 0;
-}
-body .site-header img.header-image {
-  box-shadow: none;
 }
 body .site-header img.header-image {
   box-shadow: none;
 }
 body footer[role="contentinfo"] {
   color: white;
-  background-color: #006e97;
+  background-color: #9bdcba;
 }
 body footer[role="contentinfo"] a {
   color: white;
@@ -161,7 +158,7 @@ body footer[role="contentinfo"] a:hover {
   border: none;
 }
 .main-navigation .menu-primary-menu-container .nav-menu li a {
-  color: #0a1633;
+  color: #04733d;
   font-size: 1rem;
   text-transform: capitalize;
   font-weight: bold;
@@ -179,7 +176,7 @@ body footer[role="contentinfo"] a:hover {
 #primary {
   margin: 20px 0;
   padding: 20px;
-  border-top: 5px solid #a50000;
+  border-top: 5px solid #ed1c24;
 }
 article .entry-header {
   border-bottom: 1px solid black;
@@ -236,14 +233,14 @@ footer#colophon .footer-contact-wrap {
 /*  ******************************** WOOCOMMERCE ********************************  */
 /*  ******************************** GRAVITYFORMS ********************************  */
 .home-top-centerfull .column-right h2 {
-  background-color: #006e97;
+  background-color: #9bdcba;
   padding: 10px 20px 5px;
   text-transform: capitalize;
   font-size: 1.75rem;
   text-align: left;
 }
 #gform_wrapper_1 {
-  background-color: #006e97;
+  background-color: #9bdcba;
   padding: 0 20px 20px;
   margin: 0;
 }
@@ -261,7 +258,7 @@ footer#colophon .footer-contact-wrap {
   width: 100%;
 }
 #gform_wrapper_1 .gform_fields .gfield_contains_required .ginput_container {
-  border-right: 5px solid #a50000;
+  border-right: 5px solid #ed1c24;
 }
 #gform_wrapper_1 .button {
   display: block;
@@ -270,7 +267,7 @@ footer#colophon .footer-contact-wrap {
   text-decoration: none;
   height: 50px;
   width: 250px;
-  background-color: rgba(10, 22, 51, 0.85);
+  background-color: rgba(251, 175, 93, 0.85);
   line-height: 50px;
   text-align: center;
   font-size: 1.15rem;
@@ -282,12 +279,12 @@ footer#colophon .footer-contact-wrap {
   border-radius: 5px;
   width: 100px;
   padding: 10px;
-  background-color: #0a1633;
+  background-color: #fbaf5d;
 }
 #gform_wrapper_1 .button.free-online-estimate {
   height: 50px;
   width: 250px;
-  background-color: rgba(10, 22, 51, 0.85);
+  background-color: rgba(251, 175, 93, 0.85);
   line-height: 50px;
   text-align: center;
   font-size: 1.15rem;
@@ -307,14 +304,14 @@ footer#colophon .footer-contact-wrap {
   display: block;
   background-color: black;
   content: " ";
-  background-color: #0a1633;
+  background-color: #fbaf5d;
   float: left;
 }
 #gform_wrapper_1 .button.free-online-estimate:after {
   margin-left: 10px;
 }
 #gform_wrapper_1 .button:hover {
-  background-color: rgba(10, 22, 51, 0.5);
+  background-color: rgba(251, 175, 93, 0.5);
   color: white;
 }
 #gform_wrapper_1 .button:after {
@@ -332,7 +329,7 @@ footer#colophon .footer-contact-wrap {
   display: block;
   background-color: black;
   content: " ";
-  background-color: #0a1633;
+  background-color: #fbaf5d;
   float: left;
 }
 #gform_wrapper_1 .button:after {
@@ -340,7 +337,7 @@ footer#colophon .footer-contact-wrap {
 }
 #gform_wrapper_1 .button:hover {
   background-image: none;
-  background-color: rgba(10, 22, 51, 0.5);
+  background-color: rgba(4, 115, 61, 0.5);
 }
 /* PAGE SPECIFIC STYLES
 *****************************************************************/
@@ -374,7 +371,7 @@ footer#colophon .footer-contact-wrap {
   list-style: none;
 }
 .template-front-page .our-services-list li h3 {
-  color: #006e97;
+  color: #9bdcba;
 }
 .template-front-page .our-services-list li h3:before {
   content: "";
@@ -390,7 +387,6 @@ footer#colophon .footer-contact-wrap {
 }
 .template-front-page .top-section .column-centerfull {
   height: 515px;
-  background-image: url('../images/collision-repair-center-quad-cities-banner-image-home.png');
   background-size: cover;
   color: white;
 }
@@ -431,7 +427,7 @@ footer#colophon .footer-contact-wrap {
   max-width: 87.5%;
 }
 .template-front-page .textwidget .content-section.banner {
-  border-top: 2px solid #a9c3d1;
+  border-top: 2px solid #04733d;
 }
 .template-front-page .textwidget .content-section.our-services {
   background-color: #f0f0f0;
