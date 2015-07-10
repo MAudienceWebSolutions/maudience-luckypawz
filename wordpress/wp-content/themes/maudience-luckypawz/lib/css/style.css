@@ -197,29 +197,35 @@ header .main-navigation .current_page_item > a,
 header .main-navigation .current_page_ancestor > a {
   color: black;
 }
-header .main-navigation div.nav-menu > ul {
+header .main-navigation div.nav-menu > ul,
+header .main-navigation ul.nav-menu {
   border: none;
   text-align: right;
 }
-header .main-navigation div.nav-menu > ul li {
+header .main-navigation div.nav-menu > ul li,
+header .main-navigation ul.nav-menu li {
   height: 75px;
   line-height: 80px;
   margin: 0 1%;
 }
-header .main-navigation div.nav-menu > ul li a {
+header .main-navigation div.nav-menu > ul li a,
+header .main-navigation ul.nav-menu li a {
   color: white;
   font-size: 1.25rem;
   text-transform: capitalize;
   padding: 0 10px;
 }
-header .main-navigation div.nav-menu > ul li.current_page_item {
+header .main-navigation div.nav-menu > ul li.current_page_item,
+header .main-navigation ul.nav-menu li.current_page_item {
   border-radius: 15px;
   background-color: #04733d;
 }
-header .main-navigation div.nav-menu > ul li.current_page_item a {
+header .main-navigation div.nav-menu > ul li.current_page_item a,
+header .main-navigation ul.nav-menu li.current_page_item a {
   font-weight: normal;
 }
-header .main-navigation div.nav-menu > ul li.menu-item-has-children:after {
+header .main-navigation div.nav-menu > ul li.menu-item-has-children:after,
+header .main-navigation ul.nav-menu li.menu-item-has-children:after {
   content: "";
   display: inline-block;
   width: 0;
