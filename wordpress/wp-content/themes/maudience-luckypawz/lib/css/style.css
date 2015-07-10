@@ -64,24 +64,24 @@
 /* BASE */
 /*  BASE 
 
-    This file contains all styles that do not change based on device
-    Use the responsive less files to add positioning styles
+	This file contains all styles that do not change based on device
+	Use the responsive less files to add positioning styles
 
-    Table of contents
+	Table of contents
 
-        General Styles
+		General Styles
 
-        Shell Styles
-            - Header
-            - Menus and Navigation
-            - Sidebar
-            - Footer
+		Shell Styles
+			- Header
+			- Menus and Navigation
+			- Sidebar
+			- Footer
 
-        Plug-in Specific Styles
-            - WooCommerce
-            - Gravity Forms
+		Plug-in Specific Styles
+			- WooCommerce
+			- Gravity Forms
 
-        Page Specific Styles
+		Page Specific Styles
 */
 /* ---------------------------------------------- */
 /* TEMPORARY AND IMPORTANT STYLES (to be removed) *\
@@ -92,7 +92,6 @@ html {
   background-color: white;
 }
 body {
-  border-top: 5px solid #ed1c24;
   min-height: 100vh;
   background-color: #9bdcba;
 }
@@ -110,7 +109,7 @@ body .site {
 body .site-header {
   background-color: white;
   border-bottom: 2px solid #04733d;
-  padding-bottom: 0;
+  padding: 0;
 }
 body .site-header img.header-image {
   box-shadow: none;
@@ -142,9 +141,13 @@ body footer[role="contentinfo"] a:hover {
 }
 /*  ******************************** MENUS AND NAVIGATION ********************************  */
 .main-navigation {
-  max-width: 70%;
-  float: right;
-  margin-top: 75px;
+  margin-top: 0;
+  background-color: #00a651;
+  border-top: 1px solid #04733d;
+  border-bottom: 1px solid #04733d;
+  border-image: url(../images/border-image.png) 100% 0 100% 0 repeat;
+  border-image-width: 10px;
+  border-style: solid;
 }
 .main-navigation a,
 .main-navigation li a,
@@ -154,16 +157,16 @@ body footer[role="contentinfo"] a:hover {
 .main-navigation .current_page_ancestor > a {
   color: black;
 }
-.main-navigation .menu-primary-menu-container .nav-menu {
+.main-navigation div.nav-menu > ul {
   border: none;
 }
-.main-navigation .menu-primary-menu-container .nav-menu li a {
-  color: #04733d;
+.main-navigation div.nav-menu > ul li a {
+  color: white;
   font-size: 1rem;
   text-transform: capitalize;
   font-weight: bold;
 }
-.main-navigation .menu-primary-menu-container .nav-menu li.menu-item-has-children:after {
+.main-navigation div.nav-menu > ul li.menu-item-has-children:after {
   content: "";
   display: inline-block;
   width: 0;
