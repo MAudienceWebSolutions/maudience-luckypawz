@@ -95,15 +95,21 @@
             }
         }
 
-        .top-section .column-centerfull {
+        .bottom-section {
+            text-align: center;
 
-            .textwidget {
+            .column-centerfull-wrap {
+                display: block;
+                width: 100%;
+                padding: 0;
+            }
 
-                .inner-wrap { .maudience-flexbox(space-between); }
-
-                .column-left { width: 75%; }
-
-                .column-right { width: 35%; }
+            .column-left,
+            .column-right {
+                display: inline-block;
+                max-width: 49%;
+                width: 50%;
+                padding-bottom: 20px;
             }
         }
 
@@ -121,8 +127,7 @@
         .top-section,
         .bottom-section { background-color: @child-color-green-triple-lite; }
 
-        .home-top-centerfull,
-        .home-bottom-centerfull {
+        .home-top-centerfull {
             //background: transparent url('http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png') no-repeat 100%;
             
             background-image:      url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5.png);
@@ -139,12 +144,12 @@
 
         .home-content-wrap,
         .home-top-centerfull,
-        .home-middle-centerfull,
-        .home-bottom-centerfull {
+        .home-middle-centerfull {
             > div:first-of-type { padding: 100px; }
         }
 
-        .home-content-wrap {
+        .home-content-wrap,
+        .home-middle-centerfull {
             background-image:      url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
             background-position:   center,    center;
             background-repeat:     no-repeat,   no-repeat;

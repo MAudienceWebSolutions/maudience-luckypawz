@@ -788,28 +788,20 @@ footer#colophon .footer-contact-wrap {
     border: 5px solid white;
     box-shadow: 0 0 15px lightgrey;
   }
-  .template-front-page .top-section .column-centerfull .textwidget .inner-wrap {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-pack: space-between;
-    -moz-box-pack: space-between;
-    -ms-flex-pack: space-between;
-    -webkit-justify-content: space-between;
-    justify-content: space-between;
-    -webkit-box-align: space-between;
-    -moz-box-align: space-between;
-    -ms-flex-align: space-between;
-    -webkit-align-items: space-between;
-    align-items: space-between;
+  .template-front-page .bottom-section {
+    text-align: center;
   }
-  .template-front-page .top-section .column-centerfull .textwidget .column-left {
-    width: 75%;
+  .template-front-page .bottom-section .column-centerfull-wrap {
+    display: block;
+    width: 100%;
+    padding: 0;
   }
-  .template-front-page .top-section .column-centerfull .textwidget .column-right {
-    width: 35%;
+  .template-front-page .bottom-section .column-left,
+  .template-front-page .bottom-section .column-right {
+    display: inline-block;
+    max-width: 49%;
+    width: 50%;
+    padding-bottom: 20px;
   }
   .template-front-page .column-centerfull-wrap {
     padding: 75px 0;
@@ -825,8 +817,7 @@ footer#colophon .footer-contact-wrap {
   .template-front-page .bottom-section {
     background-color: #d9f2e4;
   }
-  .template-front-page .home-top-centerfull,
-  .template-front-page .home-bottom-centerfull {
+  .template-front-page .home-top-centerfull {
     background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5.png);
     background-position: center,    center;
     background-repeat: no-repeat, no-repeat;
@@ -839,11 +830,11 @@ footer#colophon .footer-contact-wrap {
   }
   .template-front-page .home-content-wrap > div:first-of-type,
   .template-front-page .home-top-centerfull > div:first-of-type,
-  .template-front-page .home-middle-centerfull > div:first-of-type,
-  .template-front-page .home-bottom-centerfull > div:first-of-type {
+  .template-front-page .home-middle-centerfull > div:first-of-type {
     padding: 100px;
   }
-  .template-front-page .home-content-wrap {
+  .template-front-page .home-content-wrap,
+  .template-front-page .home-middle-centerfull {
     background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
     background-position: center,    center;
     background-repeat: no-repeat, no-repeat;
@@ -854,20 +845,24 @@ footer#colophon .footer-contact-wrap {
     background-color: transparent;
     height: 504px;
   }
-  .template-front-page .home-content-wrap .home-content-text {
+  .template-front-page .home-content-wrap .home-content-text,
+  .template-front-page .home-middle-centerfull .home-content-text {
     max-width: 55%;
     margin: 0 auto 0 0;
   }
-  .template-front-page .home-content-wrap .home-content-text h2 {
+  .template-front-page .home-content-wrap .home-content-text h2,
+  .template-front-page .home-middle-centerfull .home-content-text h2 {
     text-transform: lowercase;
     color: white;
     font-weight: 100;
     margin-bottom: 10px;
   }
-  .template-front-page .home-content-wrap .home-content-text h2 span {
+  .template-front-page .home-content-wrap .home-content-text h2 span,
+  .template-front-page .home-middle-centerfull .home-content-text h2 span {
     display: block;
   }
-  .template-front-page .home-content-wrap .home-content-text h2 span:first-of-type {
+  .template-front-page .home-content-wrap .home-content-text h2 span:first-of-type,
+  .template-front-page .home-middle-centerfull .home-content-text h2 span:first-of-type {
     color: black;
     font-family: 'Source Sans Pro';
     font-weight: 100;
@@ -875,29 +870,34 @@ footer#colophon .footer-contact-wrap {
     font-size: 4.3rem;
     margin-bottom: 5px;
   }
-  .template-front-page .home-content-wrap .home-content-text h2 span:last-of-type {
+  .template-front-page .home-content-wrap .home-content-text h2 span:last-of-type,
+  .template-front-page .home-middle-centerfull .home-content-text h2 span:last-of-type {
     text-align: right;
     text-transform: capitalize;
     font-size: 3.25rem;
     font-weight: 100;
   }
-  .template-front-page .home-content-wrap .home-content-text .description {
+  .template-front-page .home-content-wrap .home-content-text .description,
+  .template-front-page .home-middle-centerfull .home-content-text .description {
     font-size: 1.25rem;
     font-weight: 100;
     padding-bottom: 10px;
     line-height: 1.5rem;
   }
-  .template-front-page .home-content-wrap .home-content-text .button {
+  .template-front-page .home-content-wrap .home-content-text .button,
+  .template-front-page .home-middle-centerfull .home-content-text .button {
     font-size: 2.25rem;
   }
-  .template-front-page .home-content-wrap .home-content-image {
+  .template-front-page .home-content-wrap .home-content-image,
+  .template-front-page .home-middle-centerfull .home-content-image {
     text-align: right;
     position: relative;
     top: -400px;
     right: -40px;
     display: block;
   }
-  .template-front-page .home-content-wrap .home-content-image > a > img {
+  .template-front-page .home-content-wrap .home-content-image > a > img,
+  .template-front-page .home-middle-centerfull .home-content-image > a > img {
     width: 400px;
   }
   .template-front-page .top-centerfull-wrap .home-top-centerfull {
