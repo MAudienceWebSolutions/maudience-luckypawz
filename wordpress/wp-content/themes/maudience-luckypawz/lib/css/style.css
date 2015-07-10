@@ -94,21 +94,18 @@ html {
 body {
   min-height: 100vh;
   background-color: #9bdcba;
+  font-family: 'Source Sans Pro', Arial, serif;
 }
 body .site-header,
 body #primary,
 body #secondary .widget {
   background-color: white;
 }
-body #main {
-  background-color: #f2f4f5;
-}
 body .site {
   box-shadow: none;
 }
 body .site-header {
   background-color: white;
-  border-bottom: 2px solid #04733d;
   padding: 0;
 }
 body .site-header img.header-image {
@@ -120,7 +117,7 @@ body footer[role="contentinfo"] {
   background-color: #00a651;
   border-top: 1px solid #04733d;
   border-bottom: 1px solid #04733d;
-  border-image: url(../images/border-image.png) 100% 1 100% 1 repeat;
+  border-image: url('../images/border-image.png') 100% 1 100% 1 repeat;
   border-image-width: 10px;
   border-style: solid;
 }
@@ -129,6 +126,18 @@ body footer[role="contentinfo"] a {
 }
 body footer[role="contentinfo"] a:hover {
   color: white;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Arvo', serif;
+}
+.book-now.button {
+  font-size: 1rem;
+  font-family: 'Arvo', serif;
 }
 /* SHELL STYLES
 *****************************************************************/
@@ -241,10 +250,8 @@ header .main-navigation ul.nav-menu li.menu-item-has-children:after {
 #primary {
   margin: 20px 0;
   padding: 20px;
-  border-top: 5px solid #ed1c24;
 }
 article .entry-header {
-  border-bottom: 1px solid black;
   padding-bottom: 10px;
 }
 /*  ******************************** SIDEBAR ********************************  */
@@ -406,9 +413,6 @@ footer#colophon .footer-contact-wrap {
 }
 /* PAGE SPECIFIC STYLES
 *****************************************************************/
-.template-front-page .site-header {
-  border-bottom: none;
-}
 .template-front-page h2 {
   font-size: 2rem;
   text-transform: uppercase;
@@ -427,7 +431,6 @@ footer#colophon .footer-contact-wrap {
   background-color: transparent;
   margin: 0;
   padding: 0;
-  border-top: none;
 }
 .template-front-page .site-content article {
   padding-bottom: 0;
@@ -449,9 +452,6 @@ footer#colophon .footer-contact-wrap {
   background-image: url('https://placeholdit.imgix.net/~text?txtsize=19&txt=200%C3%97200&w=200&h=200');
   border: 5px solid white;
   box-shadow: 0 0 15px lightgrey;
-}
-.template-front-page .top-section .column-centerfull {
-  background-size: cover;
 }
 .template-front-page .top-section .column-centerfull .textwidget .inner-wrap {
   display: -webkit-box;
@@ -475,6 +475,49 @@ footer#colophon .footer-contact-wrap {
 }
 .template-front-page .top-section .column-centerfull .textwidget .column-right {
   width: 35%;
+}
+.template-front-page .column-centerfull-wrap {
+  padding: 75px 0;
+}
+.template-front-page .top-section,
+.template-front-page .bottom-section {
+  background-color: #d9f2e4;
+}
+.template-front-page .home-top-centerfull,
+.template-front-page .home-bottom-centerfull {
+  background: transparent url('http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png') no-repeat 100%;
+  height: 492px;
+}
+.template-front-page .home-content-wrap > div:first-of-type,
+.template-front-page .home-top-centerfull > div:first-of-type,
+.template-front-page .home-middle-centerfull > div:first-of-type,
+.template-front-page .home-bottom-centerfull > div:first-of-type {
+  padding: 100px;
+}
+.template-front-page .home-content-wrap {
+  background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
+  background-position: center,    center;
+  background-repeat: no-repeat, no-repeat;
+  background-clip: border-box, border-box;
+  background-origin: padding-box, padding-box;
+  background-size: 100% 100%,   100% 100%;
+  background-attachment: scroll,      scroll;
+  background-color: white;
+  height: 504px;
+}
+.template-front-page .home-content-wrap .home-content-text h2 {
+  text-transform: lowercase;
+  color: white;
+  font-weight: 100;
+}
+.template-front-page .home-content-wrap .home-content-image {
+  text-align: right;
+  position: relative;
+  top: -70px;
+  right: -20px;
+}
+.template-front-page .home-content-wrap .home-content-image > a > img {
+  width: 268px;
 }
 .template-front-page #main .widget-area {
   padding: 0;
@@ -503,6 +546,56 @@ footer#colophon .footer-contact-wrap {
 }
 .template-front-page .inner-footer-wrap .widget-area {
   border: none;
+}
+.page-template-default h2 {
+  color: #00a651;
+}
+.post-type-archive.post-type-archive-services #main {
+  border-top: 1px solid #04733d;
+  border-image: url('../images/border-image.png') 100% 1 1 1 repeat;
+  border-image-width: 10px;
+  border-style: solid;
+  margin-top: 50px;
+}
+.post-type-archive.post-type-archive-services .archive-header {
+  border-bottom: 0;
+  background-color: white;
+  width: 180px;
+  display: block;
+  margin-top: -75px;
+  padding-left: 10px;
+}
+.post-type-archive.post-type-archive-services .archive-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #00a651;
+}
+.post-type-archive.post-type-archive-services article {
+  border: none;
+}
+.post-type-archive.post-type-archive-services article .entry-title a {
+  color: #f7941d;
+  text-transform: lowercase;
+  font-weight: bold;
+}
+.post-type-archive.post-type-archive-services article .wp-post-image,
+.post-type-archive.post-type-archive-services article .entry-meta {
+  display: none;
+}
+.post-type-archive.post-type-archive-services #secondary .widget {
+  background-color: #fbaf5d;
+  color: white;
+}
+.post-type-archive.post-type-archive-services #secondary .widget h3 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 100;
+  text-transform: capitalize;
+}
+.post-type-archive.post-type-archive-services #secondary .widget strong {
+  font-family: 'Arvo', serif;
+  font-weight: normal;
 }
 /**/
 /* MOBILE - STARTING BOX/POSITION STYLES */

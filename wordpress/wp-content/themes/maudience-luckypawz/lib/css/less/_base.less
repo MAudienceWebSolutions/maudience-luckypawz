@@ -36,18 +36,17 @@
 		body {
 			min-height: 100vh;
 			background-color: @child-color-green-lite;
+			font-family: 'Source Sans Pro', Arial, serif;
 
 			.site-header,
 			#primary,
 			#secondary .widget { background-color: @child-background-color; }
-
-			#main { background-color: @child-color-grey-lite; }
 			
 			.site { box-shadow: none; }
 
 			.site-header {
 				background-color: @child-header-color;
-				border-bottom: 2px solid @child-color-green-dark;
+				//border-bottom: 2px solid @child-color-green-dark;
 				padding: 0;
 
 				img.header-image { box-shadow: none; }
@@ -60,7 +59,7 @@
 				background-color: @child-color-green;
 				border-top: 1px solid @child-color-green-dark;
 				border-bottom: 1px solid @child-color-green-dark;
-				border-image: url(../images/border-image.png) 100% 1 100% 1 repeat;
+				border-image: url('../images/border-image.png') 100% 1 100% 1 repeat;
 				border-image-width: 10px;
 				border-style: solid;
 
@@ -70,6 +69,16 @@
 				}
 			}
 		}
+
+		h1, h2, h3, h4, h5, h6 {
+			font-family: @child-accent-font;
+		}
+
+		.book-now.button {
+			font-size: 1rem;
+			font-family: @child-accent-font;
+		}
+
 
 /* SHELL STYLES
 *****************************************************************/
@@ -183,12 +192,12 @@
 		#primary {
 			margin: 20px 0;
 			padding: 20px;
-			border-top: 5px solid @child-color-red;
+			// border-top: 5px solid @child-color-red;
 		}
 
 		article {
 			.entry-header {
-				border-bottom: 1px solid black;
+				//border-bottom: 1px solid black;
 				padding-bottom: 10px;
 			}
 		}
@@ -300,9 +309,8 @@
 /* PAGE SPECIFIC STYLES
 *****************************************************************/
 
+	// Home Page
 	.template-front-page {
-
-		.site-header { border-bottom: none; }
 
 		h2 {
 			font-size: 2rem;
@@ -322,7 +330,6 @@
 			background-color: transparent;
 			margin: 0;
 			padding: 0;
-			border-top: none;
 		}
 
 		.site-content article { padding-bottom: 0; }
@@ -351,7 +358,6 @@
 		}
 
 		.top-section .column-centerfull {
-			background-size: cover;
 
 			.textwidget {
 
@@ -361,6 +367,61 @@
 
 				.column-right { width: 35%; }
 			}
+		}
+
+		.column-centerfull-wrap {
+			padding: 75px 0;
+		}
+
+		.top-section,
+		.bottom-section {
+			background-color: @child-color-green-triple-lite; }
+
+		.home-top-centerfull,
+		.home-bottom-centerfull {
+			background: transparent url('http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png') no-repeat 100%;
+			height: 492px;
+
+		}
+
+		.home-content-wrap,
+		.home-top-centerfull,
+		.home-middle-centerfull,
+		.home-bottom-centerfull {
+			> div:first-of-type { padding: 100px; }
+		}
+
+		.home-content-wrap {
+			background-image:      url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
+			background-position:   center,    center;
+			background-repeat:     no-repeat,   no-repeat;
+			background-clip:       border-box,  border-box;
+			background-origin:     padding-box, padding-box;
+			background-size:       100% 100%,   100% 100%;
+			background-attachment: scroll,      scroll;
+			background-color:      transparent;
+			height: 504px;
+
+			.home-content-text {
+
+				h2 {
+					text-transform: lowercase;
+					color: white;
+					font-weight: 100;
+				}
+			}
+
+			.home-content-image {
+				text-align: right;
+				position: relative;
+				top: -70px;
+				right: -20px;
+
+				> a > img { width: 268px; }
+			}
+		}
+
+		.home-content-wrap {
 		}
 
 		#main .widget-area {
@@ -392,6 +453,73 @@
 		}
 
 		.inner-footer-wrap .widget-area { border: none; }
+	}
+
+	// Default Template Pages
+	.page-template-default {
+		h2 {
+			color: @child-color-green;
+		}
+	}
+
+	//Archive Pages
+	.post-type-archive {
+		&.post-type-archive-services {
+
+			#main {
+				border-top: 1px solid @child-color-green-dark;
+				border-image: url('../images/border-image.png') 100% 1 1 1 repeat;
+				border-image-width: 10px;
+				border-style: solid;
+				margin-top: 50px;
+			}
+
+			.archive-header {
+				border-bottom: 0;
+				background-color: white;
+				width: 180px;
+				display: block;
+				margin-top: -75px;
+				padding-left: 10px;
+			}
+
+			.archive-title {
+				font-size: 2.5rem;
+				font-weight: 600;
+				text-transform: capitalize;
+				color: @child-color-green;
+			}
+			
+			article {
+				border: none;
+
+				.entry-title a {
+					color: @child-color-orange-dark;
+					text-transform: lowercase;
+					font-weight: bold;
+				}
+
+				.wp-post-image,
+				.entry-meta { display: none; }
+			}
+
+			#secondary .widget {
+				background-color: @child-color-orange;
+				color: white;
+
+				h3 {
+					color: white;
+					font-size: 1.5rem;
+					font-weight: 100;
+					text-transform: capitalize;
+				}
+
+				strong {
+					font-family: @child-accent-font;
+					font-weight: normal;
+				}
+			}
+		}
 	}
 
 /**/
