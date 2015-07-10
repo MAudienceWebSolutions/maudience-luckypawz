@@ -95,6 +95,15 @@ require_once('lib/maudience-contactinfo.php');
         ) );
 
         register_sidebar( array(
+            'name' => 'Home Bottom Center Full',
+            'id' => 'home-bottom-centerfull',
+            'before_widget' => '<div id="home-bottom-centerfull" class="home-bottom-centerfull">',
+            'after_widget' => '</div>',
+            'before_title' => '<h2 class="rounded">',
+            'after_title' => '</h2>',
+        ) );
+
+        register_sidebar( array(
             'name' => 'Home Bottom Left',
             'id' => 'home-bottom-left',
             'before_widget' => '<div id="home-bottom-left" class="home-bottom-left">',

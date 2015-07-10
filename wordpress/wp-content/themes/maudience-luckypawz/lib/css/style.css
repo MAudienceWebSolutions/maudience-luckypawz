@@ -451,9 +451,7 @@ footer#colophon .footer-contact-wrap {
   box-shadow: 0 0 15px lightgrey;
 }
 .template-front-page .top-section .column-centerfull {
-  height: 515px;
   background-size: cover;
-  color: white;
 }
 .template-front-page .top-section .column-centerfull .textwidget .inner-wrap {
   display: -webkit-box;
