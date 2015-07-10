@@ -134,7 +134,10 @@ h5,
 h6 {
   font-family: 'Arvo', serif;
 }
-.book-now.button {
+.book-now-button-wrap {
+  background-color: #fbaf5d;
+}
+.book-now-button-wrap a {
   font-size: 1rem;
   font-family: 'Arvo', serif;
 }

@@ -122,6 +122,15 @@ require_once('lib/maudience-contactinfo.php');
         ) );
 
         register_sidebar( array(
+            'name' => 'Pre Footer Center Full',
+            'id' => 'pre-footer-centerfull',
+            'before_widget' => '<div id="pre-footer-centerfull" class="pre-footer-centerfull">',
+            'after_widget' => '</div>',
+            'before_title' => '<h2 class="rounded">',
+            'after_title' => '</h2>',
+        ) );
+
+        register_sidebar( array(
             'name' => 'Footer Widget Left',
             'id' => 'footer-widget-left',
             'before_widget' => '<div id="footer-widget-left" class="footer-widget-left">',
