@@ -145,24 +145,31 @@ h6 {
   min-height: 115px;
   margin: 0;
 }
-.site-header .inner-header-wrap {
-  margin: -80px auto 0;
+.site-header .menu-toggle {
+  margin-top: 24px;
 }
 .site-header .inner-header-wrap > a {
   display: block;
-  max-width: 30%;
-  float: left;
+  margin: auto;
+  text-align: center;
 }
 .site-header .inner-header-wrap .header-image {
   margin-top: 0;
 }
+.site-header .inner-header-wrap .header-image {
+  width: 156px;
+  height: auto;
+  max-width: none;
+  max-height: none;
+}
 .site-header .inner-header-wrap hgroup {
   position: relative;
   height: 140px;
-  width: 165px;
+  width: 100%;
   overflow: hidden;
-  left: -160px;
+  margin-top: -130px;
   padding-top: 3px;
+  text-align: center;
 }
 .site-header .inner-header-wrap .site-title,
 .site-header .inner-header-wrap .site-description {
@@ -475,47 +482,27 @@ footer#colophon .footer-contact-wrap {
   width: 35%;
 }
 .template-front-page .column-centerfull-wrap {
-  padding: 75px 0;
+  padding: 20px 0;
 }
 .template-front-page .column-centerfull-wrap.home-section {
-  padding: 40px 0 160px;
+  background-color: #fbaf5d;
+}
+.template-front-page .middle-section {
+  background-color: #fbaf5d;
 }
 .template-front-page .top-section,
 .template-front-page .bottom-section {
-  background-color: #d9f2e4;
-}
-.template-front-page .home-top-centerfull,
-.template-front-page .home-bottom-centerfull {
-  background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5.png);
-  background-position: center,    center;
-  background-repeat: no-repeat, no-repeat;
-  background-clip: border-box, border-box;
-  background-origin: padding-box, padding-box;
-  background-size: 100% 100%,   100% 100%;
-  background-attachment: scroll,      scroll;
-  background-color: transparent;
-  height: 492px;
+  background-color: #bae7cf;
 }
 .template-front-page .home-content-wrap > div:first-of-type,
 .template-front-page .home-top-centerfull > div:first-of-type,
 .template-front-page .home-middle-centerfull > div:first-of-type,
 .template-front-page .home-bottom-centerfull > div:first-of-type {
-  padding: 100px;
-}
-.template-front-page .home-content-wrap {
-  background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
-  background-position: center,    center;
-  background-repeat: no-repeat, no-repeat;
-  background-clip: border-box, border-box;
-  background-origin: padding-box, padding-box;
-  background-size: 100% 100%,   100% 100%;
-  background-attachment: scroll,      scroll;
-  background-color: transparent;
-  height: 504px;
+  padding: 20px 5px;
 }
 .template-front-page .home-content-wrap .home-content-text {
-  max-width: 55%;
-  margin: 0 auto 0 0;
+  max-width: 95%;
+  margin: 0 auto 0;
 }
 .template-front-page .home-content-wrap .home-content-text h2 {
   text-transform: lowercase;
@@ -552,20 +539,14 @@ footer#colophon .footer-contact-wrap {
   border-radius: 5px;
   text-align: center;
   height: 50px;
-  font-size: 2.25rem;
+  font-size: 1.5rem;
   font-family: 'Arvo', serif;
   line-height: 50px;
   font-style: italic;
   margin-top: 20px;
 }
 .template-front-page .home-content-wrap .home-content-image {
-  text-align: right;
-  position: relative;
-  top: -400px;
-  right: -40px;
-}
-.template-front-page .home-content-wrap .home-content-image > a > img {
-  width: 400px;
+  display: none;
 }
 .template-front-page .top-centerfull-wrap .home-top-centerfull {
   background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
@@ -765,7 +746,46 @@ footer#colophon .footer-contact-wrap {
   /*  ******************************** GRAVITYFORMS ********************************  */
   /* PAGE SPECIFIC STYLES
 *****************************************************************/
-  .template-front-page .our-services-list {
+  .template-front-page h2 {
+    font-size: 2rem;
+    text-transform: uppercase;
+  }
+  .template-front-page h3 {
+    font-size: 1.5rem;
+    margin-top: 5px;
+  }
+  .template-front-page #main {
+    background-color: white;
+  }
+  .template-front-page #inner-main-wrap {
+    max-width: none;
+  }
+  .template-front-page #primary {
+    margin: 0;
+    padding: 0;
+  }
+  .template-front-page .site-content article {
+    padding-bottom: 0;
+  }
+  .template-front-page .our-services-list li {
+    list-style: none;
+  }
+  .template-front-page .our-services-list li h3 {
+    color: #9bdcba;
+  }
+  .template-front-page .our-services-list li h3:before {
+    content: "";
+    display: block;
+    height: 200px;
+    width: 200px;
+    background-color: white;
+    border-radius: 100px;
+    margin: 5px auto 15px;
+    background-image: url('https://placeholdit.imgix.net/~text?txtsize=19&txt=200%C3%97200&w=200&h=200');
+    border: 5px solid white;
+    box-shadow: 0 0 15px lightgrey;
+  }
+  .template-front-page .top-section .column-centerfull .textwidget .inner-wrap {
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -782,29 +802,163 @@ footer#colophon .footer-contact-wrap {
     -webkit-align-items: space-between;
     align-items: space-between;
   }
+  .template-front-page .top-section .column-centerfull .textwidget .column-left {
+    width: 75%;
+  }
+  .template-front-page .top-section .column-centerfull .textwidget .column-right {
+    width: 35%;
+  }
+  .template-front-page .column-centerfull-wrap {
+    padding: 75px 0;
+  }
+  .template-front-page .column-centerfull-wrap.home-section {
+    padding: 40px 0 160px;
+    background-color: whitesmoke;
+  }
+  .template-front-page .middle-section {
+    background-color: whitesmoke;
+  }
+  .template-front-page .top-section,
+  .template-front-page .bottom-section {
+    background-color: #d9f2e4;
+  }
+  .template-front-page .home-top-centerfull,
+  .template-front-page .home-bottom-centerfull {
+    background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5.png);
+    background-position: center,    center;
+    background-repeat: no-repeat, no-repeat;
+    background-clip: border-box, border-box;
+    background-origin: padding-box, padding-box;
+    background-size: 100% 100%,   100% 100%;
+    background-attachment: scroll,      scroll;
+    background-color: transparent;
+    height: 492px;
+  }
+  .template-front-page .home-content-wrap > div:first-of-type,
+  .template-front-page .home-top-centerfull > div:first-of-type,
+  .template-front-page .home-middle-centerfull > div:first-of-type,
+  .template-front-page .home-bottom-centerfull > div:first-of-type {
+    padding: 100px;
+  }
+  .template-front-page .home-content-wrap {
+    background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
+    background-position: center,    center;
+    background-repeat: no-repeat, no-repeat;
+    background-clip: border-box, border-box;
+    background-origin: padding-box, padding-box;
+    background-size: 100% 100%,   100% 100%;
+    background-attachment: scroll,      scroll;
+    background-color: transparent;
+    height: 504px;
+  }
+  .template-front-page .home-content-wrap .home-content-text {
+    max-width: 55%;
+    margin: 0 auto 0 0;
+  }
+  .template-front-page .home-content-wrap .home-content-text h2 {
+    text-transform: lowercase;
+    color: white;
+    font-weight: 100;
+    margin-bottom: 10px;
+  }
+  .template-front-page .home-content-wrap .home-content-text h2 span {
+    display: block;
+  }
+  .template-front-page .home-content-wrap .home-content-text h2 span:first-of-type {
+    color: black;
+    font-family: 'Source Sans Pro';
+    font-weight: 100;
+    text-transform: lowercase;
+    font-size: 4.3rem;
+    margin-bottom: 5px;
+  }
+  .template-front-page .home-content-wrap .home-content-text h2 span:last-of-type {
+    text-align: right;
+    text-transform: capitalize;
+    font-size: 3.25rem;
+    font-weight: 100;
+  }
+  .template-front-page .home-content-wrap .home-content-text .description {
+    font-size: 1.25rem;
+    font-weight: 100;
+    padding-bottom: 10px;
+    line-height: 1.5rem;
+  }
+  .template-front-page .home-content-wrap .home-content-text .button {
+    font-size: 2.25rem;
+  }
+  .template-front-page .home-content-wrap .home-content-image {
+    text-align: right;
+    position: relative;
+    top: -400px;
+    right: -40px;
+    display: block;
+  }
+  .template-front-page .home-content-wrap .home-content-image > a > img {
+    width: 400px;
+  }
+  .template-front-page .top-centerfull-wrap .home-top-centerfull {
+    background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
+    background-position: center,    center;
+    background-repeat: no-repeat, no-repeat;
+    background-clip: border-box, border-box;
+    background-origin: padding-box, padding-box;
+    background-size: 100% 100%,   100% 100%;
+    background-attachment: scroll,      scroll;
+    background-color: transparent;
+    height: 504px;
+  }
+  .template-front-page #main .widget-area {
+    padding: 0;
+  }
+  .template-front-page .textwidget .content-section {
+    padding: 75px 0;
+    text-align: center;
+    min-height: 400px;
+  }
+  .template-front-page .textwidget .content-section p {
+    margin: 20px auto;
+    max-width: 87.5%;
+  }
+  .template-front-page .textwidget .content-section.banner {
+    border-top: 2px solid #04733d;
+  }
+  .template-front-page .textwidget .content-section.our-services {
+    background-color: #f0f0f0;
+    padding: 15px 0;
+  }
+  .template-front-page .textwidget .content-section.our-services h2 {
+    margin: 0 auto 20px;
+  }
+  .template-front-page .textwidget .content-section.services-bottom {
+    min-height: 200px;
+  }
+  .template-front-page .inner-footer-wrap .widget-area {
+    border: none;
+  }
 }
 /* LARGE DESKTOP + */
 @media only screen and (min-width: 768px) {
   /*  1200UP DESKTOP STYLES 
 
-    This file contains all styles that do not change based on device
-    Use the responsive less files to add positioning styles
+	This file contains all styles that do not change based on device
+	Use the responsive less files to add positioning styles
 
-    Table of contents
+	Table of contents
 
-        General Styles
+		General Styles
 
-        Shell Styles
-            - Header
-            - Menus and Navigation
-            - Sidebar
-            - Footer
+		Shell Styles
+			- Header
+			- Menus and Navigation
+			- Sidebar
+			- Footer
 
-        Plug-in Specific Styles
-            - WooCommerce
-            - Gravity Forms
+		Plug-in Specific Styles
+			- WooCommerce
+			- Gravity Forms
 
-        Page Specific Styles
+		Page Specific Styles
 */
   /* ---------------------------------------------- */
   /* TEMPORARY AND IMPORTANT STYLES (to be removed) *\
@@ -814,6 +968,23 @@ footer#colophon .footer-contact-wrap {
   /* SHELL STYLES
 *****************************************************************/
   /*  ******************************** HEADER ********************************  */
+  .site-header .inner-header-wrap {
+    margin: -80px auto 0;
+  }
+  .site-header .inner-header-wrap > a {
+    max-width: 30%;
+    float: left;
+  }
+  .site-header .inner-header-wrap hgroup {
+    position: relative;
+    height: 140px;
+    width: 165px;
+    overflow: hidden;
+    left: -160px;
+    padding-top: 3px;
+    top: 0;
+    margin-top: 0;
+  }
   /*  ******************************** MENUS AND NAVIGATION ********************************  */
   /*  ******************************** SIDEBAR ********************************  */
   /*  ******************************** FOOTER ********************************  */

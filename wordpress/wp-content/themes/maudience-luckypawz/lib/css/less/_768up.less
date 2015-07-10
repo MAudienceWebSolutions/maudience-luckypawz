@@ -48,9 +48,206 @@
 /* PAGE SPECIFIC STYLES
 *****************************************************************/
 
+        // Home Page
     .template-front-page {
 
-        .our-services-list {
-            .maudience-flexbox(space-between);
+        h2 {
+            font-size: 2rem;
+            text-transform: uppercase;
         }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+
+        #main { background-color: white; }
+
+        #inner-main-wrap { max-width: none; }
+
+        #primary {
+            margin: 0;
+            padding: 0;
+        }
+
+        .site-content article { padding-bottom: 0; }
+
+        .our-services-list {
+            li {
+                list-style: none;
+
+                h3 {
+                    color: @child-color-green-lite;
+
+                    &:before {
+                        content: "";
+                        display: block;
+                        height: 200px;
+                        width: 200px;
+                        background-color: white;
+                        border-radius: 100px;
+                        margin: 5px auto 15px;
+                        background-image: url('https://placeholdit.imgix.net/~text?txtsize=19&txt=200%C3%97200&w=200&h=200');
+                        border: 5px solid white;
+                        box-shadow: 0 0 15px lightgrey;
+                    }
+                }
+            }
+        }
+
+        .top-section .column-centerfull {
+
+            .textwidget {
+
+                .inner-wrap { .maudience-flexbox(space-between); }
+
+                .column-left { width: 75%; }
+
+                .column-right { width: 35%; }
+            }
+        }
+
+        .column-centerfull-wrap {
+            padding: 75px 0;
+
+            &.home-section {
+                padding: 40px 0 160px;
+                background-color: whitesmoke;
+            }
+        }
+
+        .middle-section { background-color: whitesmoke; }
+
+        .top-section,
+        .bottom-section { background-color: @child-color-green-triple-lite; }
+
+        .home-top-centerfull,
+        .home-bottom-centerfull {
+            //background: transparent url('http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png') no-repeat 100%;
+            
+            background-image:      url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5.png);
+            background-position:   center,    center;
+            background-repeat:     no-repeat,   no-repeat;
+            background-clip:       border-box,  border-box;
+            background-origin:     padding-box, padding-box;
+            background-size:       100% 100%,   100% 100%;
+            background-attachment: scroll,      scroll;
+            background-color:      transparent;
+            height: 492px;
+
+        }
+
+        .home-content-wrap,
+        .home-top-centerfull,
+        .home-middle-centerfull,
+        .home-bottom-centerfull {
+            > div:first-of-type { padding: 100px; }
+        }
+
+        .home-content-wrap {
+            background-image:      url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
+            background-position:   center,    center;
+            background-repeat:     no-repeat,   no-repeat;
+            background-clip:       border-box,  border-box;
+            background-origin:     padding-box, padding-box;
+            background-size:       100% 100%,   100% 100%;
+            background-attachment: scroll,      scroll;
+            background-color:      transparent;
+            height: 504px;
+
+            .home-content-text {
+                max-width: 55%;
+                margin: 0 auto 0 0;
+
+                h2 {
+                    text-transform: lowercase;
+                    color: white;
+                    font-weight: 100;
+                    margin-bottom: 10px;
+
+                    span {
+                        display: block;
+
+                        &:first-of-type {
+                            color: black;
+                            font-family: 'Source Sans Pro';
+                            font-weight: 100;
+                            text-transform: lowercase;
+                            font-size: 4.3rem;
+                            margin-bottom: 5px;
+                        }
+
+                        &:last-of-type {
+                            text-align: right;
+                            text-transform: capitalize;
+                            font-size: 3.25rem;
+                            font-weight: 100;
+                        }
+                    }
+                }
+
+                .description {
+                    font-size: 1.25rem;
+                    font-weight: 100;
+                    padding-bottom: 10px;
+                    line-height: 1.5rem;
+                }
+
+                .button {
+                    font-size: 2.25rem;
+                }
+            }
+
+            .home-content-image {
+                text-align: right;
+                position: relative;
+                top: -400px;
+                right: -40px;
+                display: block;
+
+                > a > img { width: 400px; }
+            }
+        }
+
+        .top-centerfull-wrap .home-top-centerfull {
+            background-image:      url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
+            background-position:   center,    center;
+            background-repeat:     no-repeat,   no-repeat;
+            background-clip:       border-box,  border-box;
+            background-origin:     padding-box, padding-box;
+            background-size:       100% 100%,   100% 100%;
+            background-attachment: scroll,      scroll;
+            background-color:      transparent;
+            height: 504px;
+        }
+
+        #main .widget-area {
+            padding: 0;
+        }
+
+        .textwidget .content-section {
+            padding: 75px 0;
+            text-align: center;
+            min-height: 400px;
+
+            p {
+                margin: 20px auto;
+                max-width: 87.5%;
+            }
+
+            &.banner { border-top: 2px solid @child-color-green-dark; }
+
+            &.our-services {
+                background-color: @child-color-grey;
+                padding: 15px 0;
+
+                h2 { margin: 0 auto 20px; }
+            }
+
+            &.services-bottom {
+                min-height: 200px;
+            }
+        }
+
+        .inner-footer-wrap .widget-area { border: none; }
     }
