@@ -28,15 +28,17 @@ get_header();
 			<?php while ( have_posts() ) : the_post(); ?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-					<section id="top-section" class="content-section home-section">
-						<?php the_content(); ?>
+					<section id="home-content-section" class="content-section home-section">
+						<div class="inner-wrap">
+							<?php the_content(); ?>
+						</div>
 					</section>
 
 					<section id="top-section" class="top-section home-section">
 
 						<div id="top-centerfull" class="column-centerfull section-column">
 							<?php if ( is_active_sidebar( 'home-top-centerfull' ) ) : ?>
-								<div id="home-top-centerfull" class="home-top-centerfull widget-area" role="complementary">
+								<div id="home-top-centerfull" class="home-top-centerfull widget-area inner-wrap" role="complementary">
 									<?php dynamic_sidebar( 'home-top-centerfull' ); ?>
 								</div><!-- #home-top-right -->
 							<?php endif; ?>
@@ -45,7 +47,7 @@ get_header();
 						<div id="top-left-half" class="column-left section-column">
 							<div class="slider-wrap">
 								<?php if ( is_active_sidebar( 'home-top-left' ) ) : ?>
-									<div id="home-top-left" class="home-top-left widget-area" role="complementary">
+									<div id="home-top-left" class="home-top-left widget-area inner-wrap" role="complementary">
 										<?php dynamic_sidebar( 'home-top-left' ); ?>
 									</div><!-- #home-top-right -->
 								<?php endif; ?>
@@ -54,7 +56,7 @@ get_header();
 
 						<div id="top-right-half" class="column-right section-column">
 							<?php if ( is_active_sidebar( 'home-top-right' ) ) : ?>
-								<div id="home-top-right" class="home-top-right widget-area" role="complementary">
+								<div id="home-top-right" class="home-top-right widget-area inner-wrap" role="complementary">
 									<?php dynamic_sidebar( 'home-top-right' ); ?>
 								</div><!-- #home-top-right -->
 							<?php endif; ?>
@@ -62,13 +64,11 @@ get_header();
 					</section>
 
 					<section id="middle-section" class="middle-section home-section">
-						<div class="services-information-output">
-							<?php if ( is_active_sidebar( 'home-middle' ) ) : ?>
-								<div id="home-middle" class="home-middle widget-area" role="complementary">
-									<?php dynamic_sidebar( 'home-middle' ); ?>
-								</div><!-- #footer-widget-left -->
-							<?php endif; ?>
-						</div>
+						<?php if ( is_active_sidebar( 'home-middle' ) ) : ?>
+							<div id="home-middle" class="home-middle widget-area inner-wrap" role="complementary">
+								<?php dynamic_sidebar( 'home-middle' ); ?>
+							</div><!-- #home-middle -->
+						<?php endif; ?>
 					</section>
 
 					<section id="bottom-section" class="bottom-section home-section">
@@ -84,7 +84,7 @@ get_header();
 
 						<div id="service_area-section" class="column-right section-column">
 							<?php if ( is_active_sidebar( 'home-bottom-right' ) ) : ?>
-								<div id="home-bottom-right" class="home-bottom-right widget-area" role="complementary">
+								<div id="home-bottom-right" class="home-bottom-right widget-area inner-wrap" role="complementary">
 									<?php dynamic_sidebar( 'home-bottom-right' ); ?>
 								</div><!-- #footer-widget-left -->
 							<?php endif; ?>

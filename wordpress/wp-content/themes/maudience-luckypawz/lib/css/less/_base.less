@@ -55,7 +55,14 @@
 
 			footer[role="contentinfo"] {
 				color: white;
-				background-color: @child-color-green-lite;
+				background-color: @child-color-green;
+				height: 75px;
+				background-color: @child-color-green;
+				border-top: 1px solid @child-color-green-dark;
+				border-bottom: 1px solid @child-color-green-dark;
+				border-image: url(../images/border-image.png) 100% 1 100% 1 repeat;
+				border-image-width: 10px;
+				border-style: solid;
 
 				a {
 					color: white;
@@ -74,7 +81,7 @@
 			margin: 0;
 
 			.inner-header-wrap {
-				margin: -55px auto 0;
+				margin: -80px auto 0;
 
 				> a {
 					display: block;
@@ -83,7 +90,38 @@
 				}
 
 				.header-image { margin-top: 0; }
+
+				hgroup {
+					position: relative;
+					height: 140px;
+					width: 165px;
+					overflow: hidden;
+					left: -160px;
+					padding-top: 3px;
+				}
+
+				.site-title,
+				.site-description {
+					text-align: center;
+
+					a { color: black; }
+				}
+
+				.site-title {
+					font-size: 1.25rem;
+					margin-bottom: 60px;
+					font-weight: 100;
+				}
+				
+				.site-description {
+					font-size: 7px;
+					font-weight: bold;
+				}
 			}
+
+			.site-title,
+			.site-description,
+			.main-navigation li a { font-family: @child-accent-font; }
 		}
 
 	/*  ******************************** MENUS AND NAVIGATION ********************************  */
@@ -96,6 +134,7 @@
 			border-image: url(../images/border-image.png) 100% 1 100% 1 repeat;
 			border-image-width: 10px;
 			border-style: solid;
+			height: 75px;
 
 			a,
 			li a,
@@ -109,12 +148,22 @@
 				text-align: right;
 
 				li {
+					height: 75px;
+					line-height: 80px;
+					margin: 0 1%;
 
 					a {
 						color: white;
-						font-size: 1rem;
+						font-size: 1.25rem;
 						text-transform: capitalize;
-						font-weight: bold;
+						padding: 0 10px;
+					}
+
+					&.current_page_item {
+						border-radius: 15px;
+						background-color: @child-color-green-dark;
+
+						a {font-weight: normal; }
 					}
 
 					&.menu-item-has-children {
@@ -125,6 +174,10 @@
 		}
 
 	/*  ******************************** CONTENT ********************************  */
+
+		#main {
+			min-height: 75vh;
+		}
 
 		#primary {
 			margin: 20px 0;
@@ -314,7 +367,6 @@
 
 		#main .widget-area {
 			padding: 0;
-			margin: 0;
 		}
 
 		.textwidget .content-section {
@@ -343,3 +395,5 @@
 
 		.inner-footer-wrap .widget-area { border: none; }
 	}
+
+/**/
