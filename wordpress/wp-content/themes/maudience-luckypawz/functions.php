@@ -88,7 +88,7 @@ require_once('lib/maudience-contactinfo.php');
         register_sidebar( array(
             'name' => 'Home Middle',
             'id' => 'home-middle',
-            'before_widget' => '<div id="home-middle" class="home-middle">',
+            'before_widget' => '<div id="home-middle-centerfull" class="home-middle-centerfull">',
             'after_widget' => '</div>',
             'before_title' => '<h2 class="rounded">',
             'after_title' => '</h2>',
@@ -187,11 +187,11 @@ require_once('lib/maudience-contactinfo.php');
             // $menu_currentnav_color = 'rgba(249,190,25,1)';
             // $menu_linkhover_color_gradcolorone = '#f9f9f9';
             // $menu_linkhover_color_gradcolortwo = '#c9c9c9';
-            $menu_background_color = 'add-color-here';
-            $menu_link_color = 'add-color-here';
-            $menu_currentnav_color = 'add-color-here';
-            $menu_linkhover_color_gradcolorone = 'add-color-here';
-            $menu_linkhover_color_gradcolortwo = 'add-color-here';
+            $menu_background_color = '#04733d';
+            $menu_link_color = '#04733d';
+            $menu_currentnav_color = '#04733d';
+            $menu_linkhover_color_gradcolorone = '#04733d';
+            $menu_linkhover_color_gradcolortwo = '#04733d';
 
             echo '<style type="text/css">
                /* Styles here! */
@@ -236,6 +236,11 @@ require_once('lib/maudience-contactinfo.php');
                 #adminmenu li.opensub>a.menu-top, 
                 #adminmenu li>a.menu-top:focus { background: linear-gradient(to bottom,'.$menu_linkhover_color_gradcolorone.' 37%,'.$menu_linkhover_color_gradcolortwo.' 100%); }
 
+
+                .wp-core-ui .button-primary {
+                    background: #04733d;
+                    border-color: #9bdcba;
+                }
              </style>';
         }
         add_action('admin_head', 'ma_custom_admin_styles');
@@ -250,6 +255,7 @@ require_once('lib/maudience-contactinfo.php');
             
             echo '<style type="text/css">
             body { font-family: Futura, "Trebuchet MS", Arial, sans-serif; }
+            #login { padding-top: 0; }
             h1 a 
             { 
                 background-image: '.$background_image.'; 
@@ -259,8 +265,29 @@ require_once('lib/maudience-contactinfo.php');
                 margin-bottom: 0 !important; 
                 padding-bottom: 0 !important; 
             }
-            .login form { margin-top: 10px !important; border: 1px solid #f9be19; }
-            .login { background:#043789; }
+            .login form {
+                margin-top: 10px !important;
+                border: 1px solid transparent;
+                background-image:      url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
+                background-position:   center,    center;
+                background-repeat:     no-repeat,   no-repeat;
+                background-clip:       border-box,  border-box;
+                background-origin:     padding-box, padding-box;
+                background-size:       100% 100%,   100% 100%;
+                background-attachment: scroll,      scroll;
+                background-color:      transparent;
+            }
+            .login { background: #04733d; }
+            .wp-core-ui .button-primary {
+                    background: #04733d;
+                    border-color: #00a651;
+                }
+
+            .wp-core-ui .button-primary.focus, .wp-core-ui .button-primary.hover,
+            .wp-core-ui .button-primary:focus, .wp-core-ui .button-primary:hover {
+                border-color: #04733d;
+                background: #00a651;
+            }
             </style>';
         }
         add_action('login_head', 'ma_custom_login_logo');
