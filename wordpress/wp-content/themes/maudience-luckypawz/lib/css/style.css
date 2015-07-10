@@ -89,23 +89,22 @@
 /* GENERAL STYLES
 *****************************************************************/
 html {
-  background-color: white;
+  background-color: whitesmoke;
 }
 body {
   min-height: 100vh;
-  background-color: #9bdcba;
   font-family: 'Source Sans Pro', Arial, serif;
 }
 body .site-header,
 body #primary,
 body #secondary .widget {
-  background-color: white;
+  background-color: whitesmoke;
 }
 body .site {
   box-shadow: none;
 }
 body .site-header {
-  background-color: white;
+  background-color: whitesmoke;
   padding: 0;
 }
 body .site-header img.header-image {
@@ -428,7 +427,6 @@ footer#colophon .footer-contact-wrap {
   max-width: none;
 }
 .template-front-page #primary {
-  background-color: transparent;
   margin: 0;
   padding: 0;
 }
@@ -479,6 +477,9 @@ footer#colophon .footer-contact-wrap {
 .template-front-page .column-centerfull-wrap {
   padding: 75px 0;
 }
+.template-front-page .column-centerfull-wrap.home-section {
+  padding: 40px 0 160px;
+}
 .template-front-page .top-section,
 .template-front-page .bottom-section {
   background-color: #d9f2e4;
@@ -502,22 +503,62 @@ footer#colophon .footer-contact-wrap {
   background-origin: padding-box, padding-box;
   background-size: 100% 100%,   100% 100%;
   background-attachment: scroll,      scroll;
-  background-color: white;
+  background-color: transparent;
   height: 504px;
+}
+.template-front-page .home-content-wrap .home-content-text {
+  max-width: 55%;
+  margin: 0 auto 0 0;
 }
 .template-front-page .home-content-wrap .home-content-text h2 {
   text-transform: lowercase;
   color: white;
   font-weight: 100;
+  margin-bottom: 10px;
+}
+.template-front-page .home-content-wrap .home-content-text h2 span {
+  display: block;
+}
+.template-front-page .home-content-wrap .home-content-text h2 span:first-of-type {
+  color: black;
+  font-family: 'Source Sans Pro';
+  font-weight: 100;
+  text-transform: lowercase;
+  font-size: 4.3rem;
+  margin-bottom: 5px;
+}
+.template-front-page .home-content-wrap .home-content-text h2 span:last-of-type {
+  text-align: right;
+  text-transform: capitalize;
+  font-size: 3.25rem;
+  font-weight: 100;
+}
+.template-front-page .home-content-wrap .home-content-text .description {
+  font-size: 1.25rem;
+  font-weight: 100;
+  padding-bottom: 10px;
+  line-height: 1.5rem;
+}
+.template-front-page .home-content-wrap .home-content-text .button {
+  background-color: #ed1c24;
+  display: block;
+  border-radius: 5px;
+  text-align: center;
+  height: 50px;
+  font-size: 2.25rem;
+  font-family: 'Arvo', serif;
+  line-height: 50px;
+  font-style: italic;
+  margin-top: 20px;
 }
 .template-front-page .home-content-wrap .home-content-image {
   text-align: right;
   position: relative;
-  top: -70px;
-  right: -20px;
+  top: -400px;
+  right: -40px;
 }
 .template-front-page .home-content-wrap .home-content-image > a > img {
-  width: 268px;
+  width: 400px;
 }
 .template-front-page #main .widget-area {
   padding: 0;

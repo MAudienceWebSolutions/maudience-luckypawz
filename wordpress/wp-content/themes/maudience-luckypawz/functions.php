@@ -188,8 +188,8 @@ require_once('lib/maudience-contactinfo.php');
             // $menu_linkhover_color_gradcolorone = '#f9f9f9';
             // $menu_linkhover_color_gradcolortwo = '#c9c9c9';
             $menu_background_color = '#04733d';
-            $menu_link_color = '#04733d';
-            $menu_currentnav_color = '#04733d';
+            $menu_link_color = '#f7941d';
+            $menu_currentnav_color = '#f7941d';
             $menu_linkhover_color_gradcolorone = '#04733d';
             $menu_linkhover_color_gradcolortwo = '#04733d';
 
@@ -236,10 +236,29 @@ require_once('lib/maudience-contactinfo.php');
                 #adminmenu li.opensub>a.menu-top, 
                 #adminmenu li>a.menu-top:focus { background: linear-gradient(to bottom,'.$menu_linkhover_color_gradcolorone.' 37%,'.$menu_linkhover_color_gradcolortwo.' 100%); }
 
-
+                /*CURRENT NAV COLOR*/
+                #adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head,
+                #adminmenu .wp-menu-arrow,
+                #adminmenu .wp-menu-arrow div, #adminmenu li.current a.menu-top,
+                #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
+                .folded #adminmenu li.current.menu-top, .folded #adminmenu li.wp-has-current-submenu {
+                    background-color:'.$menu_currentnav_color.';
+                    color: #32373C;/wordpress black/grey
+                }
+                .login { background: #04733d; }
                 .wp-core-ui .button-primary {
-                    background: #04733d;
-                    border-color: #9bdcba;
+                        background: #04733d;
+                        border-color: #00a651;
+                    }
+
+                .wp-core-ui .button-primary.focus, .wp-core-ui .button-primary.hover,
+                .wp-core-ui .button-primary:focus, .wp-core-ui .button-primary:hover,
+                .wp-core-ui .button-primary.focus, .wp-core-ui .button-primary.focux,
+                .wp-core-ui .button-primary:focus, .wp-core-ui .button-primary:focus,
+                .wp-core-ui .button-primary.focus, .wp-core-ui .button-primary.active,
+                .wp-core-ui .button-primary:focus, .wp-core-ui .button-primary:active {
+                    border-color: #04733d;
+                    background: #00a651;
                 }
              </style>';
         }

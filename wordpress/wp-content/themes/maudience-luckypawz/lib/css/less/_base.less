@@ -35,7 +35,6 @@
 		
 		body {
 			min-height: 100vh;
-			background-color: @child-color-green-lite;
 			font-family: 'Source Sans Pro', Arial, serif;
 
 			.site-header,
@@ -327,7 +326,6 @@
 		#inner-main-wrap { max-width: none; }
 
 		#primary {
-			background-color: transparent;
 			margin: 0;
 			padding: 0;
 		}
@@ -371,6 +369,10 @@
 
 		.column-centerfull-wrap {
 			padding: 75px 0;
+
+			&.home-section {
+				padding: 40px 0 160px;
+			}
 		}
 
 		.top-section,
@@ -403,21 +405,64 @@
 			height: 504px;
 
 			.home-content-text {
+				max-width: 55%;
+				margin: 0 auto 0 0;
 
 				h2 {
 					text-transform: lowercase;
 					color: white;
 					font-weight: 100;
+					margin-bottom: 10px;
+
+					span {
+						display: block;
+
+						&:first-of-type {
+							color: black;
+							font-family: 'Source Sans Pro';
+							font-weight: 100;
+							text-transform: lowercase;
+							font-size: 4.3rem;
+							margin-bottom: 5px;
+						}
+
+						&:last-of-type {
+							text-align: right;
+							text-transform: capitalize;
+							font-size: 3.25rem;
+							font-weight: 100;
+						}
+					}
+				}
+
+				.description {
+					font-size: 1.25rem;
+					font-weight: 100;
+					padding-bottom: 10px;
+					line-height: 1.5rem;
+				}
+
+				.button {
+					background-color: @child-color-red;
+					display: block;
+					border-radius: 5px;
+					text-align: center;
+					height: 50px;
+					font-size: 2.25rem;
+					font-family: 'Arvo', serif;
+					line-height: 50px;
+					font-style: italic;
+					margin-top: 20px;
 				}
 			}
 
 			.home-content-image {
 				text-align: right;
 				position: relative;
-				top: -70px;
-				right: -20px;
+				top: -400px;
+				right: -40px;
 
-				> a > img { width: 268px; }
+				> a > img { width: 400px; }
 			}
 		}
 
