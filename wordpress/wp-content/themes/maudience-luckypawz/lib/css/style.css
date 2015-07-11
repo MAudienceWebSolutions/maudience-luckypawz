@@ -566,6 +566,11 @@ footer#colophon .footer-contact-wrap {
 .template-front-page #main .widget-area {
   padding: 0;
 }
+.template-front-page .home-bottom-centerfull h2 {
+  color: #00a651;
+  text-transform: capitalize;
+  font-size: 3rem;
+}
 .template-front-page .textwidget .content-section {
   padding: 75px 0;
   text-align: center;
@@ -791,6 +796,7 @@ footer#colophon .footer-contact-wrap {
   }
   .template-front-page .bottom-section {
     text-align: center;
+    padding: 40px 0;
   }
   .template-front-page .bottom-section .column-centerfull-wrap {
     display: block;
@@ -914,6 +920,15 @@ footer#colophon .footer-contact-wrap {
   }
   .template-front-page #main .widget-area {
     padding: 0;
+  }
+  .template-front-page .bottom-section .agm-google_map-widget {
+    background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-5-copy-3.png);
+    background-size: 100%;
+    padding: 20px 22.5px 22.5px;
+    background-repeat: no-repeat;
+  }
+  .template-front-page .bottom-section .agm-google_map-widget > div {
+    border-radius: 10px;
   }
   .template-front-page .textwidget .content-section {
     padding: 75px 0;
