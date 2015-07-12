@@ -144,13 +144,24 @@
         }
 
         .home-content-wrap,
-        .home-top-centerfull,
         .home-middle-centerfull {
             > div:first-of-type { padding: 100px; }
         }
 
+        .home-top-centerfull {
+            > div:first-of-type { padding: 30px 80px; }
+
+            .upw-posts.hfeed {
+                .maudience-flexbox(space-between);
+
+                article {
+                    max-width: 30%;
+                }
+            }
+        }
+
         .home-content-wrap,
-        .home-middle-centerfull {
+        .middle-section .inner-wrap {
             background-image:      url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
             background-position:   center,    center;
             background-repeat:     no-repeat,   no-repeat;

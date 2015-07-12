@@ -135,6 +135,14 @@ h5,
 h6 {
   font-family: 'Arvo', serif;
 }
+.entry-content img,
+.comment-content img,
+.widget img,
+img.header-image,
+.author-avatar img,
+img.wp-post-image {
+  box-shadow: none;
+}
 .book-now-button-wrap,
 .menu-primary-menu-container .nav-menu li:last-of-type {
   background-color: #fbaf5d;
@@ -602,7 +610,6 @@ footer#colophon .footer-contact-wrap {
   background-color: #bae7cf;
 }
 .template-front-page .home-content-wrap > div:first-of-type,
-.template-front-page .home-top-centerfull > div:first-of-type,
 .template-front-page .home-middle-centerfull > div:first-of-type,
 .template-front-page .home-bottom-centerfull > div:first-of-type {
   padding: 20px 5px;
@@ -673,6 +680,101 @@ footer#colophon .footer-contact-wrap {
   color: #00a651;
   text-transform: capitalize;
   font-size: 3rem;
+}
+.template-front-page .home-top-centerfull > div:first-of-type {
+  padding: 20px 5px;
+}
+.template-front-page .home-top-centerfull h2 {
+  font-size: 3rem;
+  text-align: center;
+  padding-top: 55px;
+}
+.template-front-page .home-top-centerfull h2 a {
+  color: black;
+  text-decoration: none;
+}
+.template-front-page .home-top-centerfull .upw-posts.hfeed .entry-image {
+  text-align: center;
+}
+.template-front-page .home-top-centerfull .upw-posts .entry-title {
+  text-align: center;
+}
+.template-front-page .home-top-centerfull .upw-posts .entry-title a {
+  color: black;
+  text-transform: lowercase;
+}
+.template-front-page .middle-section .home-middle-centerfull {
+  height: 130px;
+}
+.template-front-page .middle-section .home-middle-centerfull > div:first-of-type {
+  padding: 0;
+}
+.template-front-page .middle-section .home-middle-centerfull h2 {
+  font-size: 3rem;
+  text-align: center;
+  padding-top: 55px;
+  color: white;
+}
+.template-front-page .middle-section .home-middle-centerfull.featured-staff,
+.template-front-page .middle-section .home-middle-centerfull.staff {
+  height: auto;
+  display: inline-block;
+  vertical-align: top;
+}
+.template-front-page .middle-section .home-middle-centerfull.featured-staff {
+  width: 24%;
+  margin-left: 5%;
+  margin-right: 5%;
+  max-width: 220px;
+}
+.template-front-page .middle-section .home-middle-centerfull.featured-staff .entry-title {
+  background-color: #ed1c24;
+  border-radius: 15px;
+  text-align: center;
+  height: 75px;
+}
+.template-front-page .middle-section .home-middle-centerfull.featured-staff .entry-title a {
+  color: white;
+  line-height: 75px;
+  font-size: 1.75rem;
+  font-weight: 100;
+}
+.template-front-page .middle-section .home-middle-centerfull.staff {
+  width: 60%;
+}
+.template-front-page .middle-section .home-middle-centerfull.staff .upw-posts.hfeed {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: flex-start;
+  -moz-box-pack: flex-start;
+  -ms-flex-pack: flex-start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  -webkit-box-align: flex-start;
+  -moz-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.template-front-page .middle-section .home-middle-centerfull.staff article {
+  width: 75px;
+  height: 75px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background-color: grey;
+}
+.template-front-page .middle-section .home-middle-centerfull.staff article .entry-title a {
+  color: transparent;
+  display: block;
+  width: 50px;
+  height: 50px;
 }
 .template-front-page .textwidget .content-section {
   padding: 75px 0;
@@ -939,12 +1041,34 @@ footer#colophon .footer-contact-wrap {
     height: 492px;
   }
   .template-front-page .home-content-wrap > div:first-of-type,
-  .template-front-page .home-top-centerfull > div:first-of-type,
   .template-front-page .home-middle-centerfull > div:first-of-type {
     padding: 100px;
   }
+  .template-front-page .home-top-centerfull > div:first-of-type {
+    padding: 30px 80px;
+  }
+  .template-front-page .home-top-centerfull .upw-posts.hfeed {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: space-between;
+    -moz-box-pack: space-between;
+    -ms-flex-pack: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align: space-between;
+    -moz-box-align: space-between;
+    -ms-flex-align: space-between;
+    -webkit-align-items: space-between;
+    align-items: space-between;
+  }
+  .template-front-page .home-top-centerfull .upw-posts.hfeed article {
+    max-width: 30%;
+  }
   .template-front-page .home-content-wrap,
-  .template-front-page .home-middle-centerfull {
+  .template-front-page .middle-section .inner-wrap {
     background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png);
     background-position: center,    center;
     background-repeat: no-repeat, no-repeat;
@@ -956,23 +1080,23 @@ footer#colophon .footer-contact-wrap {
     height: 504px;
   }
   .template-front-page .home-content-wrap .home-content-text,
-  .template-front-page .home-middle-centerfull .home-content-text {
+  .template-front-page .middle-section .inner-wrap .home-content-text {
     max-width: 55%;
     margin: 0 auto 0 0;
   }
   .template-front-page .home-content-wrap .home-content-text h2,
-  .template-front-page .home-middle-centerfull .home-content-text h2 {
+  .template-front-page .middle-section .inner-wrap .home-content-text h2 {
     text-transform: lowercase;
     color: white;
     font-weight: 100;
     margin-bottom: 10px;
   }
   .template-front-page .home-content-wrap .home-content-text h2 span,
-  .template-front-page .home-middle-centerfull .home-content-text h2 span {
+  .template-front-page .middle-section .inner-wrap .home-content-text h2 span {
     display: block;
   }
   .template-front-page .home-content-wrap .home-content-text h2 span:first-of-type,
-  .template-front-page .home-middle-centerfull .home-content-text h2 span:first-of-type {
+  .template-front-page .middle-section .inner-wrap .home-content-text h2 span:first-of-type {
     color: black;
     font-family: 'Source Sans Pro';
     font-weight: 100;
@@ -981,25 +1105,25 @@ footer#colophon .footer-contact-wrap {
     margin-bottom: 5px;
   }
   .template-front-page .home-content-wrap .home-content-text h2 span:last-of-type,
-  .template-front-page .home-middle-centerfull .home-content-text h2 span:last-of-type {
+  .template-front-page .middle-section .inner-wrap .home-content-text h2 span:last-of-type {
     text-align: right;
     text-transform: capitalize;
     font-size: 3.25rem;
     font-weight: 100;
   }
   .template-front-page .home-content-wrap .home-content-text .description,
-  .template-front-page .home-middle-centerfull .home-content-text .description {
+  .template-front-page .middle-section .inner-wrap .home-content-text .description {
     font-size: 1.25rem;
     font-weight: 100;
     padding-bottom: 10px;
     line-height: 1.5rem;
   }
   .template-front-page .home-content-wrap .home-content-text .button,
-  .template-front-page .home-middle-centerfull .home-content-text .button {
+  .template-front-page .middle-section .inner-wrap .home-content-text .button {
     font-size: 2.25rem;
   }
   .template-front-page .home-content-wrap .home-content-image,
-  .template-front-page .home-middle-centerfull .home-content-image {
+  .template-front-page .middle-section .inner-wrap .home-content-image {
     text-align: right;
     position: relative;
     top: -400px;
@@ -1007,7 +1131,7 @@ footer#colophon .footer-contact-wrap {
     display: block;
   }
   .template-front-page .home-content-wrap .home-content-image > a > img,
-  .template-front-page .home-middle-centerfull .home-content-image > a > img {
+  .template-front-page .middle-section .inner-wrap .home-content-image > a > img {
     width: 400px;
   }
   .template-front-page .top-centerfull-wrap .home-top-centerfull {

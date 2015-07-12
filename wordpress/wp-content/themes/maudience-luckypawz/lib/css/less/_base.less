@@ -74,6 +74,13 @@
 			font-family: @child-accent-font;
 		}
 
+		.entry-content img,
+		.comment-content img,
+		.widget img,
+		img.header-image,
+		.author-avatar img,
+		img.wp-post-image { box-shadow: none; }
+
 		//BOOK NOW BUTTON STYLES
 
 			.book-now-button-wrap,
@@ -502,7 +509,6 @@
 		.bottom-section { background-color: @child-color-green-double-lite; }
 
 		.home-content-wrap,
-		.home-top-centerfull,
 		.home-middle-centerfull,
 		.home-bottom-centerfull {
 			> div:first-of-type { padding: 20px 5px; }
@@ -587,6 +593,105 @@
 			color: @child-color-green;
 			text-transform: capitalize;
 			font-size: 3rem;
+		}
+
+		.home-top-centerfull {
+			> div:first-of-type { padding: 20px 5px; }
+
+			h2 {
+				font-size: 3rem;
+				text-align: center;
+				padding-top: 55px;
+
+				a {
+					color: black;
+					text-decoration: none;
+				}
+			}
+
+			.upw-posts.hfeed {
+
+				.entry-image { text-align: center; }
+			}
+
+			.upw-posts .entry-title {
+				text-align: center;
+
+				a {
+					color: black;
+					text-transform: lowercase;
+				}
+			}
+		}
+
+		.middle-section {
+			.home-middle-centerfull {
+				height: 130px;
+
+				> div:first-of-type { padding: 0; }
+
+				h2 {
+					font-size: 3rem;
+					text-align: center;
+					padding-top: 55px;
+					color: white;
+				}
+
+				&.featured-staff,
+				&.staff {
+					height: auto;
+					display: inline-block;
+					vertical-align: top;
+				}
+
+				&.featured-staff {
+					width: 24%;
+					margin-left: 5%;
+					margin-right: 5%;
+					max-width: 220px;
+
+					.entry-title {
+						background-color: @child-color-red;
+						border-radius: 15px;
+						text-align: center;
+						height: 75px;
+
+						a {
+							color: white;
+							line-height: 75px;
+							font-size: 1.75rem;
+							font-weight: 100;
+						}
+					}
+				}
+
+				&.staff {
+					width: 60%;
+
+					.upw-posts.hfeed {
+						.maudience-flexbox(flex-start);
+						-ms-flex-wrap: wrap;
+						-webkit-flex-wrap: wrap;
+						-moz-flex-wrap: wrap;
+						flex-wrap: wrap;
+					}
+
+					article {
+						width: 75px;
+						height: 75px;
+						margin-right: 5px;
+						margin-bottom: 5px;
+						background-color: grey;
+
+						.entry-title a {
+							color: transparent;
+							display: block;
+							width: 50px;
+							height: 50px;
+						}
+					}
+				}
+			}
 		}
 
 		.textwidget .content-section {
