@@ -135,7 +135,8 @@ h5,
 h6 {
   font-family: 'Arvo', serif;
 }
-.book-now-button-wrap {
+.book-now-button-wrap,
+.menu-primary-menu-container .nav-menu li:last-of-type {
   background-color: #fbaf5d;
   background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-6-copy.png);
   background-position: center,    center;
@@ -146,19 +147,18 @@ h6 {
   background-attachment: scroll,      scroll;
   background-color: transparent;
   margin: auto;
-  width: 320px;
+  width: 250px;
   text-align: center;
-  height: 160px;
+  height: 140px;
 }
-.book-now-button-wrap a {
-  font-size: 2rem;
-  line-height: 1rem;
+.book-now-button-wrap a,
+.menu-primary-menu-container .nav-menu li:last-of-type a {
   font-family: 'Arvo', serif;
   text-decoration: underline;
-  padding: 75px;
   font-style: italic;
 }
-.book-now-button-wrap a:hover {
+.book-now-button-wrap a:hover,
+.menu-primary-menu-container .nav-menu li:last-of-type a:hover {
   background-color: transparent;
 }
 #colophon {
@@ -168,7 +168,31 @@ h6 {
   position: absolute;
   right: 0;
   left: 0;
-  bottom: 0;
+  bottom: -5px;
+}
+#colophon .book-now-button-wrap a {
+  font-size: 2rem;
+  line-height: 1rem;
+  padding: 65px 0;
+  font-style: italic;
+  width: 200px;
+  display: block;
+  margin: auto;
+}
+.menu-primary-menu-container .nav-menu li:last-of-type {
+  width: 150px;
+  height: 90px;
+  position: relative;
+  top: -10px;
+}
+.menu-primary-menu-container .nav-menu li:last-of-type a {
+  font-size: 1.5rem;
+  padding: 0;
+  position: relative;
+  top: 10px;
+  display: block;
+  width: 150px;
+  height: 90px;
 }
 /* SHELL STYLES
 *****************************************************************/
@@ -296,6 +320,49 @@ header .main-navigation ul.nav-menu li.menu-item-has-children:after {
 }
 article .entry-header {
   padding-bottom: 10px;
+}
+.pre-footer-section {
+  text-align: right;
+}
+.pre-footer-section .column-centerfull-wrap.section-column {
+  padding-bottom: 40px;
+}
+.pre-footer-section .pre-footer-centerfull h2 {
+  color: #ed1c24;
+  font-style: italic;
+  font-weight: 100;
+  text-transform: capitalize;
+  padding-top: 40px;
+  font-size: 2rem;
+}
+.pre-footer-section .menu-social-media-navigation-container {
+  margin: 5px 0;
+}
+.pre-footer-section .menu-social-media-navigation-container .menu-item {
+  background-image: url('../images/facebook-icon.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 35px;
+  width: 35px;
+  display: inline-block;
+  margin: 0 5px;
+  vertical-align: top;
+}
+.pre-footer-section .menu-social-media-navigation-container .menu-item:first-of-type {
+  margin-left: 0;
+}
+.pre-footer-section .menu-social-media-navigation-container .menu-item:last-of-type {
+  margin-right: 0;
+}
+.pre-footer-section .menu-social-media-navigation-container .menu-item a {
+  color: transparent;
+  display: block;
+  height: 35px;
+  width: 35px;
+}
+.pre-footer-section .menu-social-media-navigation-container .menu-item:nth-of-type(2) {
+  background-image: url('../images/twitter-icon.png');
 }
 /*  ******************************** SIDEBAR ********************************  */
 #secondary .widget {

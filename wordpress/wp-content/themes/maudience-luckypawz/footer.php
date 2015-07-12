@@ -9,6 +9,18 @@
  * @since Twenty Twelve 1.0
  */
 ?>
+		
+			<!-- PRE FOOTER SECTION -->
+			<section id="pre-footer-section" class="pre-footer-section home-section">
+
+				<div id="pre-footer-centerfull-wrap" class="column-centerfull-wrap section-column pre-footer">
+					<?php if ( is_active_sidebar( 'pre-footer-centerfull' ) ) : ?>
+						<div class="inner-wrap">
+							<?php dynamic_sidebar( 'pre-footer-centerfull' ); ?>
+						</div><!-- #home-middle -->
+					<?php endif; ?>
+				</div>
+			</section>
 		</div><!-- #inner-main-wrap .inner-wrap -->
 	</div><!-- #main .wrapper -->
 	<footer id="colophon" role="contentinfo">

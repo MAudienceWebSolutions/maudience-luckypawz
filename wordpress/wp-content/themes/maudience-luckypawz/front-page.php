@@ -108,17 +108,6 @@ get_header();
 				</article><!-- #post -->
 			<?php endwhile; // end of the loop. ?>
 		</div><!-- #content -->
-		<!-- PRE FOOTER SECTION -->
-		<section id="pre-footer-section" class="pre-footer-section home-section">
-
-			<div id="pre-footer-centerfull-wrap" class="column-centerfull-wrap section-column pre-footer">
-				<?php if ( is_active_sidebar( 'home-middle' ) ) : ?>
-					<div class="inner-wrap">
-						<?php dynamic_sidebar( 'pre-footer-centerfull' ); ?>
-					</div><!-- #home-middle -->
-				<?php endif; ?>
-			</div>
-		</section>
 	</div><!-- #primary -->
 
 <?php get_footer(); ?>

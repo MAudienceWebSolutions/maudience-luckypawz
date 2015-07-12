@@ -74,45 +74,73 @@
 			font-family: @child-accent-font;
 		}
 
-		.book-now-button-wrap {
-			background-color: 		@child-color-orange;
-			background-image:      	url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png),
-									url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-6-copy.png);
-			background-position:   	center,    center;
-			background-repeat:     	no-repeat,   no-repeat;
-			background-clip:       	border-box,  border-box;
-			background-origin:     	padding-box, padding-box;
-			background-size:       	100% 100%,   100% 100%;
-			background-attachment: 	scroll,      scroll;
-			background-color:      	transparent;
-			margin: auto;
-			width: 320px;
-			text-align: center;
-			height: 160px;
+		//BOOK NOW BUTTON STYLES
+
+			.book-now-button-wrap,
+			.menu-primary-menu-container .nav-menu li:last-of-type {
+				background-color: 		@child-color-orange;
+				background-image:      	url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png),
+										url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-6-copy.png);
+				background-position:   	center,    center;
+				background-repeat:     	no-repeat,   no-repeat;
+				background-clip:       	border-box,  border-box;
+				background-origin:     	padding-box, padding-box;
+				background-size:       	100% 100%,   100% 100%;
+				background-attachment: 	scroll,      scroll;
+				background-color:      	transparent;
+				margin: auto;
+				width: 250px;
+				text-align: center;
+				height: 140px;
+				
+
+				a {
+					font-family: 		@child-accent-font;
+					text-decoration: 	underline;
+					font-style: 		italic;
+
+					&:hover { background-color: transparent; }
+				}
+			}
+
+			#colophon {
+				position: relative;
+
+				.book-now-button-wrap {
+					position: absolute;
+					right: 0;
+					left: 0;
+					bottom: -5px;
+
+					a {
+						font-size: 			2rem;
+						line-height: 		1rem;
+						padding:			65px 0;
+						font-style: 		italic;
+						width: 200px;
+						display: block;
+						margin: auto;
+					}
+				}
+			}
+
+			.menu-primary-menu-container .nav-menu li:last-of-type {
+				width: 150px;
+				height: 90px;
+				position: relative;
+				top: -10px;
+
+				a {
+					font-size: 			1.5rem;
+					padding:			0;
+					position: relative;
+					top: 10px;
+					display: block;
+					width: 150px;
+					height: 90px;
+				}
+			}
 			
-
-			a {
-				font-size: 			2rem;
-				line-height: 		1rem;
-				font-family: 		@child-accent-font;
-				text-decoration: 	underline;
-				padding:			75px;
-				font-style: 		italic;
-
-				&:hover { background-color: transparent; }
-			}
-		}
-
-		#colophon {
-			position: relative;
-
-			.book-now-button-wrap {
-				position: absolute;
-				right: 0;
-				left: 0;
-				bottom: 0;
-			}
-		}//
 
 
 /* SHELL STYLES
@@ -251,6 +279,49 @@
 			}
 		}
 
+		.pre-footer-section {
+			text-align: right;
+
+			.column-centerfull-wrap.section-column { padding-bottom: 40px }
+
+			.pre-footer-centerfull h2 {
+				color: @child-color-red;
+				font-style: italic;
+				font-weight: 100;
+				text-transform: capitalize;
+				padding-top: 40px;
+				font-size: 2rem;
+			}
+
+			.menu-social-media-navigation-container {
+				margin: 5px 0;
+
+				.menu-item {
+	                background-image: url('../images/facebook-icon.png');
+	                background-size: 100%;
+	                background-repeat: no-repeat;
+	                background-position: center;
+	                height: 35px;
+	                width: 35px;
+	                display: inline-block;
+	                margin: 0 5px;
+	                vertical-align: top;
+
+					&:first-of-type { margin-left: 0; }
+					&:last-of-type { margin-right: 0; }
+
+	                a {
+	                	color: transparent;
+						display: block;
+						height: 35px;
+						width: 35px;
+	                }
+
+	                &:nth-of-type(2) { background-image: url('../images/twitter-icon.png'); }
+	            }
+			}
+		}
+
 	/*  ******************************** SIDEBAR ********************************  */
 
 		#secondary .widget { padding: 20px; }
@@ -292,9 +363,7 @@
 				line-height: 1rem;
 			}
 
-			li a {
-				text-decoration: none;
-			}
+			li a { text-decoration: none; }
 
 			.estimate-btn-text {
 				text-align: right;
