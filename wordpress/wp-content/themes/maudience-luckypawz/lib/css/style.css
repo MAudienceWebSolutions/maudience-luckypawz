@@ -137,10 +137,38 @@ h6 {
 }
 .book-now-button-wrap {
   background-color: #fbaf5d;
+  background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-6-copy.png);
+  background-position: center,    center;
+  background-repeat: no-repeat, no-repeat;
+  background-clip: border-box, border-box;
+  background-origin: padding-box, padding-box;
+  background-size: 100% 100%,   100% 100%;
+  background-attachment: scroll,      scroll;
+  background-color: transparent;
+  margin: auto;
+  width: 320px;
+  text-align: center;
+  height: 160px;
 }
 .book-now-button-wrap a {
-  font-size: 1rem;
+  font-size: 2rem;
+  line-height: 1rem;
   font-family: 'Arvo', serif;
+  text-decoration: underline;
+  padding: 75px;
+  font-style: italic;
+}
+.book-now-button-wrap a:hover {
+  background-color: transparent;
+}
+#colophon {
+  position: relative;
+}
+#colophon .book-now-button-wrap {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
 }
 /* SHELL STYLES
 *****************************************************************/
@@ -283,6 +311,9 @@ footer#colophon a {
 footer#colophon .widget-area {
   padding: 0;
   margin: 0;
+}
+footer#colophon .footer-widget-center {
+  width: 100%;
 }
 footer#colophon h2 {
   text-transform: capitalize;

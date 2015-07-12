@@ -75,13 +75,44 @@
 		}
 
 		.book-now-button-wrap {
-			background-color: @child-color-orange;
+			background-color: 		@child-color-orange;
+			background-image:      	url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png),
+									url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-6-copy.png);
+			background-position:   	center,    center;
+			background-repeat:     	no-repeat,   no-repeat;
+			background-clip:       	border-box,  border-box;
+			background-origin:     	padding-box, padding-box;
+			background-size:       	100% 100%,   100% 100%;
+			background-attachment: 	scroll,      scroll;
+			background-color:      	transparent;
+			margin: auto;
+			width: 320px;
+			text-align: center;
+			height: 160px;
+			
 
 			a {
-				font-size: 1rem;
-				font-family: @child-accent-font;
+				font-size: 			2rem;
+				line-height: 		1rem;
+				font-family: 		@child-accent-font;
+				text-decoration: 	underline;
+				padding:			75px;
+				font-style: 		italic;
+
+				&:hover { background-color: transparent; }
 			}
 		}
+
+		#colophon {
+			position: relative;
+
+			.book-now-button-wrap {
+				position: absolute;
+				right: 0;
+				left: 0;
+				bottom: 0;
+			}
+		}//
 
 
 /* SHELL STYLES
@@ -235,6 +266,8 @@
 				padding: 0;
 				margin: 0;
 			}
+
+			.footer-widget-center { width: 100%; }
 
 			h2 {
 				text-transform: capitalize;
