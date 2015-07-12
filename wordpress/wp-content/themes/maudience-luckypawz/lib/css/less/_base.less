@@ -185,6 +185,11 @@
 					&.current_page_item {
 						border-radius: 15px;
 						background-color: @child-color-green-dark;
+						border-top: 1px solid @child-color-green-dark;
+						border-bottom: 1px solid @child-color-green-dark;
+						border-image: url(../images/border-image-darknoback3.png) 100% 0 100% 0 repeat;
+						border-image-width: 10px;
+						border-style: solid;
 
 						a {font-weight: normal; }
 					}
@@ -522,7 +527,7 @@
 
 			#main {
 				border-top: 1px solid @child-color-green-dark;
-				border-image: url('../images/border-image.png') 100% 1 1 1 repeat;
+				border-image: url('../images/border-image-noback.png') 100% 1 1 1 repeat;
 				border-image-width: 10px;
 				border-style: solid;
 				margin-top: 50px;
@@ -530,7 +535,7 @@
 
 			.archive-header {
 				border-bottom: 0;
-				background-color: white;
+				background-color: whitesmoke;
 				width: 180px;
 				display: block;
 				margin-top: -75px;
