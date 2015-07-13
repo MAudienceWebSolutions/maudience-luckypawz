@@ -98,7 +98,7 @@ body {
 body #page,
 body .site-header,
 body #primary,
-body #secondary .widget {
+body #secondary {
   background-color: whitesmoke;
 }
 body .site {
@@ -321,6 +321,11 @@ header .main-navigation ul.nav-menu li.menu-item-has-children:after {
 /*  ******************************** CONTENT ********************************  */
 #main {
   min-height: 75vh;
+  border-top: 1px solid #04733d;
+  border-image: url('../images/border-image-noback.png') 100% 1 1 1 repeat;
+  border-image-width: 10px;
+  border-style: solid;
+  margin-top: 50px;
 }
 #primary {
   margin: 20px 0;
@@ -372,9 +377,43 @@ article .entry-header {
 .pre-footer-section .menu-social-media-navigation-container .menu-item:nth-of-type(2) {
   background-image: url('../images/twitter-icon.png');
 }
+.site-content article {
+  border: none;
+}
+.site-content .entry-header,
+.site-content .archive-header {
+  border-bottom: 0;
+  background-color: whitesmoke;
+  width: 180px;
+  display: block;
+  margin-top: -60px;
+  padding-left: 10px;
+}
+.site-content .entry-header .entry-title,
+.site-content .archive-header .entry-title,
+.site-content .entry-header .archive-title,
+.site-content .archive-header .archive-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #00a651;
+}
 /*  ******************************** SIDEBAR ********************************  */
 #secondary .widget {
   padding: 20px;
+  background-color: #fbaf5d;
+  color: white;
+  border-radius: 15px;
+}
+#secondary .widget h3 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 100;
+  text-transform: capitalize;
+}
+#secondary .widget strong {
+  font-family: 'Arvo', serif;
+  font-weight: normal;
 }
 /*  ******************************** FOOTER ********************************  */
 footer#colophon {
@@ -543,7 +582,9 @@ footer#colophon .footer-contact-wrap {
   margin-top: 5px;
 }
 .template-front-page #main {
-  background-color: white;
+  border-top: none;
+  margin-top: 0;
+  border-image: none;
 }
 .template-front-page #inner-main-wrap {
   max-width: none;
@@ -801,32 +842,17 @@ footer#colophon .footer-contact-wrap {
 .template-front-page .inner-footer-wrap .widget-area {
   border: none;
 }
-.page-template-default h2 {
-  color: #00a651;
-}
-.post-type-archive.post-type-archive-services #main {
-  border-top: 1px solid #04733d;
-  border-image: url('../images/border-image-noback.png') 100% 1 1 1 repeat;
-  border-image-width: 10px;
-  border-style: solid;
-  margin-top: 50px;
+.page-template-default .entry-content h2 {
+  color: #f7941d;
 }
 .post-type-archive.post-type-archive-services .archive-header {
-  border-bottom: 0;
-  background-color: whitesmoke;
-  width: 180px;
-  display: block;
   margin-top: -75px;
-  padding-left: 10px;
-}
-.post-type-archive.post-type-archive-services .archive-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  text-transform: capitalize;
-  color: #00a651;
 }
 .post-type-archive.post-type-archive-services article {
   border: none;
+}
+.post-type-archive.post-type-archive-services article .entry-header {
+  width: 100%;
 }
 .post-type-archive.post-type-archive-services article .entry-title a {
   color: #f7941d;
@@ -836,20 +862,6 @@ footer#colophon .footer-contact-wrap {
 .post-type-archive.post-type-archive-services article .wp-post-image,
 .post-type-archive.post-type-archive-services article .entry-meta {
   display: none;
-}
-.post-type-archive.post-type-archive-services #secondary .widget {
-  background-color: #fbaf5d;
-  color: white;
-}
-.post-type-archive.post-type-archive-services #secondary .widget h3 {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 100;
-  text-transform: capitalize;
-}
-.post-type-archive.post-type-archive-services #secondary .widget strong {
-  font-family: 'Arvo', serif;
-  font-weight: normal;
 }
 /**/
 /* MOBILE - STARTING BOX/POSITION STYLES */

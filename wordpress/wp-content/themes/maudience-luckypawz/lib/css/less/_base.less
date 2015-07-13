@@ -40,7 +40,7 @@
 			#page,
 			.site-header,
 			#primary,
-			#secondary .widget { background-color: @child-background-color; }
+			#secondary { background-color: @child-background-color; }
 			
 			.site { box-shadow: none; }
 
@@ -271,6 +271,11 @@
 
 		#main {
 			min-height: 75vh;
+			border-top: 1px solid @child-color-green-dark;
+			border-image: url('../images/border-image-noback.png') 100% 1 1 1 repeat;
+			border-image-width: 10px;
+			border-style: solid;
+			margin-top: 50px;
 		}
 
 		#primary {
@@ -329,9 +334,49 @@
 			}
 		}
 
+		.site-content {
+
+			article { border: none; }
+
+			.entry-header,
+			.archive-header {
+				border-bottom: 0;
+				background-color: whitesmoke;
+				width: 180px;
+				display: block;
+				margin-top: -60px;
+				padding-left: 10px;
+
+				.entry-title,
+				.archive-title {
+					font-size: 2.5rem;
+					font-weight: 600;
+					text-transform: capitalize;
+					color: @child-color-green;
+				}
+			}
+		}
+
 	/*  ******************************** SIDEBAR ********************************  */
 
-		#secondary .widget { padding: 20px; }
+		#secondary .widget {
+			padding: 20px;
+			background-color: @child-color-orange;
+			color: white;
+			border-radius: 15px;
+
+			h3 {
+				color: white;
+				font-size: 1.5rem;
+				font-weight: 100;
+				text-transform: capitalize;
+			}
+
+			strong {
+				font-family: @child-accent-font;
+				font-weight: normal;
+			}
+		}
 
 	/*  ******************************** FOOTER ********************************  */
 
@@ -449,7 +494,11 @@
 			margin-top: 5px;
 		}
 
-		#main { background-color: white; }
+		#main {
+			border-top: none;
+			margin-top: 0;
+			border-image: none;
+		}
 
 		#inner-main-wrap { max-width: none; }
 
@@ -723,41 +772,19 @@
 
 	// Default Template Pages
 	.page-template-default {
-		h2 {
-			color: @child-color-green;
-		}
+		.entry-content h2 { color: @child-color-orange-dark; }
 	}
 
 	//Archive Pages
 	.post-type-archive {
 		&.post-type-archive-services {
 
-			#main {
-				border-top: 1px solid @child-color-green-dark;
-				border-image: url('../images/border-image-noback.png') 100% 1 1 1 repeat;
-				border-image-width: 10px;
-				border-style: solid;
-				margin-top: 50px;
-			}
-
-			.archive-header {
-				border-bottom: 0;
-				background-color: whitesmoke;
-				width: 180px;
-				display: block;
-				margin-top: -75px;
-				padding-left: 10px;
-			}
-
-			.archive-title {
-				font-size: 2.5rem;
-				font-weight: 600;
-				text-transform: capitalize;
-				color: @child-color-green;
-			}
+			.archive-header { margin-top: -75px; }
 			
 			article {
 				border: none;
+
+				.entry-header { width: 100%; }
 
 				.entry-title a {
 					color: @child-color-orange-dark;
@@ -767,23 +794,6 @@
 
 				.wp-post-image,
 				.entry-meta { display: none; }
-			}
-
-			#secondary .widget {
-				background-color: @child-color-orange;
-				color: white;
-
-				h3 {
-					color: white;
-					font-size: 1.5rem;
-					font-weight: 100;
-					text-transform: capitalize;
-				}
-
-				strong {
-					font-family: @child-accent-font;
-					font-weight: normal;
-				}
 			}
 		}
 	}
