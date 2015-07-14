@@ -279,7 +279,8 @@ header .main-navigation .current_page_ancestor > a {
 header .main-navigation div.nav-menu > ul,
 header .main-navigation ul.nav-menu {
   border: none;
-  text-align: right;
+  max-width: 81%;
+  float: right;
 }
 header .main-navigation div.nav-menu > ul li,
 header .main-navigation ul.nav-menu li {
@@ -383,8 +384,6 @@ article .entry-header {
 .site-content .entry-header,
 .site-content .archive-header {
   border-bottom: 0;
-  background-color: whitesmoke;
-  width: 180px;
   display: block;
   margin-top: -60px;
   padding-left: 10px;
@@ -397,6 +396,9 @@ article .entry-header {
   font-weight: 600;
   text-transform: capitalize;
   color: #00a651;
+  background-color: whitesmoke;
+  display: inline;
+  padding: 0 10px;
 }
 /*  ******************************** SIDEBAR ********************************  */
 #secondary .widget {
@@ -946,7 +948,24 @@ footer#colophon .footer-contact-wrap {
   /* SHELL STYLES
 *****************************************************************/
   /*  ******************************** HEADER ********************************  */
+  .site-header .inner-header-wrap {
+    margin-top: -80px;
+  }
+  .site-header .inner-header-wrap > a {
+    display: inline;
+    margin: auto;
+    text-align: left;
+  }
+  .site-header .inner-header-wrap hgroup {
+    width: 156px;
+    height: auto;
+  }
   /*  ******************************** MENUS AND NAVIGATION ********************************  */
+  .menu-primary-menu-container {
+    max-width: 960px;
+    display: block;
+    margin: auto;
+  }
   /*  ******************************** SIDEBAR ********************************  */
   /*  ******************************** FOOTER ********************************  */
   footer .inner-wrap {
@@ -1196,7 +1215,7 @@ footer#colophon .footer-contact-wrap {
   }
 }
 /* LARGE DESKTOP + */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1200px) {
   /*  1200UP DESKTOP STYLES 
 
 	This file contains all styles that do not change based on device
@@ -1226,23 +1245,6 @@ footer#colophon .footer-contact-wrap {
   /* SHELL STYLES
 *****************************************************************/
   /*  ******************************** HEADER ********************************  */
-  .site-header .inner-header-wrap {
-    margin: -80px auto 0;
-  }
-  .site-header .inner-header-wrap > a {
-    max-width: 30%;
-    float: left;
-  }
-  .site-header .inner-header-wrap hgroup {
-    position: relative;
-    height: 140px;
-    width: 165px;
-    overflow: hidden;
-    left: -160px;
-    padding-top: 3px;
-    top: 0;
-    margin-top: 0;
-  }
   /*  ******************************** MENUS AND NAVIGATION ********************************  */
   /*  ******************************** SIDEBAR ********************************  */
   /*  ******************************** FOOTER ********************************  */

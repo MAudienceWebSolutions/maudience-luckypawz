@@ -234,7 +234,8 @@
 			div.nav-menu > ul,
 			ul.nav-menu  {
 				border: none;
-				text-align: right;
+				max-width: 81%;
+				float: right;
 
 				li {
 					height: 75px;
@@ -341,8 +342,6 @@
 			.entry-header,
 			.archive-header {
 				border-bottom: 0;
-				background-color: whitesmoke;
-				width: 180px;
 				display: block;
 				margin-top: -60px;
 				padding-left: 10px;
@@ -353,6 +352,9 @@
 					font-weight: 600;
 					text-transform: capitalize;
 					color: @child-color-green;
+					background-color: whitesmoke;
+					display: inline;
+					padding: 0 10px;
 				}
 			}
 		}
