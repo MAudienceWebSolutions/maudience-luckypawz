@@ -959,6 +959,7 @@ footer#colophon .footer-contact-wrap {
   .site-header .inner-header-wrap hgroup {
     width: 156px;
     height: auto;
+    margin-top: -137.5px;
   }
   /*  ******************************** MENUS AND NAVIGATION ********************************  */
   .menu-primary-menu-container {
