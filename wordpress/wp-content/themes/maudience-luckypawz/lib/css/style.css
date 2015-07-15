@@ -57,9 +57,7 @@
   margin-left: 10px;
 }
 .btn.more-info,
-.button.more-info,
-.btn.book-now,
-.button.book-now {
+.button.more-info {
   background-color: #ed1c24;
   padding: 5px;
   border-radius: 5px;
@@ -74,17 +72,15 @@
 }
 .btn.more-info:hover,
 .button.more-info:hover,
-.btn.book-now:hover,
-.button.book-now:hover,
 .btn.more-info:focus,
 .button.more-info:focus,
-.btn.book-now:focus,
-.button.book-now:focus,
 .btn.more-info:active,
-.button.more-info:active,
-.btn.book-now:active,
-.button.book-now:active {
+.button.more-info:active {
   background-color: rgba(237, 28, 36, 0.5);
+}
+.btn.more-info a,
+.button.more-info a {
+  color: white;
 }
 .btn:hover,
 .button:hover {
@@ -587,8 +583,7 @@ footer#colophon .footer-contact-wrap {
 #gform_wrapper_1 .button.free-online-estimate:after {
   margin-left: 10px;
 }
-#gform_wrapper_1 .button.more-info,
-#gform_wrapper_1 .button.book-now {
+#gform_wrapper_1 .button.more-info {
   background-color: #ed1c24;
   padding: 5px;
   border-radius: 5px;
@@ -602,12 +597,12 @@ footer#colophon .footer-contact-wrap {
   max-width: 50%;
 }
 #gform_wrapper_1 .button.more-info:hover,
-#gform_wrapper_1 .button.book-now:hover,
 #gform_wrapper_1 .button.more-info:focus,
-#gform_wrapper_1 .button.book-now:focus,
-#gform_wrapper_1 .button.more-info:active,
-#gform_wrapper_1 .button.book-now:active {
+#gform_wrapper_1 .button.more-info:active {
   background-color: rgba(237, 28, 36, 0.5);
+}
+#gform_wrapper_1 .button.more-info a {
+  color: white;
 }
 #gform_wrapper_1 .button:hover {
   background-color: rgba(251, 175, 93, 0.5);
