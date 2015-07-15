@@ -57,7 +57,9 @@
   margin-left: 10px;
 }
 .btn.more-info,
-.button.more-info {
+.button.more-info,
+.btn.book-more.red,
+.button.book-more.red {
   background-color: #ed1c24;
   padding: 5px;
   border-radius: 5px;
@@ -72,14 +74,22 @@
 }
 .btn.more-info:hover,
 .button.more-info:hover,
+.btn.book-more.red:hover,
+.button.book-more.red:hover,
 .btn.more-info:focus,
 .button.more-info:focus,
+.btn.book-more.red:focus,
+.button.book-more.red:focus,
 .btn.more-info:active,
-.button.more-info:active {
+.button.more-info:active,
+.btn.book-more.red:active,
+.button.book-more.red:active {
   background-color: rgba(237, 28, 36, 0.5);
 }
 .btn.more-info a,
-.button.more-info a {
+.button.more-info a,
+.btn.book-more.red a,
+.button.book-more.red a {
   color: white;
 }
 .btn:hover,
@@ -583,7 +593,8 @@ footer#colophon .footer-contact-wrap {
 #gform_wrapper_1 .button.free-online-estimate:after {
   margin-left: 10px;
 }
-#gform_wrapper_1 .button.more-info {
+#gform_wrapper_1 .button.more-info,
+#gform_wrapper_1 .button.book-more.red {
   background-color: #ed1c24;
   padding: 5px;
   border-radius: 5px;
@@ -597,11 +608,15 @@ footer#colophon .footer-contact-wrap {
   max-width: 50%;
 }
 #gform_wrapper_1 .button.more-info:hover,
+#gform_wrapper_1 .button.book-more.red:hover,
 #gform_wrapper_1 .button.more-info:focus,
-#gform_wrapper_1 .button.more-info:active {
+#gform_wrapper_1 .button.book-more.red:focus,
+#gform_wrapper_1 .button.more-info:active,
+#gform_wrapper_1 .button.book-more.red:active {
   background-color: rgba(237, 28, 36, 0.5);
 }
-#gform_wrapper_1 .button.more-info a {
+#gform_wrapper_1 .button.more-info a,
+#gform_wrapper_1 .button.book-more.red a {
   color: white;
 }
 #gform_wrapper_1 .button:hover {
