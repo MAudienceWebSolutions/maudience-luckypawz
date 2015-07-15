@@ -97,6 +97,7 @@
 .btn.book-now.red.make-reservation,
 .button.book-now.red.make-reservation {
   width: 100%;
+  max-width: 100%;
 }
 .btn:hover,
 .button:hover {
@@ -628,6 +629,7 @@ footer#colophon .footer-contact-wrap {
 #gform_wrapper_1 .button.more-info.make-reservation,
 #gform_wrapper_1 .button.book-now.red.make-reservation {
   width: 100%;
+  max-width: 100%;
 }
 #gform_wrapper_1 .button:hover {
   background-color: rgba(251, 175, 93, 0.5);
