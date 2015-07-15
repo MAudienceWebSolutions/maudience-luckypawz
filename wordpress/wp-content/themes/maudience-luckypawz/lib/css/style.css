@@ -56,6 +56,36 @@
 .button.free-online-estimate:after {
   margin-left: 10px;
 }
+.btn.more-info,
+.button.more-info,
+.btn.book-now,
+.button.book-now {
+  background-color: #ed1c24;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  font-family: 'Arvo', serif;
+  font-size: 1.5rem;
+  margin: 10px auto 0;
+  display: block;
+  text-align: center;
+  max-width: 50%;
+}
+.btn.more-info:hover,
+.button.more-info:hover,
+.btn.book-now:hover,
+.button.book-now:hover,
+.btn.more-info:focus,
+.button.more-info:focus,
+.btn.book-now:focus,
+.button.book-now:focus,
+.btn.more-info:active,
+.button.more-info:active,
+.btn.book-now:active,
+.button.book-now:active {
+  background-color: rgba(237, 28, 36, 0.5);
+}
 .btn:hover,
 .button:hover {
   background-color: rgba(251, 175, 93, 0.5);
@@ -143,30 +173,58 @@ img.header-image,
 img.wp-post-image {
   box-shadow: none;
 }
-.book-now-button-wrap,
 .menu-primary-menu-container .nav-menu li:last-of-type {
-  background-color: #fbaf5d;
-  background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-3-copy.png), url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/Rounded-Rectangle-6-copy.png);
-  background-position: center,    center;
-  background-repeat: no-repeat, no-repeat;
-  background-clip: border-box, border-box;
-  background-origin: padding-box, padding-box;
-  background-size: 100% 100%,   100% 100%;
-  background-attachment: scroll,      scroll;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-clip: border-box;
+  background-origin: padding-box;
+  background-size: 100% 100%;
+  background-attachment: scroll;
   background-color: transparent;
   margin: auto;
-  width: 250px;
   text-align: center;
-  height: 140px;
+  width: 150px;
+  height: 100px;
+  position: relative;
+  top: -10px;
+  background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/top-button.png);
 }
-.book-now-button-wrap a,
 .menu-primary-menu-container .nav-menu li:last-of-type a {
   font-family: 'Arvo', serif;
   text-decoration: underline;
   font-style: italic;
+  font-size: 1.5rem;
+  padding: 0;
+  position: relative;
+  top: 10px;
+  display: block;
+  width: 150px;
+  height: 100px;
 }
-.book-now-button-wrap a:hover,
 .menu-primary-menu-container .nav-menu li:last-of-type a:hover {
+  background-color: transparent;
+}
+.book-now-button-wrap {
+  background-color: #fbaf5d;
+  background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/07/bottom-button.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-clip: border-box;
+  background-origin: padding-box;
+  background-size: cover;
+  background-attachment: scroll,      scroll;
+  background-color: transparent;
+  margin: auto;
+  width: 300px;
+  text-align: center;
+  height: 150px;
+}
+.book-now-button-wrap a {
+  font-family: 'Arvo', serif;
+  text-decoration: underline;
+  font-style: italic;
+}
+.book-now-button-wrap a:hover {
   background-color: transparent;
 }
 #colophon {
@@ -186,21 +244,6 @@ img.wp-post-image {
   width: 200px;
   display: block;
   margin: auto;
-}
-.menu-primary-menu-container .nav-menu li:last-of-type {
-  width: 150px;
-  height: 90px;
-  position: relative;
-  top: -10px;
-}
-.menu-primary-menu-container .nav-menu li:last-of-type a {
-  font-size: 1.5rem;
-  padding: 0;
-  position: relative;
-  top: 10px;
-  display: block;
-  width: 150px;
-  height: 90px;
 }
 /* SHELL STYLES
 *****************************************************************/
@@ -544,6 +587,28 @@ footer#colophon .footer-contact-wrap {
 #gform_wrapper_1 .button.free-online-estimate:after {
   margin-left: 10px;
 }
+#gform_wrapper_1 .button.more-info,
+#gform_wrapper_1 .button.book-now {
+  background-color: #ed1c24;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  font-family: 'Arvo', serif;
+  font-size: 1.5rem;
+  margin: 10px auto 0;
+  display: block;
+  text-align: center;
+  max-width: 50%;
+}
+#gform_wrapper_1 .button.more-info:hover,
+#gform_wrapper_1 .button.book-now:hover,
+#gform_wrapper_1 .button.more-info:focus,
+#gform_wrapper_1 .button.book-now:focus,
+#gform_wrapper_1 .button.more-info:active,
+#gform_wrapper_1 .button.book-now:active {
+  background-color: rgba(237, 28, 36, 0.5);
+}
 #gform_wrapper_1 .button:hover {
   background-color: rgba(251, 175, 93, 0.5);
   color: white;
@@ -730,7 +795,7 @@ footer#colophon .footer-contact-wrap {
 .template-front-page .home-top-centerfull h2 {
   font-size: 3rem;
   text-align: center;
-  padding-top: 55px;
+  padding-top: 35px;
 }
 .template-front-page .home-top-centerfull h2 a {
   color: black;

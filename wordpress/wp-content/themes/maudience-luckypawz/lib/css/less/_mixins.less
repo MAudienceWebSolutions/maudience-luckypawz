@@ -78,6 +78,25 @@
 			}
 		}
 
+		&.more-info,
+		&.book-now {
+			background-color: @child-color-red;
+			padding: 5px;
+			border-radius: 5px;
+			color: white;
+			text-decoration: none;
+			font-family: 'Arvo', serif;
+			font-size: 1.5rem;
+			margin: 10px auto 0;
+			display: block;
+			text-align: center;
+			max-width: 50%;
+
+			&:hover,
+			&:focus,
+			&:active { background-color: fade(@child-color-red, 50%)}
+		}
+
 		&:hover {
 			background-color: fade(@button-color, 50%);
 			color: white;
