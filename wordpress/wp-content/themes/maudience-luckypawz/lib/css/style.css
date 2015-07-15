@@ -58,8 +58,8 @@
 }
 .btn.more-info,
 .button.more-info,
-.btn.book-more.red,
-.button.book-more.red {
+.btn.book-now.red,
+.button.book-now.red {
   background-color: #ed1c24;
   padding: 5px;
   border-radius: 5px;
@@ -74,22 +74,22 @@
 }
 .btn.more-info:hover,
 .button.more-info:hover,
-.btn.book-more.red:hover,
-.button.book-more.red:hover,
+.btn.book-now.red:hover,
+.button.book-now.red:hover,
 .btn.more-info:focus,
 .button.more-info:focus,
-.btn.book-more.red:focus,
-.button.book-more.red:focus,
+.btn.book-now.red:focus,
+.button.book-now.red:focus,
 .btn.more-info:active,
 .button.more-info:active,
-.btn.book-more.red:active,
-.button.book-more.red:active {
+.btn.book-now.red:active,
+.button.book-now.red:active {
   background-color: rgba(237, 28, 36, 0.5);
 }
 .btn.more-info a,
 .button.more-info a,
-.btn.book-more.red a,
-.button.book-more.red a {
+.btn.book-now.red a,
+.button.book-now.red a {
   color: white;
 }
 .btn:hover,
@@ -594,7 +594,7 @@ footer#colophon .footer-contact-wrap {
   margin-left: 10px;
 }
 #gform_wrapper_1 .button.more-info,
-#gform_wrapper_1 .button.book-more.red {
+#gform_wrapper_1 .button.book-now.red {
   background-color: #ed1c24;
   padding: 5px;
   border-radius: 5px;
@@ -608,15 +608,15 @@ footer#colophon .footer-contact-wrap {
   max-width: 50%;
 }
 #gform_wrapper_1 .button.more-info:hover,
-#gform_wrapper_1 .button.book-more.red:hover,
+#gform_wrapper_1 .button.book-now.red:hover,
 #gform_wrapper_1 .button.more-info:focus,
-#gform_wrapper_1 .button.book-more.red:focus,
+#gform_wrapper_1 .button.book-now.red:focus,
 #gform_wrapper_1 .button.more-info:active,
-#gform_wrapper_1 .button.book-more.red:active {
+#gform_wrapper_1 .button.book-now.red:active {
   background-color: rgba(237, 28, 36, 0.5);
 }
 #gform_wrapper_1 .button.more-info a,
-#gform_wrapper_1 .button.book-more.red a {
+#gform_wrapper_1 .button.book-now.red a {
   color: white;
 }
 #gform_wrapper_1 .button:hover {
