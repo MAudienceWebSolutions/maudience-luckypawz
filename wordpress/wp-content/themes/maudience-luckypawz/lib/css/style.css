@@ -547,9 +547,6 @@ footer#colophon .footer-contact-wrap {
   height: 30px;
   width: 100%;
 }
-#gform_wrapper_1 .gform_fields .gfield_contains_required .ginput_container {
-  border-right: 5px solid #ed1c24;
-}
 #gform_wrapper_1 .button {
   display: block;
   margin: auto;
