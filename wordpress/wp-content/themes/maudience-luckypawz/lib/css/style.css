@@ -539,9 +539,6 @@ footer#colophon .footer-contact-wrap {
   display: block;
   font-weight: 100;
 }
-#gform_wrapper_1 .gform_fields .gfield_label {
-  display: none;
-}
 #gform_wrapper_1 .gform_fields .ginput_container input {
   border-radius: 0;
   height: 30px;
