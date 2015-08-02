@@ -2,7 +2,7 @@
 
 //global $maudience_client_slug = '';
 define( 'MAUDIENCE_CLIENT_SLUG', 'examplesitename' );
-//require_once('lib/custom-post-types.php');
+require_once('lib/custom-post-types.php');
 require_once('lib/maudience-theme-settings.php');
 
 
