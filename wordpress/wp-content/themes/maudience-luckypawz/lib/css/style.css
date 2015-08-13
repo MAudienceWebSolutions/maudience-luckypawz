@@ -247,16 +247,21 @@ img.wp-post-image {
   position: absolute;
   right: 0;
   left: 0;
-  bottom: -5px;
+  bottom: -1px;
 }
 #colophon .book-now-button-wrap a {
   font-size: 2rem;
   line-height: 4rem;
-  padding: 65px 0;
+  padding: 65px 0 0;
   font-style: italic;
   width: 200px;
   display: block;
   margin: auto;
+}
+@media screen and (min-width: 768px) {
+  #colophon .book-now-button-wrap {
+    bottom: -5px;
+  }
 }
 /* SHELL STYLES
 *****************************************************************/
