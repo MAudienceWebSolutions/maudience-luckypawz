@@ -847,7 +847,7 @@ footer#colophon .footer-contact-wrap {
   vertical-align: top;
 }
 .template-front-page .middle-section .home-middle-centerfull.staff {
-  width: 60%;
+  width: 67.5%;
   margin: auto;
   display: block;
 }
@@ -873,11 +873,10 @@ footer#colophon .footer-contact-wrap {
   flex-wrap: wrap;
 }
 .template-front-page .middle-section .home-middle-centerfull.staff article {
-  width: 75px;
-  height: 75px;
+  width: 70px;
+  height: 70px;
   margin-right: 5px;
   margin-bottom: 5px;
-  background-color: grey;
 }
 .template-front-page .middle-section .home-middle-centerfull.staff article .entry-title a {
   color: transparent;
