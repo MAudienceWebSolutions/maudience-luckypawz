@@ -873,8 +873,8 @@ footer#colophon .footer-contact-wrap {
   flex-wrap: wrap;
 }
 .template-front-page .middle-section .home-middle-centerfull.staff article {
-  width: 70px;
-  height: 70px;
+  width: 65px;
+  height: 65px;
   margin-right: 5px;
   margin-bottom: 5px;
 }
@@ -1378,6 +1378,14 @@ To learn how this works, see http://wp.me/PEmnE-Bt
 .main-navigation ul.nav-menu.toggled-on,
 .menu-toggle {
   display: inline-block !important;
+}
+@media screen and (max-width: 768px) {
+  #main h2 {
+    text-align: center;
+  }
+  #main .home-bottom-right h2 {
+    margin: 5px 0;
+  }
 }
 @media screen and (min-width: 768px) {
   .site-header .inner-header-wrap > a {
