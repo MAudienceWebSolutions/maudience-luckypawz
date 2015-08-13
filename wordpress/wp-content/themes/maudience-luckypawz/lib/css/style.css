@@ -1393,7 +1393,7 @@ To learn how this works, see http://wp.me/PEmnE-Bt
     margin: 20px 0;
   }
   .agm-google_map-widget {
-    margin-bottom: 20px !important;
+    padding-bottom: 20px;
   }
 }
 @media screen and (min-width: 768px) {
