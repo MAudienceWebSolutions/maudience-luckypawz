@@ -1392,6 +1392,9 @@ To learn how this works, see http://wp.me/PEmnE-Bt
   #main .home-bottom-right h2 {
     margin: 20px 0;
   }
+  .agm-google_map-widget {
+    margin-bottom: 20px !important;
+  }
 }
 @media screen and (min-width: 768px) {
   .site-header .inner-header-wrap > a {
