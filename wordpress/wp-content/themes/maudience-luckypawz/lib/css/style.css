@@ -1383,6 +1383,7 @@ To learn how this works, see http://wp.me/PEmnE-Bt
   #main h2 {
     text-align: center;
   }
+  #main .home-bottom-left h2,
   #main .home-bottom-right h2 {
     margin: 20px 0;
   }

@@ -96,8 +96,16 @@ To learn how this works, see http://wp.me/PEmnE-Bt
 }
 
 @media screen and (max-width: 768px) {
-	#main h2 { text-align: center; }
-	#main .home-bottom-right h2 { margin: 20px 0; }
+
+	#main {
+
+		h2 { text-align: center; }
+
+		.home-bottom-left,
+		.home-bottom-right {
+			h2 { margin: 20px 0; }
+		}
+	}
 }
 
 @media screen and (min-width: 768px) {
