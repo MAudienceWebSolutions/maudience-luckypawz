@@ -1384,7 +1384,7 @@ To learn how this works, see http://wp.me/PEmnE-Bt
     text-align: center;
   }
   #main .home-bottom-right h2 {
-    margin: 5px 0;
+    margin: 20px 0;
   }
 }
 @media screen and (min-width: 768px) {
