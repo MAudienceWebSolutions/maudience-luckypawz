@@ -1322,3 +1322,94 @@ footer#colophon .footer-contact-wrap {
   /* PAGE SPECIFIC STYLES
 *****************************************************************/
 }
+/*
+Welcome to Custom CSS!
+
+To learn how this works, see http://wp.me/PEmnE-Bt
+*/
+/* place home page bone */
+.template-front-page .home-content-wrap .home-content-image > a > img.wp-image-199 {
+  width: 140px;
+  position: absolute;
+  bottom: -40px;
+  right: 275px;
+}
+.pre-footer-section .menu-social-media-navigation-container .menu-item.pinterest {
+  background-image: url('http://luckypawz.maudience.com/wp-content/uploads/2015/08/Pinterest.png');
+}
+.pre-footer-section .menu-social-media-navigation-container .menu-item.instagram {
+  background-image: url('http://luckypawz.maudience.com/wp-content/uploads/2015/08/Instagram.png');
+}
+.pre-footer-section .menu-social-media-navigation-container .menu-item.youtube {
+  background-image: url('http://luckypawz.maudience.com/wp-content/uploads/2015/08/Youtube.png');
+}
+.entry-content a:visited,
+.comment-content a:visited {
+  color: white;
+}
+.menu-primary-menu-container .nav-menu li:last-of-type {
+  background-image: url(http://luckypawz.maudience.com/wp-content/uploads/2015/08/button-top-mh.png);
+}
+.site-header .inner-header-wrap hgroup {
+  display: none;
+}
+@media screen and (max-width: 960px) {
+  /*style mobile menu*/
+  .nav-menu.inner-wrap.toggled-on {
+    width: 100%;
+    background-color: green;
+    max-width: 100%;
+    margin-top: 23px;
+  }
+}
+@media screen and (min-width: 600px) {
+  .menu-toggle {
+    display: inline-block;
+  }
+  .main-navigation li a,
+  .main-navigation li {
+    display: list-item;
+    text-align: center;
+  }
+  .main-navigation ul.nav-menu,
+  .main-navigation div.nav-menu > ul {
+    display: none !important;
+  }
+}
+.main-navigation ul.nav-menu.toggled-on,
+.menu-toggle {
+  display: inline-block !important;
+}
+@media screen and (min-width: 768px) {
+  .site-header .inner-header-wrap > a {
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+  .site-header .inner-header-wrap {
+    margin-top: 0;
+  }
+}
+@media screen and (min-width: 960px) {
+  .menu-toggle {
+    display: none !important;
+  }
+  .main-navigation li a,
+  .main-navigation li {
+    display: inline-block;
+  }
+  .site-header .inner-header-wrap > a {
+    display: inline;
+    margin: auto;
+    text-align: left;
+  }
+  .site-header .inner-header-wrap {
+    margin-top: -80px;
+  }
+  .main-navigation ul.nav-menu,
+  .main-navigation div.nav-menu > ul {
+    display: inline-block !important;
+    text-align: left;
+    width: 100%;
+  }
+}
