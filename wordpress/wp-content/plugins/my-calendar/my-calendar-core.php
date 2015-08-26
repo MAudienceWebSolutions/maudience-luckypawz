@@ -6,7 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 function my_calendar_add_feed() {
 	add_feed( 'my-calendar-rss', 'my_calendar_rss' );
 	add_feed( 'my-calendar-ics', 'my_calendar_ical' );
-	add_feed( 'my-calendar-print', 'my_calendar_print' );
+	//add_feed( 'my-calendar-print', 'my_calendar_print' );
+}
+
+add_action( 'template_redirect', 'my_calendar_print_view' );
+function my_calendar_print_view() {
+	if ( isset( $_GET['cid'] ) && $_GET['cid'] == 'mc-print-view' ) {
+		echo my_calendar_print();
+		exit;
+	}
 }
 
 if ( ! function_exists( 'is_ssl' ) ) {
@@ -131,6 +139,7 @@ function mc_get_file( $file, $type = 'path' ) {
 	$dir  = plugin_dir_path( __FILE__ );
 	$url  = plugin_dir_url( __FILE__ );
 	$base = basename( $dir );
+	$path = ( $type == 'path' ) ? $dir . $file : $url . $file;
 	if ( file_exists( get_stylesheet_directory() . '/' . $file ) ) {
 		$path = ( $type == 'path' ) ? get_stylesheet_directory() . '/' . $file : get_stylesheet_directory_uri() . '/' . $file;
 	}
@@ -145,8 +154,9 @@ function mc_get_file( $file, $type = 'path' ) {
 add_action( 'wp_enqueue_scripts', 'mc_register_styles' );
 function mc_register_styles() {
 	global $wp_query;
-	$stylesheet = mc_get_style_path( get_option( 'mc_css_file' ), 'url' );
-	wp_register_style( 'my-calendar-style', $stylesheet, array( 'dashicons' ) );
+	$stylesheet = apply_filters( 'mc_registered_stylesheet', mc_get_style_path( get_option( 'mc_css_file' ), 'url' ) );
+	wp_register_style( 'my-calendar-reset', plugins_url( 'css/reset.css', __FILE__ ) );
+	wp_register_style( 'my-calendar-style', $stylesheet, array( 'dashicons', 'my-calendar-reset' ) );
 	$admin_stylesheet = plugins_url( 'css/mc-admin.css', __FILE__ );
 	wp_register_style( 'my-calendar-admin-style', $admin_stylesheet );
 	if ( current_user_can( 'mc_manage_events' ) ) {
@@ -161,10 +171,8 @@ function mc_register_styles() {
 		if ( @in_array( $id, $js_array ) || get_option( 'mc_show_js' ) == '' ) {
 			wp_enqueue_script( 'jquery' );
 			if ( get_option( 'mc_gmap' ) == 'true' ) {
-				wp_register_script( 'gmaps', "//maps.google.com/maps/api/js?sensor=true" );
-				wp_register_script( 'gmap3', plugins_url( 'js/gmap3.min.js', __FILE__ ), array( 'jquery' ) );
-				wp_enqueue_script( 'gmaps' );
-				wp_enqueue_script( 'gmap3' );
+				wp_enqueue_script( 'gmaps', "https://maps.google.com/maps/api/js?sensor=true" );
+				wp_enqueue_script( 'gmap3', plugins_url( 'js/gmap3.min.js', __FILE__ ), array( 'jquery' ) );
 			}
 		}
 	}
@@ -182,14 +190,6 @@ function mc_register_styles() {
 		$mobile = mc_get_file( 'mc-mobile.css' );
 		wp_register_style( 'my-calendar-mobile-style', $mobile );
 		wp_enqueue_style( 'my-calendar-mobile-style' );
-	}
-	if ( function_exists( 'mcs_submissions' ) ) {
-		$mcs    = plugins_url( '/my-calendar-submissions/mcs-styles.css' );
-		$mcs_ui = plugins_url( '/my-calendar-submissions/css/smoothness/jquery-ui-1.8.23.custom.css' );
-		wp_register_style( 'my-calendar-submissions-ui-style', $mcs_ui );
-		wp_enqueue_style( 'my-calendar-submissions-ui-style' );
-		wp_register_style( 'my-calendar-submissions-style', $mcs );
-		wp_enqueue_style( 'my-calendar-submissions-style' );
 	}
 }
 
@@ -234,7 +234,6 @@ function my_calendar_wp_head() {
 			$all_styles = "
 <style type=\"text/css\">
 <!--
-.mcjs .mc-main .details, .mcjs .mc-main .calendar-events { display: none; }
 /* Styles by My Calendar - Joseph C Dolson http://www.joedolson.com/ */
 $category_styles
 .mc-event-visible {
@@ -253,8 +252,8 @@ function mc_deal_with_deleted_user( $id ) {
 	$mcdb = $wpdb;
 	// Do the queries
 	// This may not work quite right in multi-site. Need to explore further when I have time.
-	$mcdb->get_results( "UPDATE " . my_calendar_table() . " SET event_author=" . apply_filters( 'mc_deleted_author', $mcdb->get_var( "SELECT MIN(ID) FROM " . $mcdb->prefix . "users", 0, 0 ) ) . " WHERE event_author=" . $id );
-	$mcdb->get_results( "UPDATE " . my_calendar_table() . " SET event_host=" . apply_filters( 'mc_deleted_host', $mcdb->get_var( "SELECT MIN(ID) FROM " . $mcdb->prefix . "users", 0, 0 ) ) . " WHERE event_host=" . $id );
+	$mcdb->get_results( "UPDATE " . my_calendar_table() . " SET event_author=" . esc_sql( apply_filters( 'mc_deleted_author', $mcdb->get_var( "SELECT MIN(ID) FROM " . $mcdb->prefix . "users", 0, 0 ) ) ) . " WHERE event_author=" . $id );
+	$mcdb->get_results( "UPDATE " . my_calendar_table() . " SET event_host=" . esc_sql( apply_filters( 'mc_deleted_host', $mcdb->get_var( "SELECT MIN(ID) FROM " . $mcdb->prefix . "users", 0, 0 ) ) ) . " WHERE event_host=" . $id );
 }
 
 // Function to add the javascript to the admin header
@@ -294,6 +293,7 @@ function my_calendar_add_javascript() {
 			date_i18n( 'D', strtotime( 'Friday' ) ),
 			date_i18n( 'D', strtotime( 'Saturday' ) )
 		) );
+		wp_localize_script( 'pickadate.time', 'mc_time_format', apply_filters( 'mc_time_format', 'h:i A' ) );
 
 		wp_enqueue_script( 'jquery.addfields', plugins_url( 'js/jquery.addfields.js', __FILE__ ), array( 'jquery' ) );
 		if ( function_exists( 'wp_enqueue_media' ) && ! did_action( 'wp_enqueue_media' ) ) {
@@ -305,8 +305,8 @@ function my_calendar_add_javascript() {
 	if ( isset( $_GET['page'] ) && ( $_GET['page'] == 'my-calendar-config' || $_GET['page'] == 'my-calendar-help' ) ) {
 		wp_enqueue_script( 'mc.tabs' );
 		wp_enqueue_script( 'mc.sortable' );
-		$firstItem = ( $_GET['page'] == 'my-calendar-config' ) ? 'mc_editor' : 'mc_main';
-		wp_localize_script( 'mc.tabs', 'firstItem', $firstItem );
+		//$firstItem = ( $_GET['page'] == 'my-calendar-config' ) ? 'my-calendar-manage' : 'mc_main';
+		//wp_localize_script( 'mc.tabs', 'firstItem', $firstItem );
 	}
 	if ( isset( $_GET['page'] ) && ( $_GET['page'] == 'my-calendar-groups' || $_GET['page'] == 'my-calendar-manage' ) ) {
 		wp_enqueue_script( 'jquery.checkall', plugins_url( 'js/jquery.checkall.js', __FILE__ ), array( 'jquery' ) );
@@ -319,7 +319,7 @@ function my_calendar_write_js() {
 		<script type="text/javascript">
 			//<![CDATA[
 			jQuery(document).ready(function ($) {
-				$('#e_begin,' + '#e_end').pickadate({
+				$( '.mc-datepicker' ).pickadate({
 					monthsFull: mc_months,
 					weekdaysShort: mc_days,
 					format: 'yyyy-mm-dd',
@@ -327,7 +327,11 @@ function my_calendar_write_js() {
 					selectMonths: true,
 					editable: true
 				});
-
+				$( '.mc-timepicker' ).pickatime({
+					interval: 15,
+					format: mc_time_format,
+					editable: true		
+				});
 				$('#mc-accordion').accordion({collapsible: true, active: false});
 				<?php 
 	if ( function_exists( 'jd_doTwitterAPIPost' ) ) { ?>
@@ -448,12 +452,12 @@ function my_calendar_add_styles() {
 			'my-calendar-templates'
 		);
 		if ( in_array( $_GET['page'], $pages ) ) {
-			echo '<link type="text/css" rel="stylesheet" href="' . plugins_url( 'css/mc-styles.css', __FILE__ ) . '" />';
+			wp_enqueue_style( 'mc-styles', plugins_url( 'css/mc-styles.css', __FILE__ ) );
 		}
 		if ( $_GET['page'] == 'my-calendar' ) {
-			echo '<link type="text/css" rel="stylesheet" href="' . plugins_url( 'js/pickadate/themes/default.css', __FILE__ ) . '" />';
-			echo '<link type="text/css" rel="stylesheet" href="' . plugins_url( 'js/pickadate/themes/default.date.css', __FILE__ ) . '" />';
-			echo '<link type="text/css" rel="stylesheet" href="' . plugins_url( 'js/pickadate/themes/default.time.css', __FILE__ ) . '" />';
+			wp_enqueue_style( 'mc-pickadate-default', plugins_url( 'js/pickadate/themes/default.css', __FILE__ ) );
+			wp_enqueue_style( 'mc-pickadate-date', plugins_url( 'js/pickadate/themes/default.date.css', __FILE__ ) );
+			wp_enqueue_style( 'mc-pickadate-time', plugins_url( 'js/pickadate/themes/default.time.css', __FILE__ ) );
 		}
 	}
 }
@@ -648,7 +652,8 @@ function check_my_calendar() {
 			'2.2.10',
 			'2.3.0',
 			'2.3.11',
-			'2.3.15'
+			'2.3.15',
+			'2.4.4',
 		);
 		foreach ( $valid_upgrades as $upgrade ) {
 			if ( version_compare( $current_version, $upgrade, "<" ) ) {
@@ -684,10 +689,17 @@ function mc_do_upgrades( $upgrade_path ) {
 	foreach ( $upgrade_path as $upgrade ) {
 		switch ( $upgrade ) {
 			// only upgrade db on most recent version
+			case '2.4.4':
+				add_option( 'mc_display_more', 'true' );
+				$input_options = get_option( 'mc_input_options' );
+				$input_options['event_host'] = 'on';
+				update_option( 'mc_input_options', $input_options );
+				add_option( 'mc_default_direction', 'DESC' );
+				mc_upgrade_db();				
+				break;
 			case '2.3.15':
 				delete_option( 'mc_event_groups' );
 				delete_option( 'mc_details' );
-				mc_upgrade_db();
 				break;
 			case '2.3.11':
 				add_option( 'mc_use_custom_js', 0 );
@@ -935,6 +947,19 @@ function mc_month_comparison( $month ) {
 	return '';
 }
 
+function mc_day_comparison( $day ) {
+	$current_day = date( "j", current_time( 'timestamp' ) );
+	if ( isset( $_GET['yr'] ) && isset( $_GET['month'] ) && isset( $_GET['dy'] ) ) {
+		if ( $day == $_GET['dy'] ) {
+			return ' selected="selected"';
+		}
+	} else if ( $day == $current_day ) {
+		return ' selected="selected"';
+	}
+
+	return '';
+}
+
 function mc_year_comparison( $year ) {
 	$current_year = date( "Y", current_time( 'timestamp' ) );
 	if ( isset( $_GET['yr'] ) && isset( $_GET['month'] ) ) {
@@ -1037,6 +1062,15 @@ function my_calendar_admin_bar() {
 		$url  = apply_filters( 'mc_add_events_url', admin_url( 'admin.php?page=my-calendar' ) );
 		$args = array( 'id' => 'mc-add-event', 'title' => __( 'Add Event', 'my-calendar' ), 'href' => $url );
 		$wp_admin_bar->add_node( $args );
+	}
+	if ( _mc_is_url( get_option( 'mc_uri' ) ) ) {
+		$url  = esc_url( apply_filters( 'mc_adminbar_uri', get_option( 'mc_uri' ) ) );
+		$args = array( 'id' => 'mc-my-calendar', 'title' => __( 'View Calendar', 'my-calendar' ), 'href' => $url );
+		$wp_admin_bar->add_node( $args );
+	} else {
+		$url  = admin_url( 'admin.php?page=my-calendar-config#mc-output' );
+		$args = array( 'id' => 'mc-my-calendar', 'title' => __( 'Set Calendar URL', 'my-calendar' ), 'href' => $url );
+		$wp_admin_bar->add_node( $args );		
 	}
 	if ( current_user_can( 'mc_manage_events' ) && current_user_can( 'mc_add_events' ) ) {
 		$url  = admin_url( 'admin.php?page=my-calendar-manage' );
@@ -1158,7 +1192,7 @@ function my_calendar_send_email( $event ) {
 		$from      = ( get_option( 'mc_event_mail_from' ) == '' ) ? get_bloginfo( 'admin_email' ) : get_option( 'mc_event_mail_from' );
 		$from      = apply_filters( 'mc_event_mail_from', $from, $details );
 		$headers[] = "From: " . __( 'Event Notifications', 'my-calendar' ) . " <$from>";
-		$bcc       = get_option( 'mc_event_mail_bcc' );
+		$bcc       = apply_filters( 'mc_event_mail_bcc', get_option( 'mc_event_mail_bcc' ), $details );
 		if ( $bcc ) {
 			$bcc = explode( PHP_EOL, $bcc );
 			foreach ( $bcc as $b ) {
@@ -1168,7 +1202,7 @@ function my_calendar_send_email( $event ) {
 				}
 			}
 		}
-		$headers = apply_filters( 'mc_customize_email_headers', $headers );
+		$headers = apply_filters( 'mc_customize_email_headers', $headers, $event );
 		$subject = jd_draw_template( $details, get_option( 'mc_event_mail_subject' ) );
 		$message = jd_draw_template( $details, get_option( 'mc_event_mail_message' ) );
 		wp_mail( $to, $subject, $message, $headers );
@@ -1396,7 +1430,7 @@ function mc_guess_calendar() {
 	);
 	$current_uri = get_option( 'mc_uri' );
 	// check whether calendar page is a valid URL.
-	if ( $current_uri ) { 
+	if ( $current_uri ) {
 		$response = wp_remote_head( $current_uri );
 		if ( !is_wp_error( $response ) ) {
 			$http = $response['response']['code'];
@@ -1557,7 +1591,7 @@ $plugins_string
 			<input type='checkbox' name='has_purchased' id='has_purchased' value='on' /> <label for='has_purchased'>" . __( 'I have <a href="http://www.joedolson.com/my-calendar/users-guide/">purchased the User\'s Guide</a>, but could not find an answer to this question.', 'my-calendar' ) . "</label>
 		</p>
 		<p>
-			<label for='support_request'>Support Request:</label><br /><textarea name='support_request' id='support_request' required aria-required='true' cols='80' rows='10'>" . stripslashes( $request ) . "</textarea>
+			<label for='support_request'>Support Request:</label><br /><textarea name='support_request' id='support_request' required aria-required='true' cols='80' rows='10' class='widefat'>" . stripslashes( $request ) . "</textarea>
 		</p>
 		<p>
 			<input type='submit' value='" . __( 'Send Support Request', 'my-calendar' ) . "' name='mc_support' class='button-primary' />
@@ -1633,7 +1667,7 @@ function _mc_increment_values( $recur ) {
 function mc_change_instances( $id, $repeats, $begin = false ) {
 	global $wpdb;
 	$mcdb   = $wpdb;
-	$events = $mcdb->get_results( "SELECT * FROM " . my_calendar_event_table() . " WHERE occur_event_id = $id ORDER BY occur_begin DESC" );
+	$events = $mcdb->get_results( $mcdb->prepare( "SELECT * FROM " . my_calendar_event_table() . " WHERE occur_event_id = %d ORDER BY occur_begin DESC", $id ) );
 	$count  = count( $events );
 	$last   = $count - 1;
 	if ( $begin == false ) {
@@ -1875,8 +1909,6 @@ function mc_increment_event( $id, $post = array(), $test = false ) {
 			'occur_end'      => date( 'Y-m-d H:i:s', $end ),
 			'occur_group_id' => $group_id
 		);
-		// Logic shift -- should not have any need to verify occurrences.
-		//$occurs = $wpdb->get_results("SELECT * FROM ".my_calendar_event_table()." WHERE occur_event_id = $id ORDER BY occur_begin DESC");
 		if ( ! $test ) {
 			$wpdb->insert( my_calendar_event_table(), $data, $format );
 		}
@@ -1886,6 +1918,9 @@ function mc_increment_event( $id, $post = array(), $test = false ) {
 }
 
 function mc_get_details_link( $event ) {
+	if ( is_numeric( $event ) ) {
+		$event = mc_get_event( $event );
+	}
 	// if available, and not querying remotely, use permalink.
 	$permalinks   = apply_filters( 'mc_use_permalinks', get_option( 'mc_use_permalinks' ) );
 	$permalinks   = ( $permalinks === 1 || $permalinks === true || $permalinks === 'true' ) ? true : false;
@@ -1906,7 +1941,8 @@ function mc_get_details_link( $event ) {
 					'page_id',
 					'p',
 					'mcs',
-					'time'
+					'time',
+					'page'
 				), get_option( 'mc_uri' ) );
 		}
 	}
@@ -1922,6 +1958,7 @@ function mc_register_actions() {
 	add_action( 'mc_transition_event', 'mc_tweet_approval', 10, 2 );
 	add_action( 'mc_save_event', 'mc_event_post', 10, 3 );
 	add_action( 'mc_delete_event', 'mc_event_delete_post', 10, 2 );
+	add_action( 'mc_mass_delete_events', 'mc_event_delete_posts', 10, 2 );
 	add_action( 'parse_request', 'my_calendar_api' );
 }
 
@@ -1931,6 +1968,33 @@ add_filter( 'post_updated_messages', 'mc_posttypes_messages' );
 // Actions
 add_action( 'init', 'mc_taxonomies', 0 );
 add_action( 'init', 'mc_posttypes' );
+
+function mc_event_delete_posts( $deleted ) {
+	foreach ( $deleted as $delete ) {
+		$posts = get_posts( array(
+				'post_type'  => 'mc-events',
+				'meta_key'   => '_mc_event_id',
+				'meta_value' => $delete
+		) );
+		$post_id = $posts[0]->ID;
+		wp_delete_post( $post_id, true );
+	}
+}
+
+add_action( 'load-options-permalink.php', 'mc_load_permalinks' );
+function mc_load_permalinks() {
+	if( isset( $_POST['mc_cpt_base'] ) )	{
+		update_option( 'mc_cpt_base', sanitize_title_with_dashes( $_POST['mc_cpt_base'] ) );
+	}
+	
+	// Add a settings field to the permalink page
+	add_settings_field( 'mc_cpt_base', __( 'My Calendar Events base' ), 'mc_field_callback', 'permalink', 'optional', array( 'label_for'=>'mc_cpt_base' ) );
+}
+
+function mc_field_callback() {
+	$value = ( get_option( 'mc_cpt_base' ) != '' ) ? get_option( 'mc_cpt_base' ) : 'mc-events';	
+	echo '<input type="text" value="' . esc_attr( $value ) . '" name="mc_cpt_base" id="mc_cpt_base" class="regular-text" />';
+}
 
 function mc_posttypes() {
 	$arguments = array(
@@ -1953,6 +2017,7 @@ function mc_posttypes() {
 		),
 	);
 	$enabled = array( 'mc-events' );
+	$slug = ( get_option( 'mc_cpt_base' ) != '' ) ? get_option( 'mc_cpt_base' ) : 'mc-events';
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
 			$value  =& $types[ $key ];
@@ -1981,7 +2046,7 @@ function mc_posttypes() {
 				'query_var'           => true,
 				'rewrite'             => array(
 					'with_front' => false,
-					'slug'       => apply_filters( 'mc_event_slug', 'mc-events' )
+					'slug'       => apply_filters( 'mc_event_slug', $slug )
 				),
 				'hierarchical'        => false,
 				'menu_position'       => 20,
@@ -1991,6 +2056,25 @@ function mc_posttypes() {
 		}
 	}
 }
+
+/**
+ * Most people don't want comments open on events. This will automatically close them. 
+ */
+function mc_close_comments( $posts ) {
+	if ( !is_single() || empty( $posts ) ) { return $posts; }
+	
+	if ( 'mc-events' == get_post_type($posts[0]->ID) ) {
+		if ( apply_filters( 'mc_autoclose_comments', true ) && $posts[0]->comment_status != 'closed' ) {
+			$posts[0]->comment_status = 'closed';
+			$posts[0]->ping_status    = 'closed';
+			wp_update_post( $posts[0] );
+		}
+	}
+	
+	return $posts;
+}
+add_filter( 'the_posts', 'mc_close_comments' );
+
 
 function mc_taxonomies() {
 	global $mc_types;

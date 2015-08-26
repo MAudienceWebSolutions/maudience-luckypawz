@@ -29,21 +29,25 @@ $grid_template = addslashes( '<span class="event-time dtstart value-title" title
 <div class="sub-details">
 {hcard}
 {details before="<p class=\'mc_details\'>" after="</p>"}
-<p><a href="{linking}" class="event-link external">{title}</a></p></div>' );
+<p><a href="{linking}" class="event-link external"><span class="screen-reader-text">More information about </span>{title}</a></p></div>' );
 
 $list_template = addslashes( '<span class="event-time dtstart value-title" title="{dtstart}">{time}<span class="time-separator"> - </span>{endtime before="<span class=\'end-time dtend value-title\' title=\'{dtend}\'>" after="</span>"}</span>
+
+<h3 class="event-title">{title}</h3>
 
 <div class="sub-details">
 {hcard}
 {details before="<p class=\'mc_details\'>" after="</p>"}
-<p><a href="{linking}" class="event-link external">{title}</a></p></div>' );
+<p><a href="{linking}" class="event-link external"><span class="screen-reader-text">More information about </span>{title}</a></p></div>' );
 
 $mini_template = addslashes( '<span class="event-time dtstart value-title" title="{dtstart}">{time}<span class="time-separator"> - </span>{endtime before="<span class=\'end-time dtend value-title\' title=\'{dtend}\'>" after="</span>"}</span>
+
+<h3 class="event-title">{title}</h3>
 
 <div class="sub-details">
 {excerpt before="<div class=\'excerpt\'>" after="</div>"}
 {hcard}
-<p><a href="{linking}" class="event-link external">{title}</a></p></div>' );
+<p><a href="{linking}" class="event-link external"><span class="screen-reader-text">More information about </span>{title}</a></p></div>' );
 
 $single_template = addslashes( '<span class="event-time dtstart value-title" title="{dtstart}">{time}<span class="time-separator"> - </span><span class="end-time dtend value-title" title="{dtend}">{endtime}</span></span>
 
@@ -52,7 +56,7 @@ $single_template = addslashes( '<span class="event-time dtstart value-title" tit
 <div class="mc-description">{image}{description}</div>
 <p>{ical_html} &bull; {gcal_link}</p>
 {map}
-<p><a href="{linking}" class="event-link external">{title}</a></p></div>' );
+<p><a href="{linking}" class="event-link external"><span class="screen-reader-text">More information about </span>{title}</a></p></div>' );
 
 $rss_template = addslashes( "\n<item>
     <title>{rss_title}: {date}, {time}</title>
@@ -215,6 +219,7 @@ function mc_default_settings() {
 	add_option( 'mc_show_months', 1 );
 	add_option( 'mc_show_map', 'true' );
 	add_option( 'mc_show_address', 'false' );
+	add_option( 'mc_display_more', 'true' );
 	add_option( 'mc_calendar_javascript', 0 );
 	add_option( 'mc_list_javascript', 0 );
 	add_option( 'mc_mini_javascript', 0 );
@@ -234,7 +239,8 @@ function mc_default_settings() {
 	                                       'event_location'          => 'off',
 	                                       'event_location_dropdown' => 'on',
 	                                       'event_specials'          => 'on',
-	                                       'event_access'            => 'on'
+	                                       'event_access'            => 'on',
+										   'event_host'              => 'on'
 		) );
 	add_option( 'mc_input_options_administrators', 'false' );
 	add_site_option( 'mc_multisite', '0' );
@@ -252,14 +258,16 @@ function mc_default_settings() {
 	add_option( 'mc_date_format', get_option( 'date_format' ) );
 	// This option *must* be complete, if it's partial we get errors. So use update instead of add.
 	update_option( 'mc_templates', array(
-		'title'   => '{title}',
-		'link'    => '{title}',
-		'grid'    => $grid_template,
-		'list'    => $list_template,
-		'mini'    => $mini_template,
-		'rss'     => $rss_template,
-		'details' => $single_template,
-		'label'   => addslashes( 'More<span class="screen-reader-text"> about {title}</span>' )
+		'title'      => '{time}: {title}',
+		'title_list' => '{title}',
+		'title_solo' => '{title}',
+		'link'       => '{title}',
+		'grid'       => $grid_template,
+		'list'       => $list_template,
+		'mini'       => $mini_template,
+		'rss'        => $rss_template,
+		'details'    => $single_template,
+		'label'      => addslashes( 'More<span class="screen-reader-text"> about {title}</span>' )
 	) );
 	add_option( 'mc_skip_holidays', 'false' );
 	add_option( 'mc_css_file', 'twentyfifteen.css' );
@@ -273,6 +281,7 @@ function mc_default_settings() {
 	add_option( 'mc_event_link', 'true' );
 	add_option( 'mc_topnav', 'toggle,timeframe,jump,nav' );
 	add_option( 'mc_bottomnav', 'key,category,feeds' );	
+	add_option( 'mc_default_direction', 'DESC' );	
 	update_option( 'mc_update_notice', 1 );
 	mc_add_roles();
 	$has_uri = mc_guess_calendar();
@@ -299,7 +308,7 @@ function mc_generate_calendar_page( $slug ) {
 			'post_type'   => 'page',
 			'post_author' => $current_user->ID,
 			'ping_status' => 'closed',
-			'post_content' => '[my_calendar]'
+			'post_content' => '[my_calendar id="my-calendar"]'
 		);
 		$post_ID   = wp_insert_post( $page );
 		$post_slug = wp_unique_post_slug( $slug, $post_ID, 'publish', 'page', 0 );

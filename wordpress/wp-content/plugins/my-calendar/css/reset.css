@@ -67,3 +67,11 @@
     position: absolute;
     max-height: 1px;
 }
+
+button.mc-toggle {
+  border: 0;
+  padding: 4px;
+  background-color: transparent;
+}
+
+.mcjs .mc-main .details, .mcjs .mc-main .calendar-events { display: none; }

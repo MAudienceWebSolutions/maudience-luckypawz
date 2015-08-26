@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) && ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	delete_option( 'mc_show_months' );
 	delete_option( 'mc_show_map' );
 	delete_option( 'mc_show_address' );
+	delete_option( 'mc_display_more' );
 	delete_option( 'mc_today_template' );
 	delete_option( 'mc_upcoming_template' );
 	delete_option( 'mc_today_title' );
@@ -110,5 +111,6 @@ if ( ! defined( 'ABSPATH' ) && ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	delete_option( 'mc_api_enabled' );
 	delete_option( 'mc_use_custom_js' );
 	delete_option( 'mc_update_notice' );
+	delete_option( 'mc_default_direction' );	
 	add_option( 'mc_uninstalled', 'true' );
 }

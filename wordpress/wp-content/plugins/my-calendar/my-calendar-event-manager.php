@@ -19,6 +19,29 @@ function mc_switch_sites() {
 	return false;
 }
 
+add_action( 'admin_menu', 'mc_add_outer_box' );
+
+// begin add boxes
+function mc_add_outer_box() {
+	add_meta_box( 'mcs_add_event', __('My Calendar Event', 'my-calendar'), 'mc_add_inner_box', 'mc-events', 'side','high' );
+}
+
+function mc_add_inner_box() {
+	global $post;
+	$event_id = get_post_meta( $post->ID, '_mc_event_id', true );
+	if ( $event_id ) {
+		$url = admin_url( 'admin.php?page=my-calendar&mode=edit&event_id='.$event_id );
+		$event = mc_get_event_core( $event_id );
+		$content = "<p><strong>" . $event->event_title . '</strong><br />' . $event->event_begin . ' @ ' . $event->event_time . "</p>";
+		if ( $event->event_label != '' ) {
+			$content .= "<p>" . sprintf( __( '<strong>Location:</strong> %s', 'my-calendar' ), $event->event_label ) . "</p>";
+		}
+		$content .= "<p>" . sprintf( __( '<a href="%s">Edit event</a>.', 'my-calendar' ), $url ) . "</p>";
+		
+		echo $content;
+	} 
+}
+
 function mc_event_post( $action, $data, $event_id ) {
 	// if the event save was successful.
 	if ( $action == 'add' || $action == 'copy' ) {
@@ -88,6 +111,7 @@ function mc_add_post_meta_data( $post_id, $post, $data, $event_id ) {
 	update_post_meta( $post_id, '_mc_event_id', $event_id );
 	update_post_meta( $post_id, '_mc_event_desc', $data['event_desc'] );
 	update_post_meta( $post_id, '_mc_event_image', $data['event_image'] );
+	update_post_meta( $post_id, '_event_time_label', ( isset( $_POST['event_time_label'] ) ) ? $_POST['event_time_label'] : '' );
 	$location_id = ( isset( $post['location_preset'] ) ) ? (int) $post['location_preset'] : 0;
 	if ( $location_id ) { // only change location ID if dropdown set.
 		update_post_meta( $post_id, '_mc_event_location', $location_id );
@@ -97,39 +121,51 @@ function mc_add_post_meta_data( $post_id, $post, $data, $event_id ) {
 }
 
 function mc_create_event_post( $data, $event_id ) {
-	$term              = mc_get_category_detail( $data['event_category'], 'category_term' );
-	$privacy           = ( mc_get_category_detail( $data['event_category'], 'category_private' ) == 1 ) ? 'private' : 'publish';
-	$title             = $data['event_title'];
-	$template          = apply_filters( 'mc_post_template', 'details', $term );
-	$data['shortcode'] = "[my_calendar_event event='$event_id' template='$template' list='']";
-	$description       = $data['event_desc'];
-	$excerpt           = $data['event_short'];
-	$location_id       = ( isset( $_POST['location_preset'] ) ) ? (int) $_POST['location_preset'] : 0;
-	$post_status       = $privacy;
-	$auth              = $data['event_author'];
-	$type              = 'mc-events';
-	$my_post           = array(
-		'post_title'   => $title,
-		'post_content' => $description,
-		'post_status'  => $post_status,
-		'post_author'  => $auth,
-		'post_name'    => sanitize_title( $title ),
-		'post_date'    => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
-		'post_type'    => $type,
-		'post_excerpt' => $excerpt
-	);
-	$post_id           = wp_insert_post( $my_post );
-	wp_set_object_terms( $post_id, (int) $term, 'mc-event-category' );
-	$attachment_id = ( isset( $_POST['event_image_id'] ) && is_numeric( $_POST['event_image_id'] ) ) ? $_POST['event_image_id'] : false;
-	if ( $attachment_id ) {
-		set_post_thumbnail( $post_id, $attachment_id );
+	$post_id               = mc_get_event_post( $event_id );
+	if ( ! $post_id ) {
+		$term              = mc_get_category_detail( $data['event_category'], 'category_term' );
+		$privacy           = ( mc_get_category_detail( $data['event_category'], 'category_private' ) == 1 ) ? 'private' : 'publish';
+		$title             = $data['event_title'];
+		$template          = apply_filters( 'mc_post_template', 'details', $term );
+		$data['shortcode'] = "[my_calendar_event event='$event_id' template='$template' list='']";
+		$description       = $data['event_desc'];
+		$excerpt           = $data['event_short'];
+		$location_id       = ( isset( $_POST['location_preset'] ) ) ? (int) $_POST['location_preset'] : 0;
+		$post_status       = $privacy;
+		$auth              = $data['event_author'];
+		$type              = 'mc-events';
+		$my_post           = array(
+			'post_title'   => $title,
+			'post_content' => $description,
+			'post_status'  => $post_status,
+			'post_author'  => $auth,
+			'post_name'    => sanitize_title( $title ),
+			'post_date'    => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+			'post_type'    => $type,
+			'post_excerpt' => $excerpt
+		);
+		$post_id           = wp_insert_post( $my_post );
+		wp_set_object_terms( $post_id, (int) $term, 'mc-event-category' );
+		$attachment_id = ( isset( $_POST['event_image_id'] ) && is_numeric( $_POST['event_image_id'] ) ) ? $_POST['event_image_id'] : false;
+		if ( $attachment_id ) {
+			set_post_thumbnail( $post_id, $attachment_id );
+		}
+		mc_update_event( 'event_post', $post_id, $event_id );
+		mc_update_event( 'event_location', $location_id, $event_id );
+		do_action( 'mc_update_event_post', $post_id, $_POST, $data, $event_id );
+		wp_publish_post( $post_id );	
 	}
-	mc_update_event( 'event_post', $post_id, $event_id );
-	mc_update_event( 'event_location', $location_id, $event_id );
-	do_action( 'mc_update_event_post', $post_id, $_POST, $data, $event_id );
-	wp_publish_post( $post_id );
-
 	return $post_id;
+}
+
+function mc_get_event_post( $event_id ) {
+	$event = mc_get_event_core( $event_id );
+	if ( is_object( $event ) ) {
+		if ( property_exists( $event, 'event_post' ) && get_post_status( $event->event_post ) ) {
+			return $event->event_post;
+		}
+	}
+	return false;
 }
 
 function mc_update_event( $field, $data, $event, $type = '%d' ) {
@@ -585,7 +621,9 @@ function my_calendar_save( $action, $output, $event_id = false ) {
 				}
 				if ( get_option( 'mc_uri' ) != '' ) {
 					$event_ids  = mc_get_occurrences( $event_id );
-					$event_link = mc_build_url( array( 'mc_id' => $event_ids[0]->occur_id ), array( 'page' ), get_option( 'mc_uri' ) );
+					//$event_link = mc_build_url( array( 'mc_id' => $event_ids[0]->occur_id ), array( 'page' ), get_option( 'mc_uri' ) );
+					//$event_link = add_query_arg( 'mc_id', $event_ids[0]->occur_id, get_option( 'mc_uri' ) );
+					$event_link = mc_get_details_link( $event_ids[0]->occur_id );
 				} else {
 					$event_link = false;
 				}
@@ -609,14 +647,16 @@ function my_calendar_save( $action, $output, $event_id = false ) {
 				$update['event_begin'] != $_POST['prev_event_begin'] ||
 				date( "H:i:00", strtotime( $update['event_time'] ) ) != $_POST['prev_event_time'] ||
 				$update['event_end'] != $_POST['prev_event_end'] ||
-				( date( "H:i:00", strtotime( $update['event_endtime'] ) ) != $_POST['prev_event_endtime'] && ( $_POST['prev_event_endtime'] != '' && date( "H:i:00", strtotime( $update['event_endtime'] ) ) != '00:00:00' ) ) )
-				? true : false;
+				( date( "H:i:00", strtotime( $update['event_endtime'] ) ) != $_POST['prev_event_endtime'] && ( $_POST['prev_event_endtime'] != '' && date( "H:i:00", strtotime( $update['event_endtime'] ) ) != '23:59:59' ) ) ) 
+				? true : false; // this may need to be 00:00:00; will have to verify JCD TODO
 			if ( isset( $_POST['event_instance'] ) ) {
 				$is_changed     = mc_compare( $update, $event_id );// compares the information sent to the information saved for a given event.
 				$event_instance = (int) $_POST['event_instance'];
 				if ( $is_changed ) {
 					// if changed, create new event, match group id, update instance to reflect event connection, same group id.
 					// if group ID == 0, need to add group ID to both records.
+					// if a single instance is edited, it should *not* inherit the recurring settings from parent.
+					$update['event_recur'] = 'S1';
 					if ( $update['event_group_id'] == 0 ) {
 						$update['event_group_id'] = $event_id;
 						mc_update_data( $event_id, 'event_group_id', $event_id );
@@ -635,7 +675,7 @@ function my_calendar_save( $action, $output, $event_id = false ) {
 					} else {
 						$result = mc_update_instance( $event_instance, $event_id, $update );
 						// Only dates were changed
-						$message = "<div class='updated notice'><p>" . __( 'Date/time information for this event has been updated.', 'my-calendar' ) . "$url</p></div>";
+						$message = "<div class='updated notice'><p>" . __( 'Date/time information for this event has been updated.', 'my-calendar' ) . " $url</p></div>";
 						mc_delete_cache();
 					}
 				}
@@ -656,11 +696,12 @@ function my_calendar_save( $action, $output, $event_id = false ) {
 			$data = $update;
 			do_action( 'mc_save_event', $action, $data, $event_id, $result );
 			if ( $result === false ) {
-				$message = "<div class='error'><p><strong>" . __( 'Error', 'my-calendar' ) . ":</strong>" . __( 'Your event was not updated.', 'my-calendar' ) . "$url</p></div>";
+				$message = "<div class='error'><p><strong>" . __( 'Error', 'my-calendar' ) . ":</strong>" . __( 'Your event was not updated.', 'my-calendar' ) . " $url</p></div>";
 			} else {
 				// do an action using the $action and processed event data
-				do_action( 'mc_transition_event', (int) $_POST['prev_event_status'], (int) $_POST['event_approved'] );
-				$message = "<div class='updated'><p>" . __( 'Event updated successfully', 'my-calendar' ) . ".$url</p></div>";
+				$event_approved = ( isset( $_POST['event_approved'] ) ) ? intval( $_POST['event_approved'] ) : 0;
+				do_action( 'mc_transition_event', (int) $_POST['prev_event_status'], $event_approved );
+				$message = "<div class='updated'><p>" . __( 'Event updated successfully', 'my-calendar' ) . ". $url</p></div>";
 				mc_delete_cache();
 			}
 		} else {
@@ -781,25 +822,58 @@ function mc_show_edit_block( $field ) {
 	}
 }
 
-function mc_show_block( $field, $has_data, $data ) {
+function mc_show_block( $field, $has_data, $data, $echo = true ) {
+	global $user_ID;
 	$return     = $checked = $value = '';
 	$show_block = mc_show_edit_block( $field );
 	$pre        = '<div class="ui-sortable meta-box-sortables"><div class="postbox">';
 	$post       = '</div></div>';
 	switch ( $field ) {
+		case 'event_host' :
+			if ( $show_block ) {
+				$users = my_calendar_getUsers();
+				$select = '';
+				foreach ( $users as $u ) {
+					$display_name = ( $u->display_name == '' ) ? $u->user_nicename : $u->display_name;
+					if ( is_object( $data ) && $data->event_host == $u->ID ) {
+						$selected = ' selected="selected"';
+					} else if ( is_object( $u ) && $u->ID == $user_ID && empty( $data->event_host ) ) {
+						$selected = ' selected="selected"';
+					} else {
+						$selected = '';
+					}
+					$select .= "<option value='$u->ID'$selected>$display_name</option>\n";
+				}
+				$return = '
+					<p>
+					<label for="e_host">' . __( 'Host', 'my-calendar' ) . '</label>
+					<select id="e_host" name="event_host">' .
+						$select
+					. '</select>
+				</p>';
+			}
+			break;
 		case 'event_desc' :
 			if ( $show_block ) {
+				global $current_screen;
 				// because wp_editor cannot return a value, event_desc fields cannot be filtered if its enabled.
 				$value = ( $has_data ) ? stripslashes( $data->event_desc ) : '';
-				echo '
-				<div class="event_description">
-				<label for="content">' . __( 'Event Description', 'my-calendar' ) . '</label><br />';
-				if ( user_can_richedit() ) {
-					wp_editor( $value, 'content', array( 'textarea_rows' => 10 ) );
+				if ( $current_screen->base == 'post' ) {
+					$return = '<div class="event_description">
+									<label for="content">' . __( 'Event Description', 'my-calendar' ) . '</label><br />
+									<textarea id="content" name="content" class="event_desc" rows="8" cols="80">' . stripslashes( esc_attr( $value ) ) . '</textarea>
+								</div>';
 				} else {
-					echo '<textarea id="content" name="content" class="event_desc" rows="8" cols="80">' . stripslashes( esc_attr( $value ) ) . '</textarea>';
+					echo '
+					<div class="event_description">
+					<label for="content">' . __( 'Event Description', 'my-calendar' ) . '</label><br />';
+					if ( user_can_richedit() ) {
+						wp_editor( $value, 'content', array( 'textarea_rows' => 10 ) );
+					} else {
+						echo '<textarea id="content" name="content" class="event_desc" rows="8" cols="80">' . stripslashes( esc_attr( $value ) ) . '</textarea>';
+					}
+					echo '</div>';
 				}
-				echo '</div>';
 			}
 			break;
 		case 'event_short' :
@@ -813,11 +887,11 @@ function mc_show_block( $field, $has_data, $data ) {
 			break;
 		case 'event_image' :
 			if ( $show_block ) {
-				$value  = ( $has_data ) ? esc_attr( $data->event_image ) : '';
+				$value  = ( $has_data ) ? $data->event_image : '';
 				$return = '
 				<div class="mc-image-upload field-holder">
 					<input type="hidden" name="event_image_id" value="" class="textfield" id="e_image_id" />
-					<label for="e_image">' . __( "Add an image:", 'my-calendar' ) . '</label><br /><input type="text" name="event_image" id="e_image" size="60" value="' . $value . '" placeholder="http://yourdomain.com/image.jpg" /> <a href="#" class="button textfield-field">' . __( "Upload", 'my-calendar' ) . '</a>';
+					<label for="e_image">' . __( "Add an image:", 'my-calendar' ) . '</label><br /><input type="text" name="event_image" id="e_image" size="60" value="' . esc_attr( $value ) . '" placeholder="http://yourdomain.com/image.jpg" /> <a href="#" class="button textfield-field">' . __( "Upload", 'my-calendar' ) . '</a>';
 				if ( ! empty( $data->event_image ) ) {
 					$return .= '<div class="event_image"><img src="' . esc_attr( $data->event_image ) . '" alt="" /></div>';
 				} else {
@@ -825,7 +899,7 @@ function mc_show_block( $field, $has_data, $data ) {
 				}
 				$return .= '</div>';
 			} else {
-				$return = '<input type="hidden" name="event_image" value="' . $value . '" />';
+				$return = '<input type="hidden" name="event_image" value="' . esc_attr( $value ) . '" />';
 			}
 			break;
 		case 'event_category' :
@@ -883,8 +957,8 @@ function mc_show_block( $field, $has_data, $data ) {
 		<fieldset>
 		<legend class="screen-reader-text">' . __( 'Recurring Events', 'my-calendar' ) . '</legend>
 			<p>
-				<label for="e_repeats">' . __( 'Repeats', 'my-calendar' ) . ' <input type="text" name="event_repeats" aria-labelledby="e_repeats_label" id="e_repeats" size="1" value="' . $repeats . '" /> <span id="e_repeats_label">' . __( 'times', 'my-calendar' ) . '</span>, </label>
-				<label for="e_every">' . __( 'every', 'my-calendar' ) . '</label> <input type="number" name="event_every" id="e_every" size="1" min="1" max="12" maxlength="1" value="' . $every . '" /> 
+				<label for="e_repeats">' . __( 'Repeats', 'my-calendar' ) . ' <input type="text" name="event_repeats" aria-labelledby="e_repeats_label" id="e_repeats" size="1" value="' . esc_attr( $repeats ) . '" /> <span id="e_repeats_label">' . __( 'times', 'my-calendar' ) . '</span>, </label>
+				<label for="e_every">' . __( 'every', 'my-calendar' ) . '</label> <input type="number" name="event_every" id="e_every" size="1" min="1" max="12" maxlength="1" value="' . esc_attr( $every ) . '" /> 
 				<label for="e_recur" class="screen-reader-text">' . __( 'Units', 'my-calendar' ) . '</label> 
 				<select name="event_recur" id="e_recur">
 					' . mc_recur_options( $recur ) . '
@@ -903,9 +977,9 @@ function mc_show_block( $field, $has_data, $data ) {
 				$return = '
 				<div>' .
 				          $prev . '		
-					<input type="hidden" name="event_repeats" value="' . $repeats . '" />
-					<input type="hidden" name="event_every" value="' . $every . '" />
-					<input type="hidden" name="event_recur" value="' . $recur . '" />
+					<input type="hidden" name="event_repeats" value="' . esc_attr( $repeats ) . '" />
+					<input type="hidden" name="event_every" value="' . esc_attr( $every ) . '" />
+					<input type="hidden" name="event_recur" value="' . esc_attr( $recur ) . '" />
 				</div>';
 			}
 			break;
@@ -932,8 +1006,8 @@ function mc_show_block( $field, $has_data, $data ) {
 				</div>
 				' . $post;
 			} else {
-				$open         = ( $has_data ) ? $data->event_open : '2';
-				$tickets      = ( $has_data ) ? esc_attr( esc_url( $data->event_tickets ) ) : '';
+				$open         = ( $has_data ) ? esc_attr( $data->event_open ) : '2';
+				$tickets      = ( $has_data ) ? esc_url( $data->event_tickets ) : '';
 				$registration = ( $has_data ) ? esc_attr( $data->event_registration ) : '';
 				$return       = '
 				<div>
@@ -951,19 +1025,19 @@ function mc_show_block( $field, $has_data, $data ) {
 					$return = "
 				<div>
 					<input type='hidden' name='event_label' value='" . esc_attr( stripslashes( $data->event_label ) ) . "' />
-					<input type='hidden' name='event_street' value='" . ( stripslashes( $data->event_street ) ) . "' />
-					<input type='hidden' name='event_street2' value='" . ( stripslashes( $data->event_street2 ) ) . "' />
-					<input type='hidden' name='event_phone' value='" . ( stripslashes( $data->event_phone ) ) . "' />
-					<input type='hidden' name='event_phone2' value='" . ( stripslashes( $data->event_phone2 ) ) . "' />
-					<input type='hidden' name='event_city' value='" . ( stripslashes( $data->event_city ) ) . "' />
-					<input type='hidden' name='event_state' value='" . ( stripslashes( $data->event_state ) ) . "' />
-					<input type='hidden' name='event_postcode' value='" . ( stripslashes( $data->event_postcode ) ) . "' />
-					<input type='hidden' name='event_region' value='" . ( stripslashes( $data->event_region ) ) . "' />
-					<input type='hidden' name='event_country' value='" . ( stripslashes( $data->event_country ) ) . "' />
-					<input type='hidden' name='event_zoom' value='" . ( stripslashes( $data->event_zoom ) ) . "' />
-					<input type='hidden' name='event_url' value='" . ( stripslashes( $data->event_url ) ) . "' />
-					<input type='hidden' name='event_latitude' value='" . ( stripslashes( $data->event_latitude ) ) . "' />
-					<input type='hidden' name='event_longitude' value='" . ( stripslashes( $data->event_longitude ) ) . "' />
+					<input type='hidden' name='event_street' value='" . esc_attr( stripslashes( $data->event_street ) ) . "' />
+					<input type='hidden' name='event_street2' value='" . esc_attr( stripslashes( $data->event_street2 ) ) . "' />
+					<input type='hidden' name='event_phone' value='" . esc_attr( stripslashes( $data->event_phone ) ) . "' />
+					<input type='hidden' name='event_phone2' value='" . esc_attr( stripslashes( $data->event_phone2 ) ) . "' />
+					<input type='hidden' name='event_city' value='" . esc_attr( stripslashes( $data->event_city ) ) . "' />
+					<input type='hidden' name='event_state' value='" . esc_attr( stripslashes( $data->event_state ) ) . "' />
+					<input type='hidden' name='event_postcode' value='" . esc_attr( stripslashes( $data->event_postcode ) ) . "' />
+					<input type='hidden' name='event_region' value='" . esc_attr( stripslashes( $data->event_region ) ) . "' />
+					<input type='hidden' name='event_country' value='" . esc_attr( stripslashes( $data->event_country ) ) . "' />
+					<input type='hidden' name='event_zoom' value='" . esc_attr( stripslashes( $data->event_zoom ) ) . "' />
+					<input type='hidden' name='event_url' value='" . esc_attr( stripslashes( $data->event_url ) ) . "' />
+					<input type='hidden' name='event_latitude' value='" . esc_attr( stripslashes( $data->event_latitude ) ) . "' />
+					<input type='hidden' name='event_longitude' value='" . esc_attr( stripslashes( $data->event_longitude ) ) . "' />
 				</div>";
 				}
 			}
@@ -971,7 +1045,12 @@ function mc_show_block( $field, $has_data, $data ) {
 		default:
 			return;
 	}
-	echo apply_filters( 'mc_show_block', $return, $data, $field );
+	$return = apply_filters( 'mc_show_block', $return, $data, $field );
+	if ( $echo == true ) {
+		echo $return;
+	} else {
+		return $return;
+	}
 }
 
 
@@ -1039,7 +1118,7 @@ function mc_form_fields( $data, $mode, $event_id ) {
 	} else {
 		echo mc_group_id();
 	} ?>"/>
-	<input type="hidden" name="event_action" value="<?php echo $mode; ?>"/>
+	<input type="hidden" name="event_action" value="<?php esc_attr_e( $mode ); ?>"/>
 	<?php if ( ! empty( $_GET['date'] ) ) { ?>
 		<input type="hidden" name="event_instance" value="<?php echo (int) $_GET['date']; ?>"/>
 	<?php } ?>
@@ -1084,12 +1163,12 @@ function mc_form_fields( $data, $mode, $event_id ) {
 			$text_link = '';
 		}
 		?>
-		<h3><?php echo $text; ?> <span class="alignright"><a
-					href="<?php echo admin_url( 'admin.php?page=my-calendar-manage' ); ?>"><?php _e( 'Manage events', 'my-calendar' ); ?></a><?php echo $delete;
-				echo $text_link; ?></span>
-		</h3>
-
+		<h3><?php echo $text; ?></h3>
 		<div class="inside">
+		<p class='mc-controls'>
+			<a href="<?php echo admin_url( 'admin.php?page=my-calendar-manage' ); ?>"><?php echo ( current_user_can( 'mc_manage_events' ) ) ? __( 'Manage events', 'my-calendar' ) : __( 'Manage your events', 'my-calendar' ); ?></a>
+			<?php echo $delete;	echo $text_link; ?>	<input type="submit" name="save" class="button-primary" value="<?php _e( 'Save Event', 'my-calendar' ); ?>"/>
+		</p>		
 			<?php
 			if ( ! empty( $_GET['date'] ) && $data->event_recur != 'S' ) {
 				$event   = mc_get_event( $instance );
@@ -1104,8 +1183,7 @@ function mc_form_fields( $data, $mode, $event_id ) {
 			<fieldset>
 				<legend class="screen-reader-text"><?php _e( 'Event Details', 'my-calendar' ); ?></legend>
 				<p>
-					<label for="e_title"><?php _e( 'Event Title', 'my-calendar' ); ?> <span
-							class='required'><?php _e( '(required)', 'my-calendar' ); ?></span></label><br/><input
+					<label for="e_title"><?php _e( 'Event Title', 'my-calendar' ); ?></label><br/><input
 						type="text" id="e_title" name="event_title" size="50" maxlength="255"
 						value="<?php if ( $has_data ) {
 							echo apply_filters( 'mc_manage_event_title', stripslashes( esc_attr( $data->event_title ) ), $data );
@@ -1113,7 +1191,7 @@ function mc_form_fields( $data, $mode, $event_id ) {
 					if ( $mode == 'edit' ) {
 						?>
 						<input type='hidden' name='prev_event_status'
-						       value='<?php echo $data->event_approved; ?>' /><?php
+						       value='<?php esc_attr_e( $data->event_approved ); ?>' /><?php
 						if ( get_option( 'mc_event_approve' ) == 'true' ) {
 							if ( current_user_can( 'mc_approve_events' ) ) { // Added by Roland P. 
 								if ( $has_data && $data->event_approved == '1' ) {
@@ -1174,28 +1252,7 @@ function mc_form_fields( $data, $mode, $event_id ) {
 				mc_show_block( 'event_desc', $has_data, $data );
 				mc_show_block( 'event_short', $has_data, $data );
 				mc_show_block( 'event_image', $has_data, $data );
-				?>
-				<p>
-					<label for="e_host"><?php _e( 'Host', 'my-calendar' ); ?></label>
-					<select id="e_host" name="event_host">
-						<?php
-						// Grab all the categories and list them
-						$users = my_calendar_getUsers();
-						foreach ( $users as $u ) {
-							$display_name = ( $u->display_name == '' ) ? $u->user_nicename : $u->display_name;
-							if ( is_object( $data ) && $data->event_host == $u->ID ) {
-								$selected = ' selected="selected"';
-							} else if ( is_object( $u ) && $u->ID == $user_ID && empty( $data->event_host ) ) {
-								$selected = ' selected="selected"';
-							} else {
-								$selected = '';
-							}
-							echo "<option value='$u->ID'$selected>$display_name</option>\n";
-						}
-						?>
-					</select>
-				</p>
-				<?php
+				mc_show_block( 'event_host', $has_data, $data );
 				mc_show_block( 'event_category', $has_data, $data );
 				mc_show_block( 'event_link', $has_data, $data );
 				echo apply_filters( 'mc_event_details', '', $has_data, $data, 'admin' );
@@ -1211,10 +1268,10 @@ function mc_form_fields( $data, $mode, $event_id ) {
 
 		<div class="inside">
 			<?php if ( is_object( $data ) ) { // information for rewriting recurring data ?>
-				<input type="hidden" name="prev_event_begin" value="<?php echo $data->event_begin; ?>"/>
-				<input type="hidden" name="prev_event_time" value="<?php echo $data->event_time; ?>"/>
-				<input type="hidden" name="prev_event_end" value="<?php echo $data->event_end; ?>"/>
-				<input type="hidden" name="prev_event_endtime" value="<?php echo $data->event_endtime; ?>"/>
+				<input type="hidden" name="prev_event_begin" value="<?php esc_attr_e( $data->event_begin ); ?>"/>
+				<input type="hidden" name="prev_event_time" value="<?php esc_attr_e( $data->event_time ); ?>"/>
+				<input type="hidden" name="prev_event_end" value="<?php esc_attr_e( $data->event_end ); ?>"/>
+				<input type="hidden" name="prev_event_endtime" value="<?php esc_attr_e( $data->event_endtime ); ?>"/>
 			<?php } ?>
 			<fieldset>
 				<legend class="screen-reader-text"><?php _e( 'Event Date and Time', 'my-calendar' ); ?></legend>
@@ -1378,12 +1435,8 @@ if ( mc_show_edit_block( 'event_specials' ) ) {
 } else {
 	?>
 	<div>
-	<input type="hidden" name="event_holiday" value="true"<?php if ( get_option( 'mc_skip_holidays' ) == 'true' ) {
-		echo " checked=\"checked\"";
-	} ?> />
-	<input type="hidden" name="event_fifth_week" value="true"<?php if ( get_option( 'mc_no_fifth_week' ) == 'true' ) {
-		echo " checked=\"checked\"";
-	} ?>/>
+	<input type="hidden" name="event_holiday" value="true" <?php checked( get_option( 'mc_skip_holidays' ), 'true' ); ?> />
+	<input type="hidden" name="event_fifth_week" value="true" <?php checked( get_option( 'mc_no_fifth_week' ), 'true' ); ?> />
 	</div><?php
 } ?>
 <p>
@@ -1412,13 +1465,13 @@ function mc_event_accessibility( $form, $data, $label ) {
 		if ( is_array( $events_access ) ) {
 			$checked = ( in_array( $k, $events_access ) || in_array( $a, $events_access ) ) ? " checked='checked'" : '';
 		}
-		$item = sprintf( '<li><input type="checkbox" id="%1$s" name="events_access[]" value="%4$s" class="checkbox" %2$s /> <label for="%1$s">%3$s</label></li>', $id, $checked, $label, $a );
+		$item = sprintf( '<li><input type="checkbox" id="%1$s" name="events_access[]" value="%4$s" class="checkbox" %2$s /> <label for="%1$s">%3$s</label></li>', esc_attr( $id ), $checked, esc_html( $label ), esc_attr( $a ) );
 		$form .= $item;
 	}
 	if ( isset( $events_access['notes'] ) ) {
 		$note_value = esc_attr( $events_access['notes'] );
 	}
-	$form .= '<li><label for="events_access_notes">' . __( 'Notes', 'my-calendar' ) . '</label> <input type="text" name="events_access[notes]" value="' . $note_value . '" /></li>';
+	$form .= '<li><label for="events_access_notes">' . __( 'Notes', 'my-calendar' ) . '</label> <input type="text" name="events_access[notes]" value="' . esc_attr( $note_value ) . '" /></li>';
 	$form .= "</ul>
 	</fieldset>";
 
@@ -1430,14 +1483,18 @@ function mc_list_events() {
 	global $wpdb;
 	$mcdb = $wpdb;
 	if ( current_user_can( 'mc_approve_events' ) || current_user_can( 'mc_manage_events' ) || current_user_can( 'mc_add_events' ) ) {
-		$sortby = ( isset( $_GET['sort'] ) ) ? (int) $_GET['sort'] : get_option( 'mc_default_sort' );
 
 		if ( isset( $_GET['order'] ) ) {
 			$sortdir = ( isset( $_GET['order'] ) && $_GET['order'] == 'ASC' ) ? 'ASC' : 'default';
+			$sortdir = ( isset( $_GET['order'] ) && $_GET['order'] == 'DESC' ) ? 'DESC' : $sortdir;
 		} else {
 			$sortdir = 'default';
 		}
-		$sortbydirection = ( $sortdir == 'default' ) ? 'DESC' : $sortdir;
+
+		$default_direction = ( get_option( 'mc_default_direction' ) == '' ) ? 'ASC' : get_option( 'mc_default_direction' );
+		$sortbydirection = ( $sortdir == 'default' ) ? $default_direction : $sortdir;
+				
+		$sortby = ( isset( $_GET['sort'] ) ) ? $_GET['sort'] : get_option( 'mc_default_sort' );
 		if ( empty( $sortby ) ) {
 			$sortbyvalue = 'event_begin';
 		} else {
@@ -1467,7 +1524,7 @@ function mc_list_events() {
 					$sortbyvalue = "event_begin $sortbydirection, event_time";
 			}
 		}
-		$sorting         = ( $sortbydirection == 'DESC' ) ? "&amp;order=ASC" : '';
+		$sorting         = ( $sortbydirection == 'DESC' ) ? "&amp;order=ASC" : '&amp;order=DESC';
 		$allow_filters   = true;
 		$status          = ( isset( $_GET['limit'] ) ) ? $_GET['limit'] : 'all';
 		$restrict        = ( isset( $_GET['restrict'] ) ) ? $_GET['restrict'] : 'all';
@@ -1743,10 +1800,10 @@ function mc_list_events() {
 							<td>
 								<?php if ( $event->event_label != '' ) { ?><a class='mc_filter' href='<?php $elabel = urlencode( $event->event_label ); echo admin_url( "admin.php?page=my-calendar-manage&amp;filter=$elabel&amp;restrict=where" ); ?>' title="<?php _e( 'Filter by location', 'my-calendar' ); ?>"><span class="screen-reader-text"><?php _e( 'Show only: ', 'my-calendar' ); ?></span><?php echo stripslashes( $event->event_label ); ?></a><?php } ?>
 							</td>
-							<?php if ( $event->event_time != "00:00:00" ) {
+							<?php if ( $event->event_endtime != "23:59:59" ) {
 								$eventTime = date_i18n( get_option( 'mc_time_format' ), strtotime( $event->event_time ) );
 							} else {
-								$eventTime = get_option( 'mc_notime_text' );
+								$eventTime = mc_notime_label( $event );
 							} ?>
 							<td><?php
 								$date_format = ( get_option( 'mc_date_format' ) == '' ) ? get_option( 'date_format' ) : get_option( 'mc_date_format' );
@@ -1863,13 +1920,14 @@ function mc_check_data( $action, $post, $i ) {
 	$submit = array();
 	$errors = '';
 	$every  = $recur = $events_access = $begin = $end = $short = $time = $endtime = $event_label = $event_street = $event_street2 = $event_city = $event_state = $event_postcode = $event_region = $event_country = $event_url = $event_image = $event_phone = $event_phone2 = $event_access = $event_tickets = $event_registration = $event_author = $category = $expires = $event_zoom = $event_open = $event_group = $approved = $host = $event_fifth_week = $event_holiday = $event_group_id = $event_span = $event_hide_end = $event_longitude = $event_latitude = '';
+		
 	if ( get_magic_quotes_gpc() ) {
 		$post = array_map( 'stripslashes_deep', $post );
 	}
 	if ( ! wp_verify_nonce( $post['event_nonce_name'], 'event_nonce' ) ) {
 		return array();
 	}
-
+	
 	if ( $action == 'add' || $action == 'edit' || $action == 'copy' ) {
 		$title = ! empty( $post['event_title'] ) ? trim( $post['event_title'] ) : '';
 		$desc  = ! empty( $post['content'] ) ? trim( $post['content'] ) : '';
@@ -1906,21 +1964,17 @@ function mc_check_data( $action, $post, $i ) {
 		$begin   = date( 'Y-m-d', strtotime( $begin ) );// regardless of entry format, convert.
 		$time    = ! empty( $post['event_time'][ $i ] ) ? trim( $post['event_time'][ $i ] ) : '';
 		$endtime = ! empty( $post['event_endtime'][ $i ] ) ? trim( $post['event_endtime'][ $i ] ) : date( 'H:i:s', strtotime( $time . ' +1 hour' ) );
-		$endtime = ( $time == '' || $time == '00:00:00' ) ? '00:00:00' : $endtime; // set at midnight if all day.
-		$endtime = ( $endtime == '' ) ? '00:00:00' : date( 'H:i:00', strtotime( $endtime ) );
-		// if the end time is midnight but the date is empty, change to tomorrow.
-		if ( $endtime == '00:00:00' && $action != 'edit' ) { // cascading problem if this happens on edits!
-			$end = date( 'Y-m-d', strtotime( $end . ' +1 day' ) );
-		}
+		$endtime = ( $time == '' || $time == '00:00:00' ) ? '23:59:59' : $endtime; // set at 23:59:59 if all day.
+		$endtime = ( $endtime == '' ) ? '23:59:00' : date( 'H:i:00', strtotime( $endtime ) );
 		// prevent setting enddate to incorrect value on copy.
 		if ( strtotime( $end ) < strtotime( $begin ) && $action == 'copy' ) {
 			$end = date( 'Y-m-d', ( strtotime( $begin ) + ( strtotime( $post['prev_event_end'] ) - strtotime( $post['prev_event_begin'] ) ) ) );
 		}
 		if ( isset( $post['event_allday'] ) && (int) $post['event_allday'] !== 0 ) {
-			$time = $endtime = '00:00:00';
+			$time = '00:00:00'; $endtime = '23:59:59';
 		}
 		$end                = date( 'Y-m-d', strtotime( $end ) ); // regardless of entry format, convert.			
-		$repeats            = ( ! empty( $post['event_repeats'] ) || trim( $post['event_repeats'] ) == '' ) ? trim( $post['event_repeats'] ) : 0;
+		$repeats            = ( isset( $post['event_repeats'] ) ) ? trim( $post['event_repeats'] ) : 0;
 		$host               = ! empty( $post['event_host'] ) ? $post['event_host'] : $current_user->ID;
 		$category           = ! empty( $post['event_category'] ) ? $post['event_category'] : '';
 		$event_link         = ! empty( $post['event_link'] ) ? trim( $post['event_link'] ) : '';
@@ -1940,7 +1994,7 @@ function mc_check_data( $action, $post, $i ) {
 		$event_group_id     = ( ( is_array( $post['event_begin'] ) && count( $post['event_begin'] ) > 1 ) || mc_event_is_grouped( $group_id_submitted ) ) ? $group_id_submitted : 0;
 		$event_span         = ( ! empty( $post['event_span'] ) && $event_group_id != 0 ) ? 1 : 0;
 		$event_hide_end     = ( ! empty( $post['event_hide_end'] ) ) ? (int) $post['event_hide_end'] : 0;
-		$event_hide_end     = ( $time == '' || $time == '00:00:00' ) ? 1 : $event_hide_end; // hide end time automatically on all day events
+		$event_hide_end     = ( $time == '' || $time == '23:59:59' ) ? 1 : $event_hide_end; // hide end time automatically on all day events
 		// set location
 		if ( $location_preset != 'none' && is_numeric( $location_preset ) ) {
 			$sql             = "SELECT * FROM " . my_calendar_locations_table() . " WHERE location_id = $location_preset";
@@ -2026,7 +2080,7 @@ function mc_check_data( $action, $post, $i ) {
 		}
 
 		// We check for a valid time, or an empty one
-		$time            = ( $time == '' ) ? '00:00:00' : date( 'H:i:00', strtotime( $time ) );
+		$time            = ( $time == '' ) ? '23:59:59' : date( 'H:i:00', strtotime( $time ) );
 		$time_format_one = '/^([0-1][0-9]):([0-5][0-9]):([0-5][0-9])$/';
 		$time_format_two = '/^([2][0-3]):([0-5][0-9]):([0-5][0-9])$/';
 		if ( preg_match( $time_format_one, $time ) || preg_match( $time_format_two, $time ) || $time == '' ) {
@@ -2068,6 +2122,7 @@ function mc_check_data( $action, $post, $i ) {
 	if ( $spam == 1 && $begin == '1970-01-01' ) {
 		die;
 	}
+		
 	if ( $errors == '' ) {
 		$ok     = true;
 		$submit = array(
@@ -2121,6 +2176,8 @@ function mc_check_data( $action, $post, $i ) {
 		$event_access = ( is_array( $event_access ) ) ? serialize( $event_access ) : '';
 		// The form is going to be rejected due to field validation issues, so we preserve the users entries here
 		// all submitted data should be in this object, regardless of data destination.
+		$users_entries                     = ( !is_object( $users_entries ) ) ? new stdClass() : $users_entries;
+		$users_entries->event_id           = ( isset( $_GET['event_id'] ) && is_numeric( $_GET['event_id'] ) ) ? $_GET['event_id'] : false;
 		$users_entries->event_title        = $title;
 		$users_entries->event_desc         = $desc;
 		$users_entries->event_begin        = $begin;
@@ -2205,7 +2262,11 @@ function mc_compare( $update, $id ) {
 	}
 }
 
-// args: instance ID, event ID, array containing updated dates.
+/**
+ * Update a single event instance.
+ *
+ * args: instance ID, event ID, array containing new dates.
+*/
 function mc_update_instance( $event_instance, $event_id, $update = array() ) {
 	global $wpdb;
 	$mcdb = $wpdb;
@@ -2306,7 +2367,7 @@ function mc_instance_list( $id, $occur = false, $template = '<h3>{title}</h3>{de
 		$output = $details . $before . $output . $after;
 	}
 
-	return $output;
+	return ( get_option( 'mc_process_shortcodes' ) == 'true' ) ? do_shortcode( $output ) : $output;
 }
 
 function mc_event_is_grouped( $group_id ) {
@@ -2325,6 +2386,10 @@ function mc_event_is_grouped( $group_id ) {
 	}
 }
 
+function mc_is_all_day( $event ) {
+	return ( $event->event_time == "00:00:00" && $event->event_endtime == "23:59:59" ) ? true : false;
+}
+
 function mc_standard_datetime_input( $form, $has_data, $data, $instance, $context = 'admin' ) {
 	if ( $has_data ) {
 		$event_begin = esc_attr( $data->event_begin );
@@ -2337,50 +2402,37 @@ function mc_standard_datetime_input( $form, $has_data, $data, $instance, $contex
 				$event_end = '';
 			};
 		}
-		$starttime = ( $data->event_time == "00:00:00" && $data->event_endtime == "00:00:00" ) ? '' : date( "h:i A", strtotime( $data->event_time ) );
-		$endtime   = ( $data->event_endtime == "00:00:00" && $data->event_time == "00:00:00" ) ? '' : date( "h:i A", strtotime( $data->event_endtime ) );
+		$starttime = ( mc_is_all_day( $data ) ) ? '' : date( "h:i A", strtotime( $data->event_time ) );
+		$endtime   = ( mc_is_all_day( $data ) ) ? '' : date( "h:i A", strtotime( $data->event_endtime ) );
 	} else {
 		$event_begin = date( "Y-m-d" );
 		$event_end   = $starttime = $endtime = '';
 	}
 	$allday = $hide = '';
-	if ( $has_data && ( $data->event_time == '00:00:00' && $data->event_endtime == '00:00:00' ) ) {
+	if ( $has_data && ( mc_is_all_day( $data ) ) ) {
 		$allday = " checked=\"checked\"";
 	}
 	if ( $has_data && $data->event_hide_end == '1' ) {
 		$hide = " checked=\"checked\"";
 	}
-	$scripting = '
-<script type="text/javascript">
-//<![CDATA[
-jQuery(document).ready(function($) {
-	$("#e_time").pickatime({
-		interval: 15,
-		format: "' . apply_filters( 'mc_time_format', 'h:i A' ) . '",
-		editable: true
-	});
-	$("#e_endtime").pickatime({
-		interval: 15,
-		format: "' . apply_filters( 'mc_time_format', 'h:i A' ) . '",
-		editable: true		
-	});
-});
-//]]>
-</script>';
-	$form .= $scripting;
+	if ( $has_data ) {
+		$allday_label = mc_notime_label( $data );
+	} else {
+		$allday_label = get_option( 'mc_notime_text' );
+	}
 	$form .= '<p>
-		<label for="e_begin" id="eblabel">' . __( 'Date (YYYY-MM-DD)', 'my-calendar' ) . '</label> <input type="text" id="e_begin" name="event_begin[]" size="10" value="" data-value="' . $event_begin . '" />
+		<label for="e_begin" id="eblabel">' . __( 'Date (YYYY-MM-DD)', 'my-calendar' ) . '</label> <input type="text" id="e_begin" class="mc-datepicker" name="event_begin[]" size="10" value="" data-value="' . esc_attr( $event_begin ) . '" />
 		<label for="e_time">' . __( 'From', 'my-calendar' ) . '</label> 
-		<input type="text" id="e_time" name="event_time[]" size="8" value="' . $starttime . '" />	
+		<input type="text" id="e_time" class="mc-timepicker" name="event_time[]" size="8" value="' . esc_attr( $starttime ) . '" />	
 		<label for="e_endtime">' . __( 'To', 'my-calendar' ) . '</label> 
-		<input type="text" id="e_endtime" name="event_endtime[]" size="8" value="' . $endtime . '" />
+		<input type="text" id="e_endtime" class="mc-timepicker" name="event_endtime[]" size="8" value="' . esc_attr( $endtime ) . '" />
 	</p>
 	<ul>
-		<li><input type="checkbox" value="1" id="e_allday" name="event_allday"' . $allday . ' /> <label for="e_allday">' . __( 'All day event', 'my-calendar' ) . '</label> </li>
+		<li><input type="checkbox" value="1" id="e_allday" name="event_allday"' . $allday . ' /> <label for="e_allday">' . __( 'All day event', 'my-calendar' ) . '</label> <span class="event_time_label"><label for="e_time_label">' . __( 'Time label:', 'my-calendar' ) . '</label> <input type="text" name="event_time_label" id="e_time_label" value="' . esc_attr( $allday_label ) . '" /> </li>
 		<li><input type="checkbox" value="1" id="e_hide_end" name="event_hide_end"' . $hide . ' /> <label for="e_hide_end">' . __( 'Hide end time', 'my-calendar' ) . '</label></li>
 	</ul>
 	<p>
-		<label for="e_end" id="eelabel"><em>' . __( 'End Date (YYYY-MM-DD, optional)', 'my-calendar' ) . '</em></label> <input type="text" name="event_end[]" id="e_end" size="10" value="" data-value="' . $event_end . '" /> 
+		<label for="e_end" id="eelabel"><em>' . __( 'End Date (YYYY-MM-DD, optional)', 'my-calendar' ) . '</em></label> <input type="text" name="event_end[]" id="e_end" class="mc-datepicker" size="10" value="" data-value="' . esc_attr( $event_end ) . '" /> 
 	</p>';
 
 	return $form;
@@ -2419,4 +2471,20 @@ function mc_standard_event_registration( $form, $has_data, $data, $context = 'ad
 			</p>";
 
 	return apply_filters( 'mc_event_registration_form', $form, $has_data, $data, 'admin' );
+}
+
+
+add_action( 'save_post', 'mc_post_update_event' );
+/**
+ * Re-run a test cycle when updating post.
+ */
+function mc_post_update_event( $id ) {
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || wp_is_post_revision( $id ) || !( get_post_type( $id ) == 'mc-events' ) ) {
+		return;
+	}
+	$post = get_post( $id );
+	$featured_image = wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
+	$event_id = get_post_meta( $post->ID, '_mc_event_id', true );
+	mc_update_data( $event_id, 'event_image', $featured_image, '%s' );
+	
 }

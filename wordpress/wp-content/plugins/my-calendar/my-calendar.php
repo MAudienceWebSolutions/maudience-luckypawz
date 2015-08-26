@@ -7,7 +7,7 @@ Author: Joseph C Dolson
 Author URI: http://www.joedolson.com
 Text Domain: my-calendar
 Domain Path: lang
-Version: 2.3.32
+Version: 2.4.6
 */
 /*  Copyright 2009-2015  Joe Dolson (email : joe@joedolson.com)
 
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 
 global $mc_version, $wpdb;
-$mc_version = '2.3.32';
+$mc_version = '2.4.6';
 
 // Define the tables used in My Calendar
 if ( is_multisite() && get_site_option( 'mc_multisite_show' ) == 1 ) {
@@ -82,7 +82,6 @@ include( dirname( __FILE__ ) . '/my-calendar-widgets.php' );
 include( dirname( __FILE__ ) . '/my-calendar-upgrade-db.php' );
 include( dirname( __FILE__ ) . '/my-calendar-output.php' );
 include( dirname( __FILE__ ) . '/my-calendar-templates.php' );
-include( dirname( __FILE__ ) . '/my-calendar-ical.php' );
 include( dirname( __FILE__ ) . '/my-calendar-limits.php' );
 include( dirname( __FILE__ ) . '/my-calendar-shortcodes.php' );
 include( dirname( __FILE__ ) . '/my-calendar-templating.php' );
@@ -91,7 +90,10 @@ include( dirname( __FILE__ ) . '/my-calendar-api.php' );
 include( dirname( __FILE__ ) . '/my-calendar-generator.php' );
 
 // Enable internationalisation
-load_plugin_textdomain( 'my-calendar', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
+add_action( 'plugins_loaded', 'mc_load_textdomain' );
+function mc_load_textdomain() {
+	load_plugin_textdomain( 'my-calendar', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
+}
 
 if ( version_compare( get_bloginfo( 'version' ), '3.0', '<' ) && is_ssl() ) {
 	$wp_content_url = str_replace( 'http://', 'https://', get_option( 'siteurl' ) );
@@ -116,11 +118,42 @@ add_action( 'init', 'mc_export_vcal', 200 );
 add_filter( 'widget_text', 'do_shortcode', 9 );
 add_filter( 'plugin_action_links', 'mc_plugin_action', - 10, 2 );
 add_filter( 'wp_title', 'mc_event_filter', 10, 3 );
+// Customize canonical URL
+add_action( 'init', 'mc_custom_canonical' );
+function mc_custom_canonical() {
+	add_action( 'wp_head', 'mc_canonical' );
+	remove_action( 'wp_head', 'rel_canonical' );
+}
+
+function mc_canonical() {
+	// original code
+	if ( !is_singular() ) {
+		return;
+	}
+	global $wp_the_query;
+	if ( !$id = $wp_the_query->get_queried_object_id() ) {
+		return;
+	}
+
+	// original code
+	$link = get_permalink( $id );
+	if ( $page = get_query_var('cpage') ) {
+		$link = get_comments_pagenum_link( $page );
+	}
+	if ( isset( $_GET['mc_id'] ) ) { 
+		$mc_id = ( is_numeric( $_GET['mc_id'] ) ) ? $_GET['mc_id'] : false;
+		$link = add_query_arg( 'mc_id', $mc_id, $link );
+	}
+	echo "<link rel='canonical' href='$link' />\n";	
+}
 
 function mc_event_filter( $title, $sep = ' | ', $seplocation = 'right' ) {
-	if ( isset( $_GET['mc_id'] ) ) {
+	if ( isset( $_GET['mc_id'] ) && is_numeric( $_GET['mc_id'] ) ) {
 		$id        = (int) $_GET['mc_id'];
 		$event     = mc_get_event( $id );
+		if ( mc_event_is_hidden( $event ) ) {
+			return $title;
+		}
 		$array     = mc_create_tags( $event );
 		$left_sep  = ( $seplocation != 'right' ? ' ' . $sep . ' ' : '' );
 		$right_sep = ( $seplocation != 'right' ? '' : ' ' . $sep . ' ' );
@@ -162,12 +195,12 @@ function mc_show_sidebar( $show = '', $add = false, $remove = false ) {
 			<?php if ( ! function_exists( 'mcs_submit_exists' ) ) { ?>
 				<div class="ui-sortable meta-box-sortables">
 					<div class="postbox support">
-						<h3 class='sales'><strong><?php _e( 'My Calendar: Submissions', 'my-calendar' ); ?></strong></h3>
+						<h3 class='sales'><strong><?php _e( 'My Calendar Pro', 'my-calendar' ); ?></strong></h3>
 
 						<div class="inside resources">
-							<p class="mcsbuy"><?php _e( "Buy the <a href='https://www.joedolson.com/my-calendar/submissions/' rel='external'>My Calendar Submissions add-on</a> &mdash; let your audience build your calendar.", 'my-calendar' ); ?></p>
+							<p class="mcsbuy"><?php _e( "Buy <a href='https://www.joedolson.com/my-calendar/pro/' rel='external'>My Calendar Pro</a> &mdash; a more powerful calendar for your site.", 'my-calendar' ); ?></p>
 
-							<p class="mc-button"><a href="http://www.joedolson.com/my-calendar/submissions/" rel="external"><?php _e( 'Learn more!', 'my-calendar' ); ?></a>
+							<p class="mc-button"><a href="http://www.joedolson.com/my-calendar/pro/" rel="external"><?php _e( 'Learn more!', 'my-calendar' ); ?></a>
 							</p>
 						</div>
 					</div>
@@ -401,7 +434,7 @@ function my_calendar_menu() {
 	}
 	if ( function_exists( 'add_submenu_page' ) ) {
 		add_action( "admin_head", 'my_calendar_write_js' );
-		add_action( "admin_head", 'my_calendar_add_styles' );
+		add_action( "admin_enqueue_scripts", 'my_calendar_add_styles' );
 		if ( get_option( 'mc_remote' ) == 'true' ) {
 		} else { // if we're accessing a remote page, remove these pages.
 			$edit = add_submenu_page( apply_filters( 'mc_locate_events_page', 'my-calendar' ), __( 'Add New Event', 'my-calendar' ), __( 'Add New Event', 'my-calendar' ), 'mc_add_events', 'my-calendar', 'edit_my_calendar' );
@@ -423,8 +456,8 @@ function my_calendar_menu() {
 		$permission = apply_filters( 'mcs_submission_permissions', 'manage_options' );
 		add_action( "admin_head", 'my_calendar_sub_js' );
 		add_action( "admin_head", 'my_calendar_sub_styles' );
-		add_submenu_page( 'my-calendar', __( 'Event Submissions', 'my-calendar' ), __( 'Event Submissions', 'my-calendar' ), $permission, 'my-calendar-submissions', 'mcs_settings' );
-		add_submenu_page( 'my-calendar', __( 'Payments', 'my-calendar' ), __( 'Payments', 'my-calendar' ), $permission, 'my-calendar-payments', 'mcs_sales_page' );
+		add_submenu_page( 'my-calendar', __( 'My Calendar Pro Settings', 'my-calendar' ), __( 'My Calendar Pro', 'my-calendar' ), $permission, 'my-calendar-submissions', 'mcs_settings' );
+		add_submenu_page( 'my-calendar', __( 'Payments Received', 'my-calendar' ), __( 'Payments', 'my-calendar' ), $permission, 'my-calendar-payments', 'mcs_sales_page' );
 	}
 }
 
@@ -458,7 +491,8 @@ function mc_show_event_editing( $status, $args ) {
 			'event_open'              => __( 'Event Registration options', 'my-calendar' ),
 			'event_location'          => __( 'Event Location fields', 'my-calendar' ),
 			'event_specials'          => __( 'Set Special Scheduling options', 'my-calendar' ),
-			'event_access'            => __( 'Event Accessibility' )
+			'event_access'            => __( 'Event Accessibility', 'my-calendar' ),
+			'event_host'              => __( 'Event Host', 'my-calendar' )
 		);
 		$output       = '';
 		foreach ( $input_options as $key => $value ) {

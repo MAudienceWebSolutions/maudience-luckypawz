@@ -20,7 +20,7 @@ function jd_draw_template( $array, $template, $type = 'list' ) {
 					}
 				}
 				if ( strpos( $template, "{" . $key . " " ) !== false ) { // only do preg_match if appropriate
-					preg_match_all( '/{' . $key . '\b(?>\s+(?:before="([^"]*)"|after="([^"]*)"|format="([^"]*)")|[^\s]+|\s+){0,2}}/', $template, $matches, PREG_PATTERN_ORDER );
+					preg_match_all( '/{' . $key . '\b(?>\s+(?:before="([^"]*)"|after="([^"]*)"|format="([^"]*)")|[^\s]+|\s+){0,3}}/', $template, $matches, PREG_PATTERN_ORDER );
 					if ( $matches ) {
 						$number = count( $matches[0] );
 						for ( $i=0; $i<=$number; $i++ ) {
@@ -208,7 +208,7 @@ function mc_hcard( $event, $address = 'true', $map = 'true', $source = 'event', 
 	}
 	$hcard .= "</div>";
 
-	return apply_filters( 'mt_hcard', $hcard, $event, $address, $map, $source, $context );
+	return apply_filters( 'mc_hcard', $hcard, $event, $address, $map, $source, $context );
 }
 
 // Produces the array of event details used for drawing templates
@@ -227,23 +227,24 @@ function mc_create_tags( $event, $context = 'filters' ) {
 	$e['access']        = mc_expand( get_post_meta( $event->event_post, '_mc_event_access', true ) );
 
 	// date & time fields
-	$dtstart           = mc_format_timestamp( strtotime( $event->occur_begin ) );
-	$dtend             = mc_format_timestamp( strtotime( $event->occur_end ) );
-
 	$real_end_date     = $event->occur_end;
+	$dtstart           = mc_format_timestamp( strtotime( $event->occur_begin ) );
+	$dtend             = mc_format_timestamp( strtotime( $real_end_date ) );
+
 	$e['date_utc']     = date_i18n( apply_filters( 'mc_date_format', $date_format, 'template_begin_ts' ), $event->ts_occur_begin );
 	$e['date_end_utc'] = date_i18n( apply_filters( 'mc_date_format', $date_format, 'template_end_ts' ), $event->ts_occur_end );
-	$e['time']         = ( date( 'H:i:s', strtotime( $event->occur_begin ) ) == '00:00:00' ) ? get_option( 'mc_notime_text' ) : date( get_option( 'mc_time_format' ), strtotime( $event->occur_begin ) );
-	$e['time24']       = ( date( 'G:i', strtotime( $event->occur_begin ) ) == '00:00:00' ) ? get_option( 'mc_notime_text' ) : date( get_option( 'mc_time_format' ), strtotime( $event->occur_begin ) );
-	$endtime           = date( 'H:i:s', strtotime( $event->occur_end ) );
-	$e['endtime']      = ( $event->occur_end == $event->occur_begin || $event->event_hide_end == 1 ) ? '' : date_i18n( get_option( 'mc_time_format' ), strtotime( $endtime ) );
+		$notime = mc_notime_label( $event );
+	$e['time']         = ( date( 'H:i:s', strtotime( $event->occur_begin ) ) == '00:00:00' ) ? $notime : date( get_option( 'mc_time_format' ), strtotime( $event->occur_begin ) );
+	$e['time24']       = ( date( 'G:i', strtotime( $event->occur_begin ) ) == '00:00:00' ) ? $notime : date( get_option( 'mc_time_format' ), strtotime( $event->occur_begin ) );
+	$endtime           = ( $event->event_end == '23:59:59' ) ? '00:00:00' : date( 'H:i:s', strtotime( $real_end_date ) );
+	$e['endtime']      = ( $real_end_date == $event->occur_begin || $event->event_hide_end == 1 || date( 'H:i:s', strtotime( $real_end_date ) ) == '23:59:59' ) ? '' : date_i18n( get_option( 'mc_time_format' ), strtotime( $endtime ) );
 	$e['runtime']      = mc_runtime( $event->ts_occur_begin, $event->ts_occur_end, $event );
 	$e['dtstart'] = date( 'Y-m-d\TH:i:s', strtotime( $event->occur_begin ) );// hcal formatted
-	$e['dtend']   = date( 'Y-m-d\TH:i:s', strtotime( $event->occur_end ) );    //hcal formatted end
+	$e['dtend']   = date( 'Y-m-d\TH:i:s', strtotime( $real_end_date ) );    //hcal formatted end
 	$e['rssdate'] = date( 'D, d M Y H:i:s +0000', strtotime( $event->event_added ) );
 	$date         = date_i18n( apply_filters( 'mc_date_format', $date_format, 'template_begin' ), strtotime( $event->occur_begin ) );
 	$date_end     = date_i18n( apply_filters( 'mc_date_format', $date_format, 'template_end' ), strtotime( $real_end_date ) );
-	$date_arr     = array( 'occur_begin' => $event->occur_begin, 'occur_end' => $event->occur_end );
+	$date_arr     = array( 'occur_begin' => $event->occur_begin, 'occur_end' => $real_end_date );
 	$date_obj     = (object) $date_arr;
 	if ( $event->event_span == 1 ) {
 		$dates = mc_event_date_span( $event->event_group_id, $event->event_span, array( 0 => $date_obj ) );
@@ -253,7 +254,7 @@ function mc_create_tags( $event, $context = 'filters' ) {
 	$e['date']      = ( $event->event_span != 1 ) ? $date : mc_format_date_span( $dates, 'simple', $date );
 	$e['enddate']   = $date_end;
 	$e['daterange'] = ( $date == $date_end ) ? $date : "<span class='mc_db'>$date</span> <span>&ndash;</span> <span class='mc_de'>$date_end</span>";
-	$e['timerange'] = ( ( $e['time'] == $e['endtime'] ) || $event->event_hide_end == 1 ) ? $e['time'] : "<span class='mc_tb'>" . $e['time'] . "</span> <span>&ndash;</span> <span class='mc_te'>" . $e['endtime'] . "</span>";
+	$e['timerange'] = ( ( $e['time'] == $e['endtime'] ) || $event->event_hide_end == 1 || date( 'H:i:s', strtotime( $real_end_date ) ) == '23:59:59' ) ? $e['time'] : "<span class='mc_tb'>" . $e['time'] . "</span> <span>&ndash;</span> <span class='mc_te'>" . $e['endtime'] . "</span>";
 	$e['datespan']  = ( $event->event_span == 1 || ( $e['date'] != $e['enddate'] ) ) ? mc_format_date_span( $dates ) : $date;
 	$e['multidate'] = mc_format_date_span( $dates, 'complex', "<span class='fallback-date'>$date</span><span class='separator'>,</span> <span class='fallback-time'>$e[time]</span>&ndash;<span class='fallback-endtime'>$e[endtime]</span>" );
 	$e['began']     = $event->event_begin; // returns date of first occurrence of an event.
@@ -261,11 +262,13 @@ function mc_create_tags( $event, $context = 'filters' ) {
 	$e['repeats']   = $event->event_repeats;
 
 	// category fields
-	$e['cat_id']    = $event->event_category;
-	$e['category']  = stripslashes( $event->category_name );
-	$e['icon']      = mc_category_icon( $event, 'img' );
-	$e['icon_html'] = "<img src='$e[icon]' class='mc-category-icon' alt='" . __( 'Category', 'my-calendar' ) . ": " . esc_attr( $event->category_name ) . "' />";
-	$e['color']     = $event->category_color;
+	$e['cat_id']          = $event->event_category;
+	$e['category']        = stripslashes( $event->category_name );
+	$e['icon']            = mc_category_icon( $event, 'img' );
+	$e['icon_html']       = "<img src='$e[icon]' class='mc-category-icon' alt='" . __( 'Category', 'my-calendar' ) . ": " . esc_attr( $event->category_name ) . "' />";
+	$e['color']           = $event->category_color;
+	$e['color_css']       = "<span style='background-color: $event->category_color'>"; // this is because widgets now strip out style attributes.
+	$e['close_color_css'] = "</span>";
 
 	// special
 	$e['skip_holiday'] = ( $event->event_holiday == 0 ) ? 'false' : 'true';
@@ -273,10 +276,10 @@ function mc_create_tags( $event, $context = 'filters' ) {
 
 	// general text fields
 	$e['title']                = stripslashes( $event->event_title );
-	$e['description']          = ( get_option( 'mc_process_shortcodes' ) == 'true' && $context == 'filters' ) ? apply_filters( 'the_content', $event->event_desc ) : wpautop( stripslashes( $event->event_desc ) );
+	$e['description']          = wpautop( stripslashes( $event->event_desc ) );
 	$e['description_raw']      = stripslashes( $event->event_desc );
 	$e['description_stripped'] = strip_tags( stripslashes( $event->event_desc ) );
-	$e['shortdesc']            = ( get_option( 'mc_process_shortcodes' ) == 'true' && $context == 'filters' ) ? apply_filters( 'the_content', $event->event_short ) : wpautop( stripslashes( $event->event_short ) );
+	$e['shortdesc']            = wpautop( stripslashes( $event->event_short ) );
 	$e['shortdesc_raw']        = stripslashes( $event->event_short );
 	$e['shortdesc_stripped']   = strip_tags( stripslashes( $event->event_short ) );
 
@@ -366,6 +369,12 @@ function mc_create_tags( $event, $context = 'filters' ) {
 	return $e;
 }
 
+function mc_notime_label( $event ) {
+	$notime = get_post_meta( $event->event_post, '_event_time_label', true );
+	$notime = ( $notime != '' ) ? $notime : get_option( 'mc_notime_text' );
+	return apply_filters( 'mc_notime_label', $notime, $event );
+}
+
 function mc_get_details_label( $event, $e ) {
 	$templates  = get_option( 'mc_templates' );
 	$e_template = ( ! empty( $templates['label'] ) ) ? stripcslashes( $templates['label'] ) : sprintf( __( 'Event Details %s', 'my-calendar' ), '<span class="screen-reader-text">about {title}</span> &raquo;' );
@@ -386,7 +395,7 @@ function mc_format_timestamp( $os ) {
 }
 
 function mc_runtime( $start, $end, $event ) {
-	if ( $event->event_hide_end || $start == $end ) {
+	if ( $event->event_hide_end || $start == $end || date( 'H:i:s', strtotime( $end ) ) == '23:59:59'  ) {
 		return '';
 	} else {
 		return human_time_diff( $start, $end );

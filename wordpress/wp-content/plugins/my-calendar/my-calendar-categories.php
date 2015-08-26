@@ -257,30 +257,34 @@ function mc_edit_category_form( $view = 'edit', $catID = '' ) {
 								} else {
 									$color = '';
 								} ?>
-								<label for="cat_name"><?php _e( 'Category Name', 'my-calendar' ); ?>:</label> <input
+								<ul>
+								<li>
+								<label for="cat_name"><?php _e( 'Category Name', 'my-calendar' ); ?></label> <input
 									type="text" id="cat_name" name="category_name" class="input" size="30"
 									value="<?php if ( ! empty( $cur_cat ) && is_object( $cur_cat ) ) {
 										echo stripslashes( esc_attr( $cur_cat->category_name ) );
 									} ?>"/>
-								<label for="cat_color"><?php _e( 'Color', 'my-calendar' ); ?>:</label> <input
-									type="text"
+								<label for="cat_color"><?php _e( 'Color', 'my-calendar' ); ?></label> <input
+									type="text
 									id="cat_color"
 									name="category_color"
 									class="mc-color-input"
 									size="10"
 									maxlength="7"
-									value="<?php echo $color; ?>"/><br/>
-								<label for="cat_icon"><?php _e( 'Category Icon', 'my-calendar' ); ?>:</label> <select
+									value="<?php esc_attr_e( $color ); ?>"/>
+								</li>
+								<li>
+								<label for="cat_icon"><?php _e( 'Category Icon', 'my-calendar' ); ?></label> <select
 									name="category_icon" id="cat_icon">
 									<?php
 									foreach ( $iconlist as $value ) {
 										$selected = ( ( ! empty( $cur_cat ) && is_object( $cur_cat ) ) && $cur_cat->category_icon == $value ) ? " selected='selected'" : '';
-										echo "<option value='$value'$selected style='background: url(" . str_replace( 'my-calendar/', '', $url ) . "$path/$value) left 50% no-repeat;'>$value</option>";
+										echo "<option value='" . esc_attr( $value ) . "'$selected style='background: url(" . str_replace( 'my-calendar/', '', esc_url( $url . "$path/$value" ) ) . ") left 50% no-repeat;'>$value</option>";
 									}
 									?>
 								</select>
-
-								<p>
+								</li>
+								<li>
 									<?php if ( $view == 'add' ) {
 										$private_checked = '';
 									} else {
@@ -300,7 +304,10 @@ function mc_edit_category_form( $view = 'edit', $catID = '' ) {
 										for="mc_default_category"><?php _e( 'Default category', 'my-calendar' ); ?></label>
 									<input type="checkbox" value="on" name="mc_skip_holidays_category"
 									       id="mc_shc"<?php echo $holiday_checked; ?> /> <label
-										for="mc_shc"><?php _e( 'Holiday Category', 'my-calendar' ); ?></label></p>
+										for="mc_shc"><?php _e( 'Holiday Category', 'my-calendar' ); ?></label>
+								</li>
+								<?php echo apply_filters( 'mc_category_fields', '', $cur_cat ); ?>
+							</ul>
 							</fieldset>
 							<p>
 								<input type="submit" name="save" class="button-primary"

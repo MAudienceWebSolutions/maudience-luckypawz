@@ -202,7 +202,7 @@ function mc_select_host( $host, $type = 'event' ) {
 				$host = get_user_by( 'login', $host ); // get author by username
 
 				if ( is_object( $host ) ) {
-					$host_id     = (int) $host->ID;
+					$host_id     = $host->ID;
 					$select_host = ( $type == 'all' ) ? " WHERE $data = $host_id" : " $data = $host_id AND";
 				} else {
 					$select_host = '';
@@ -276,9 +276,9 @@ function mc_limit_string( $type = '', $ltype = '', $lvalue = '' ) {
 			) ) ) {
 			if ( $current_location != 'all' && $current_location != '' ) {
 				if ( is_numeric( $current_location ) ) {
-					$limit_string = "$location_type = " . (int) $current_location . " AND";				
+					$limit_string = esc_sql( $location_type ) . ' = ' . intval( $current_location ) . ' AND';				
 				} else {
-					$limit_string = "$location_type = '" . esc_sql( $current_location ) . "' AND";
+					$limit_string = esc_sql( $location_type ) . " = '" . esc_sql( $current_location ) . "' AND";				
 				}
 			}
 		}
@@ -331,7 +331,7 @@ function mc_secondary_limit( $ltype = '', $lvalue = '' ) {
 			$location_type = "event_label";
 	}
 	if ( $current_location != 'all' && $current_location != '' ) {
-		$limit_string = " $location_type='" . esc_sql( $current_location ) . "' AND ";
+		$limit_string = " $location_type='$current_location' AND ";
 		// $limit_string .= ($type=='all')?' AND':"";
 	}
 
