@@ -1217,6 +1217,10 @@ class GFNotificationTable extends WP_List_Table {
 		echo $this->single_row_columns( $item );
 		echo '</tr>';
 	}
+	
+	function get_columns() {
+		return $this->_column_headers[0];
+	}
 
 	function column_default( $item, $column ) {
 		echo rgar( $item, $column );

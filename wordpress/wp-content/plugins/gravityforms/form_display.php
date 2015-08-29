@@ -31,8 +31,12 @@ class GFFormDisplay {
 		}
 
 		//pre process action
-		do_action( 'gform_pre_process', $form );
-		do_action( "gform_pre_process_{$form['id']}", $form );
+		/**
+		 * Fires before a form is processed (You can specify the ID of the form to checK)
+		 *
+		 * @param array $form The Form Object
+		 */
+		gf_do_action( 'gform_pre_process', $form['id'], $form );
 
 		$lead = array();
 
@@ -113,8 +117,7 @@ class GFFormDisplay {
 				$form = self::update_confirmation( $form );
 
 				//pre submission action
-				do_action( 'gform_pre_submission', $form );
-				do_action( "gform_pre_submission_{$form['id']}", $form );
+				gf_do_action( 'gform_pre_submission', $form['id'], $form );
 
 				//pre submission filter
 				$form = gf_apply_filters( 'gform_pre_submission_filter', $form_id, $form );
@@ -123,8 +126,7 @@ class GFFormDisplay {
 				$confirmation = self::handle_submission( $form, $lead, $ajax );
 
 				//after submission hook
-				do_action( 'gform_after_submission', $lead, $form );
-				do_action( "gform_after_submission_{$form['id']}", $lead, $form );
+				gf_do_action( 'gform_after_submission', $form['id'], $lead, $form );
 
 			} elseif ( $saving_for_later ) {
 				GFCommon::log_debug( 'GFFormDisplay::process_form(): Saving for later.' );
@@ -162,8 +164,7 @@ class GFFormDisplay {
 
 			if ( is_array( $confirmation ) && isset( $confirmation['redirect'] ) ){
 				header( "Location: {$confirmation["redirect"]}" );
-				do_action( 'gform_post_submission', $lead, $form );
-				do_action( "gform_post_submission_{$form["id"]}", $lead, $form );
+				gf_do_action( 'gform_post_submission', $form['id'], $lead, $form );
 				exit;
 			}
 		}
@@ -181,8 +182,16 @@ class GFFormDisplay {
 		self::set_submission_if_null( $form_id, 'page_number', $page_number );
 		self::set_submission_if_null( $form_id, 'source_page_number', $source_page_number );
 
-		do_action( 'gform_post_process', $form, $page_number, $source_page_number );
-		do_action( "gform_post_process_{$form['id']}", $form, $page_number, $source_page_number );
+		/**
+		 * Fires after the form processing is completed. Form processing happens when submitting a page on a multi-page form (i.e. going to the "Next" or "Previous" page), or
+		 * when submitting a single page form.
+		 *
+		 * @param array $form The Form Object
+		 * @param int $page_number In a multi-page form, this variable contains the current page number.
+		 * @param int $source_page_number In a multi-page form, this parameters contains the number of the page that the submission came from.
+		 *                                For example, when clicking "Next" on page 1, this parameter will be set to 1. When clicking "Previous" on page 2, this parameter will be set to 2.
+		 */
+		gf_do_action( 'gform_post_process', $form['id'], $form, $page_number, $source_page_number );
 
 	}
 
@@ -578,12 +587,10 @@ class GFFormDisplay {
 
 					if ( $submission_info['page_number'] == 0 ) {
 						//post submission hook
-						do_action( 'gform_post_submission', $lead, $form );
-						do_action( "gform_post_submission_{$form['id']}", $lead, $form );
+						gf_do_action( 'gform_post_submission', $form['id'], $lead, $form );
 					} else {
 						//change page hook
-						do_action( 'gform_post_paging', $form, $submission_info['source_page_number'], $submission_info['page_number'] );
-						do_action( "gform_post_paging_{$form['id']}", $form, $submission_info['source_page_number'], $submission_info['page_number'] );
+						gf_do_action( 'gform_post_paging', $form['id'], $form, $submission_info['source_page_number'], $submission_info['page_number'] );
 					}
 				}
 			} elseif ( ! current_user_can( 'administrator' ) && ! $view_counter_disabled ) {
@@ -668,7 +675,7 @@ class GFFormDisplay {
 			$default_anchor = $has_pages || $ajax ? true : false;
 			$use_anchor     = gf_apply_filters( 'gform_confirmation_anchor', $form_id, $default_anchor );
 			if ( $use_anchor !== false ) {
-				$form_string .= "<a id='gf_$form_id' name='gf_$form_id' class='gform_anchor' ></a>";
+				$form_string .= "<a id='gf_$form_id' class='gform_anchor' ></a>";
 				$action .= "#gf_$form_id";
 			}
 			$target = $ajax ? "target='gform_ajax_frame_{$form_id}'" : '';
@@ -754,7 +761,7 @@ class GFFormDisplay {
 					$field->conditionalLogicFields = self::get_conditional_logic_fields( $form, $field->id );
 
 					if ( is_array( $submitted_values ) ) {
-						$field_value = $submitted_values[ $field->id ];
+						$field_value = rgar( $submitted_values, $field->id );
 					} else {
 						$field_value = GFFormsModel::get_field_value( $field, $field_values );
 					}
@@ -952,7 +959,7 @@ class GFFormDisplay {
 		if ( $button['type'] == 'text' || $button['type'] == 'link' || empty( $button['imageUrl'] ) ) {
 			$button_text = ! empty( $button['text'] ) ? $button['text'] : $default_text;
 			if ( $button['type'] == 'link' ) {
-				$button_input = "<a href='javascript:void(0);' id='{$button_input_id}_link' class='{$class}' alt='{$alt}' title='{$alt}' {$tabindex} {$onclick}>{$button_text}</a>";
+				$button_input = "<a href='javascript:void(0);' id='{$button_input_id}_link' class='{$class}' {$tabindex} {$onclick}>{$button_text}</a>";
 			} else {
 				$class .= ' button';
 				$button_input = "<input type='{$input_type}' id='{$button_input_id}' class='{$class}' value='" . esc_attr( $button_text ) . "' {$tabindex} {$onclick} />";
@@ -976,6 +983,8 @@ class GFFormDisplay {
 		$save_button = rgars( $form, 'save/enabled' ) ? self::get_form_button( $form_id, "gform_save_{$form_id}", $form['save']['button'], rgars( $form, 'save/button/text' ), 'gform_save_link', rgars( $form, 'save/button/text' ), 0, "jQuery(\"#gform_save_{$form_id}\").val(1);" ) : '';
 
 		$footer .= $previous_button . ' ' . $button_input . ' ' . $save_button;
+
+		$tabindex = (int) $tabindex;
 
 		if ( $ajax ) {
 			$footer .= "<input type='hidden' name='gform_ajax' value='" . esc_attr( "form_id={$form_id}&amp;title={$display_title}&amp;description={$display_description}&amp;tabindex={$tabindex}" ) . "' />";
@@ -1018,7 +1027,7 @@ class GFFormDisplay {
 		return $footer;
 	}
 
-	private static function get_max_page_number( $form ) {
+	public static function get_max_page_number( $form ) {
 		$page_number = 0;
 		foreach ( $form['fields'] as $field ) {
 			if ( $field->type == 'page' ) {
@@ -1115,7 +1124,7 @@ class GFFormDisplay {
 		}
 
 		do_action( 'gform_entry_created', $lead, $form );
-		$lead = apply_filters( 'gform_entry_post_save', $lead, $form );
+		$lead = gf_apply_filters( 'gform_entry_post_save', $form['id'], $lead, $form );
 
 		RGFormsModel::set_current_lead( $lead );
 
@@ -1171,7 +1180,7 @@ class GFFormDisplay {
 
 		if ( $form['confirmation']['type'] == 'message' ) {
 			$default_anchor = self::has_pages( $form ) ? 1 : 0;
-			$anchor         = gf_apply_filters( 'gform_confirmation_anchor', $form['id'], $default_anchor ) ? "<a id='gf_{$form['id']}' name='gf_{$form['id']}' class='gform_anchor' ></a>" : '';
+			$anchor         = gf_apply_filters( 'gform_confirmation_anchor', $form['id'], $default_anchor ) ? "<a id='gf_{$form['id']}' class='gform_anchor' ></a>" : '';
 			$nl2br          = rgar( $form['confirmation'], 'disableAutoformat' ) ? false : true;
 			$cssClass       = rgar( $form, 'cssClass' );
 			$confirmation   = empty( $form['confirmation']['message'] ) ? "{$anchor} " : "{$anchor}<div id='gform_confirmation_wrapper_{$form['id']}' class='gform_confirmation_wrapper {$cssClass}'><div id='gform_confirmation_message_{$form['id']}' class='gform_confirmation_message_{$form['id']} gform_confirmation_message'>" . GFCommon::replace_variables( $form['confirmation']['message'], $form, $lead, false, true, $nl2br ) . '</div></div>';
@@ -1456,7 +1465,13 @@ class GFFormDisplay {
 	public static function enqueue_form_scripts( $form, $ajax = false ) {
 
 		// adding pre enqueue scripts hook so that scripts can be added first if a need exists
-		do_action( "gform_pre_enqueue_scripts_{$form['id']}", do_action( 'gform_pre_enqueue_scripts', $form, $ajax ), $ajax );
+		/**
+		 * Fires before any scripts are enqueued (form specific as well)
+		 *
+		 * @param array $form The Form Object
+		 * @param bool $ajax Whether AJAX is on or off (True or False)
+		 */
+		gf_do_action( 'gform_pre_enqueue_scripts', $form['id'], $form, $ajax );
 
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 
@@ -1523,8 +1538,7 @@ class GFFormDisplay {
 			wp_enqueue_script( 'gform_placeholder' );
 		}
 
-		do_action( 'gform_enqueue_scripts', $form, $ajax );
-		do_action( "gform_enqueue_scripts_{$form['id']}", $form, $ajax );
+		gf_do_action( 'gform_enqueue_scripts', $form['id'], $form, $ajax );
 
 		// enqueue jQuery every time form is displayed to allow 'gform_post_render' js hook
 		// to be available to users even when GF is not using it
@@ -1775,8 +1789,10 @@ class GFFormDisplay {
 						}
 						break;
 					case 'time':
-						$ampm_key = key( array_slice( $field_val, -1, 1, true ) );
-						$field_val[ $ampm_key ] = strtolower( $field_val[ $ampm_key ] );
+						if ( is_array( $field_val ) ) {
+							$ampm_key = key( array_slice( $field_val, - 1, 1, true ) );
+							$field_val[ $ampm_key ] = strtolower( $field_val[ $ampm_key ] );
+						}
 						break;
 					case 'address':
 
@@ -1914,8 +1930,7 @@ class GFFormDisplay {
 			}
 		}
 
-		do_action( 'gform_register_init_scripts', $form, $field_values, $is_ajax );
-		do_action( 'gform_register_init_scripts_' . $form['id'], $form, $field_values, $is_ajax );
+		gf_do_action( 'gform_register_init_scripts', $form['id'], $form, $field_values, $is_ajax );
 
 	}
 
@@ -2779,7 +2794,7 @@ class GFFormDisplay {
 		$use_anchor     = gf_apply_filters( 'gform_confirmation_anchor', $form_id, $default_anchor );
 
 		if ( $use_anchor !== false ) {
-			$save_email_confirmation = "<a id='gf_$form_id' name='gf_$form_id' class='gform_anchor' ></a>" . $save_email_confirmation;
+			$save_email_confirmation = "<a id='gf_$form_id' class='gform_anchor' ></a>" . $save_email_confirmation;
 		}
 
 		if ( $ajax ) {
@@ -2805,7 +2820,7 @@ class GFFormDisplay {
 		$use_anchor     = gf_apply_filters( 'gform_confirmation_anchor', $form_id, $default_anchor );
 
 		if ( $use_anchor !== false ) {
-			$confirmation_message = "<a id='gf_{$form_id}' name='gf_{$form_id}' class='gform_anchor' ></a>" . $confirmation_message;
+			$confirmation_message = "<a id='gf_{$form_id}' class='gform_anchor' ></a>" . $confirmation_message;
 		}
 
 		$wrapper_css_class = GFCommon::get_browser_class() . ' gform_wrapper';

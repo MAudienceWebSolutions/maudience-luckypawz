@@ -436,7 +436,7 @@ class GFFormSettings {
         <tr id="sub_label_placement_setting">
             <th>
                 ' .
-			__( 'Sub-label placement', 'gravityforms' ) . ' ' .
+			__( 'Sub-Label Placement', 'gravityforms' ) . ' ' .
 			gform_tooltip( 'form_sub_label_placement', '', true ) .
 			'
 			</th>
@@ -1770,6 +1770,10 @@ class GFConfirmationTable extends WP_List_Table {
 		echo '<tr id="confirmation-' . $item['id'] . '" ' . $row_class . '>';
 		echo $this->single_row_columns( $item );
 		echo '</tr>';
+	}
+
+	function get_columns() {
+		return $this->_column_headers[0];
 	}
 
 	function column_content( $item ) {
